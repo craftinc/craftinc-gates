@@ -9,11 +9,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.bukkit.Location;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.event.Event;
-import org.bukkit.plugin.PluginManager;
+
 import org.bukkit.plugin.java.JavaPlugin;
+
 import org.mcteam.ancientgates.commands.BaseCommand;
 import org.mcteam.ancientgates.commands.CommandClose;
 import org.mcteam.ancientgates.commands.CommandCreate;
@@ -23,10 +24,13 @@ import org.mcteam.ancientgates.commands.CommandList;
 import org.mcteam.ancientgates.commands.CommandOpen;
 import org.mcteam.ancientgates.commands.CommandSetFrom;
 import org.mcteam.ancientgates.commands.CommandSetTo;
+
 import org.mcteam.ancientgates.gson.Gson;
 import org.mcteam.ancientgates.gson.GsonBuilder;
+
 import org.mcteam.ancientgates.listeners.PluginBlockListener;
 import org.mcteam.ancientgates.listeners.PluginPlayerListener;
+
 
 public class Plugin extends JavaPlugin {
 	public static Plugin instance;
@@ -55,7 +59,8 @@ public class Plugin extends JavaPlugin {
 	}
 
 	@Override
-	public void onEnable() {
+	public void onEnable() 
+	{
 		// Add the commands
 		commands.add(new CommandHelp());
 		commands.add(new CommandCreate());
@@ -74,10 +79,9 @@ public class Plugin extends JavaPlugin {
 		Gate.load();
 		
 		// Register events
-		PluginManager pm = this.getServer().getPluginManager();
-		pm.registerEvent(Event.Type.PLAYER_MOVE, this.playerListener, Event.Priority.Normal, this);
-		pm.registerEvent(Event.Type.BLOCK_PHYSICS, this.blockListener, Event.Priority.Normal, this);
-		
+		getServer().getPluginManager().registerEvents(this.playerListener, this);
+		getServer().getPluginManager().registerEvents(this.blockListener, this);
+
 		log("Enabled");
 	}
 	

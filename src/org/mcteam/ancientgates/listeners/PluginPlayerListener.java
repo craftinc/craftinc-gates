@@ -4,65 +4,98 @@ import java.util.logging.Level;
 
 import org.bukkit.Chunk;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
+
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.event.player.PlayerListener;
+
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
+
 import org.mcteam.ancientgates.Conf;
 import org.mcteam.ancientgates.Gate;
 import org.mcteam.ancientgates.Plugin;
 import org.mcteam.ancientgates.util.GeometryUtil;
 
 
-public class PluginPlayerListener extends PlayerListener {
-	@Override
-	public void onPlayerMove(PlayerMoveEvent event) {
-		if (event.isCancelled()) {
+public class PluginPlayerListener implements Listener
+{	
+	@EventHandler
+	public void onPlayerMove(PlayerMoveEvent event) 
+	{
+		if (event.isCancelled()) 
 			return;
-		}
 		
 		Block blockTo = event.getTo().getBlock();
-		Block blockToUp = blockTo.getFace(BlockFace.UP);
+		Block blockToUp = blockTo.getRelative(BlockFace.UP);
 		
-		if (blockTo.getType() != Material.PORTAL && blockToUp.getType() != Material.PORTAL) {
-			return;
-		}
+		// Uncomment if you don't want portals to be always open. Portals then are only open, if the Material in the Portal is PORTAL
+			/*
+			if (blockTo.getType() != Material.PORTAL && blockToUp.getType() != Material.PORTAL) {
+	                    
+				return;
+			}
+			*/
 		
 		// Ok so a player walks into a portal block
 		// Find the nearest gate!
 		Gate nearestGate = null;
 		Location playerLocation = event.getPlayer().getLocation();
-		double shortestDistance = -1;
+		//double shortestDistance = -1;
 		
-		for (Gate gate : Gate.getAll()) {
-			if ( gate.getFrom() == null || gate.getTo() == null) {
+		for (Gate gate : Gate.getAll()) 
+		{
+			if ( gate.getFrom() == null || gate.getTo() == null)
 				continue;
-			}
 			
-			if ( ! gate.getFrom().getWorld().equals(playerLocation.getWorld())) {
+			
+			if ( ! gate.getFrom().getWorld().equals(playerLocation.getWorld()))
 				continue; // We can only be close to gates in the same world
-			}
+			
 			
 			double distance = GeometryUtil.distanceBetweenLocations(playerLocation, gate.getFrom());
 			
-			if (distance > Conf.getGateSearchRadius()) {
+			if (distance > Conf.getGateSearchRadius())
 				continue;
-			}
 			
-			if (shortestDistance == -1 || shortestDistance > distance) {
+			
+			 Plugin.log(Level.ALL, "in gate search radius.");
+            for (Integer[] blockXYZ: gate.getGateBlocks()) 
+            {
+                if ( (blockTo.getX() == blockXYZ[0] || blockToUp.getX() == blockXYZ[0]) &&
+                     (blockTo.getY() == blockXYZ[1] || blockToUp.getY() == blockXYZ[1]) &&
+                     (blockTo.getZ() == blockXYZ[2] || blockToUp.getZ() == blockXYZ[2])
+                   ) 
+                {
+                    nearestGate = gate;
+                    break;
+                }
+            }
+            
+			/*if (shortestDistance == -1 || shortestDistance > distance) {
 				nearestGate = gate;
 				shortestDistance = distance;
-			}
+			}*/
 		}
 		
-		if (nearestGate != null) {
+		if (nearestGate != null) 
+		{
 			checkChunkLoad(nearestGate.getTo().getBlock());
-			event.getPlayer().teleport(nearestGate.getTo());
-			event.setTo(nearestGate.getTo());
+			
+            Float newYaw = nearestGate.getFrom().getYaw() - nearestGate.getTo().getYaw() + playerLocation.getYaw();
+            
+            Location teleportToLocation = new Location( nearestGate.getTo().getWorld(),
+                                						nearestGate.getTo().getX(),
+						                                nearestGate.getTo().getY(),
+						                                nearestGate.getTo().getZ(),
+						                                newYaw, playerLocation.getPitch() );
+                        
+			event.getPlayer().teleport(teleportToLocation);
+			event.setTo(teleportToLocation);
 		}
 	}
+	
 	
 	private void checkChunkLoad(Block b) 
 	{
