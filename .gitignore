@@ -15,5 +15,9 @@
 /dist
 /localexport.jardesc
 
-# Mac filesystem dust
+# osx noise
 .DS_Store
+profile
+
+# bukkit
+bukkit/
