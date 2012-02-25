@@ -2,7 +2,9 @@ package org.mcteam.ancientgates;
 
 import java.io.File;
 import java.io.IOException;
+
 import java.lang.reflect.Type;
+
 import java.util.Collection;
 import java.util.Map.Entry;
 import java.util.Map;
@@ -12,7 +14,9 @@ import java.util.TreeMap;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+
 import org.mcteam.ancientgates.gson.reflect.TypeToken;
+
 import org.mcteam.ancientgates.util.DiscUtil;
 import org.mcteam.ancientgates.util.FloodUtil;
 
@@ -24,7 +28,9 @@ public class Gate {
 	private transient String id;
 	private Location from;
 	private Location to;
-	
+        
+        private Integer[][] gateBlocks;
+
 	public Gate() {
 		
 	}
@@ -56,6 +62,27 @@ public class Gate {
 	public Location getTo() {
 		return to;
 	}
+        
+        public Integer[][] getGateBlocks() {
+                return gateBlocks;
+        }
+
+        public void setGateBlocks(Set<Block> gateBlocks) {
+                if (gateBlocks == null)
+                    return;
+
+                this.gateBlocks = new Integer[gateBlocks.size()][3];
+
+                int blockcount = 0;
+                for (Block b: gateBlocks) {
+                        if (b != null) {
+                            this.gateBlocks[blockcount][0] = b.getX();
+                            this.gateBlocks[blockcount][1] = b.getY();
+                            this.gateBlocks[blockcount][2] = b.getZ();
+                        }
+                        blockcount++;
+                }
+        }
 	
 	//----------------------------------------------//
 	// The Open And Close Methods
@@ -68,6 +95,8 @@ public class Gate {
 			return false;
 		}
 		
+                // Uncomment lines below to have the old Portal open functionality back.
+                
 		// This is not to do an effect
 		// It is to stop portalblocks from destroyingthemself as they cant rely on non created blocks :P
 		for (Block block : blocks) {
@@ -83,7 +112,8 @@ public class Gate {
 	
 	public void close() {
 		Set<Block> blocks = FloodUtil.getGateFrameBlocks(from.getBlock());
-		
+                
+		// Uncomment lines below to have the old Portal open functionality back.
 		for (Block block : blocks) {
 			block.setType(Material.AIR);
 		}
