@@ -7,6 +7,7 @@ public class CommandDelete extends BaseCommand {
 		aliases.add("delete");
 		aliases.add("del");
 		aliases.add("remove");
+		aliases.add("rm");
 		
 		requiredParameters.add("id");		
 		
