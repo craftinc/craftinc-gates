@@ -95,7 +95,7 @@ public class Gate {
 			return false;
 		}
 		
-                // Uncomment lines below to have the old Portal open functionality back.
+        // Uncomment lines below to have the old Portal open functionality back.
                 
 		// This is not to do an effect
 		// It is to stop portalblocks from destroyingthemself as they cant rely on non created blocks :P
@@ -110,12 +110,14 @@ public class Gate {
 		return true;
 	}
 	
-	public void close() {
-		Set<Block> blocks = FloodUtil.getGateFrameBlocks(from.getBlock());
-                
-		// Uncomment lines below to have the old Portal open functionality back.
-		for (Block block : blocks) {
-			block.setType(Material.AIR);
+	public void close() 
+	{
+		if (from != null)
+		{
+			Set<Block> blocks = FloodUtil.getGateFrameBlocks(from.getBlock());
+	                
+			for (Block block : blocks)
+				block.setType(Material.AIR);
 		}
 	}
 	
