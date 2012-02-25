@@ -2,11 +2,13 @@ package org.mcteam.ancientgates.util;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Level;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.mcteam.ancientgates.Conf;
+import org.mcteam.ancientgates.Plugin;
 
 public class FloodUtil {
 	private static final Set<BlockFace> exp1 = new HashSet<BlockFace>();
@@ -49,34 +51,33 @@ public class FloodUtil {
 		return blocks1;
 	}
 	
-	public static Set<Block> getAirFloodBlocks(Block startBlock, Set<Block> foundBlocks, Set<BlockFace> expandFaces, int limit) {
-		if (foundBlocks == null) {
+	public static Set<Block> getAirFloodBlocks(Block startBlock, Set<Block> foundBlocks, Set<BlockFace> expandFaces, int limit) 
+	{
+		if (foundBlocks == null)
 			return null;
+
+		if  (foundBlocks.size() > limit) 
+		{
+			Plugin.log(Level.ALL, "exceeding gate size limit.");
+            return null;
 		}
 		
-                //System.out.println("limit: " + limit);
-		if  (foundBlocks.size() > limit) {
-                        System.out.println("Exceeding gate size limit.");
-                        return null;
-		}
-		
-		if (foundBlocks.contains(startBlock)) {
+		if (foundBlocks.contains(startBlock)) 
 			return foundBlocks;
-		}
 		
-		if (startBlock.getType() == Material.AIR || startBlock.getType() == Material.PORTAL) {
+		if (startBlock.getType() == Material.AIR || startBlock.getType() == Material.PORTAL) 
+		{
 			// ... We found a block :D ...
 			foundBlocks.add(startBlock);
 			
 			// ... And flood away !
-			for (BlockFace face : expandFaces) {
+			for (BlockFace face : expandFaces) 
+			{
 				Block potentialBlock = startBlock.getRelative(face);
 				foundBlocks = getAirFloodBlocks(potentialBlock, foundBlocks, expandFaces, limit);
 			}
 		}
-                if (foundBlocks != null) {
-                    //System.out.println("size: " + foundBlocks.size());
-                }
+
 		return foundBlocks;
 	}
 	
