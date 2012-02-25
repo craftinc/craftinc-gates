@@ -21,7 +21,7 @@ public class Conf {
 	public static ChatColor colorCommand = ChatColor.AQUA;
 	public static ChatColor colorParameter = ChatColor.DARK_AQUA;
 	
-	private static double gateSearchRadius = 7.0;
+	private static double gateSearchRadius = 10.0;
 	
 	static {
 		
@@ -32,7 +32,7 @@ public class Conf {
 	}
 	
 	public static int getGateMaxArea() {
-		return (int)gateSearchRadius*10;
+		return (int)gateSearchRadius * 7;
 	}
 	
 	// -------------------------------------------- //
