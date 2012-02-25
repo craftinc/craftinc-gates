@@ -18,6 +18,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.mcteam.ancientgates.commands.BaseCommand;
 import org.mcteam.ancientgates.commands.CommandClose;
 import org.mcteam.ancientgates.commands.CommandCreate;
+import org.mcteam.ancientgates.commands.CommandCreateSetFrom;
 import org.mcteam.ancientgates.commands.CommandDelete;
 import org.mcteam.ancientgates.commands.CommandHelp;
 import org.mcteam.ancientgates.commands.CommandList;
@@ -64,6 +65,7 @@ public class Plugin extends JavaPlugin {
 		// Add the commands
 		commands.add(new CommandHelp());
 		commands.add(new CommandCreate());
+		commands.add(new CommandCreateSetFrom());
 		commands.add(new CommandDelete());
 		commands.add(new CommandSetFrom());
 		commands.add(new CommandSetTo());

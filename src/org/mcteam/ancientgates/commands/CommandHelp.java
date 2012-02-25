@@ -54,6 +54,7 @@ public class CommandHelp extends BaseCommand {
 		pageLines = new ArrayList<String>();
 		pageLines.add( new CommandHelp().getUseageTemplate(true, true) );
 		pageLines.add( new CommandCreate().getUseageTemplate(true, true) );
+		pageLines.add( new CommandCreateSetFrom().getUseageTemplate(true, true) );
 		pageLines.add( new CommandDelete().getUseageTemplate(true, true) );
 		pageLines.add( new CommandSetFrom().getUseageTemplate(true, true) );
 		pageLines.add( new CommandSetTo().getUseageTemplate(true, true) );
