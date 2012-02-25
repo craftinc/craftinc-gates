@@ -11,7 +11,7 @@
 
 # various other potential build files
 /build
-/bin
+/bin/
 /dist
 /localexport.jardesc
 
