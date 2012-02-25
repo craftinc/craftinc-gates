@@ -13,6 +13,7 @@ public class CommandSetFrom extends BaseCommand {
 	
 	public CommandSetFrom() {
 		aliases.add("setfrom");
+		aliases.add("sf");
 		
 		requiredParameters.add("id");		
 		
