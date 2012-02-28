@@ -5,12 +5,14 @@ import java.util.List;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
 import org.mcteam.ancientgates.Gate;
 import org.mcteam.ancientgates.Plugin;
 import org.mcteam.ancientgates.Conf;
 import org.mcteam.ancientgates.util.TextUtil;
 
-public class BaseCommand {
+public class BaseCommand 
+{
 	public List<String> aliases;
 	public List<String> requiredParameters;
 	public List<String> optionalParameters;
@@ -26,7 +28,8 @@ public class BaseCommand {
 	public List<String> parameters;
 	
 	
-	public BaseCommand() {
+	public BaseCommand() 
+	{
 		aliases = new ArrayList<String>();
 		requiredParameters = new ArrayList<String>();
 		optionalParameters = new ArrayList<String>();
@@ -70,25 +73,36 @@ public class BaseCommand {
 		}
 	}
 	
-	public boolean validateCall() {
-		if ( this.senderMustBePlayer && ! (sender instanceof Player)) {
+	public boolean validateCall() 
+	{
+		// validate player		
+		if ( this.senderMustBePlayer && ! (sender instanceof Player)) 
+		{
 			sendMessage("This command can only be used by ingame players.");
 			return false;
 		}
 		
-		if( ! hasPermission(sender)) {
+		// validate permission
+		if( ! hasPermission(sender)) 
+		{
 			sendMessage("You lack the permissions to "+this.helpDescription.toLowerCase()+".");
 			return false;
 		}
 		
-		if (parameters.size() < requiredParameters.size()) {
+		// valide parameter count
+		if (parameters.size() < requiredParameters.size()) 
+		{
 			sendMessage("Usage: "+this.getUseageTemplate(true));
 			return false;
 		}
 		
-		if (this.hasGateParam) {
+		// validate gate parameter
+		if (this.hasGateParam) 
+		{
 			String id = parameters.get(0);
-			if ( ! Gate.exists(id)) {
+			
+			if ( ! Gate.exists(id)) 
+			{
 				sendMessage("There exists no gate with id "+id);
 				return false;
 			}
