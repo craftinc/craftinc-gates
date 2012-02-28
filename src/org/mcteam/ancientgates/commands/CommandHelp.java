@@ -23,23 +23,35 @@ public class CommandHelp extends BaseCommand {
 		return true;
 	}
 	
-	public void perform() {
+	
+	public void perform() 
+	{
 		int page = 1;
-		if (parameters.size() > 0) {
-			try {
+		
+		if (parameters.size() > 0) 
+		{
+			try 
+			{
 				page = Integer.parseInt(parameters.get(0));
-			} catch (NumberFormatException e) {
+			} 
+			catch (NumberFormatException e) 
+			{
 				// wasn't an integer
 			}
 		}
+		
 		sendMessage(TextUtil.titleize("AncientGates Help ("+page+"/"+helpPages.size()+")"));
+		
 		page -= 1;
-		if (page < 0 || page >= helpPages.size()) {
+		if (page < 0 || page >= helpPages.size()) 
+		{
 			sendMessage("This page does not exist");
 			return;
 		}
+		
 		sendMessage(helpPages.get(page));
 	}
+	
 	
 	//----------------------------------------------//
 	// Build the help pages
@@ -47,7 +59,8 @@ public class CommandHelp extends BaseCommand {
 	
 	public static ArrayList<ArrayList<String>> helpPages;
 	
-	static {
+	static 
+	{
 		helpPages = new ArrayList<ArrayList<String>>();
 		ArrayList<String> pageLines;
 
@@ -59,6 +72,7 @@ public class CommandHelp extends BaseCommand {
 		pageLines.add( new CommandSetFrom().getUseageTemplate(true, true) );
 		pageLines.add( new CommandSetTo().getUseageTemplate(true, true) );
 		pageLines.add( new CommandOpen().getUseageTemplate(true, true) );
+		pageLines.add( new CommandRename().getUseageTemplate(true, true) );
 		pageLines.add( new CommandClose().getUseageTemplate(true, true) );
 		pageLines.add( new CommandList().getUseageTemplate(true, true) );
 		helpPages.add(pageLines);

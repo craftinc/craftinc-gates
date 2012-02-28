@@ -23,6 +23,7 @@ import org.mcteam.ancientgates.commands.CommandDelete;
 import org.mcteam.ancientgates.commands.CommandHelp;
 import org.mcteam.ancientgates.commands.CommandList;
 import org.mcteam.ancientgates.commands.CommandOpen;
+import org.mcteam.ancientgates.commands.CommandRename;
 import org.mcteam.ancientgates.commands.CommandSetFrom;
 import org.mcteam.ancientgates.commands.CommandSetTo;
 
@@ -70,6 +71,7 @@ public class Plugin extends JavaPlugin {
 		commands.add(new CommandSetFrom());
 		commands.add(new CommandSetTo());
 		commands.add(new CommandOpen());
+		commands.add(new CommandRename());
 		commands.add(new CommandClose());
 		commands.add(new CommandList());
 		
