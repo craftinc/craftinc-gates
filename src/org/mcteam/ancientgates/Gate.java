@@ -134,8 +134,11 @@ public class Gate
 		{
 			Set<Block> blocks = FloodUtil.getGateFrameBlocks(from.getBlock());
 	                
-			for (Block block : blocks)
-				block.setType(Material.AIR);
+			if (blocks != null)
+			{
+				for (Block block : blocks)
+					block.setType(Material.AIR);
+			}
 		}
 	}
 	
