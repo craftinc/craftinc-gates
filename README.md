@@ -1,43 +1,46 @@
-AncientGates - Easily create portals with custom design
-====================
-<b>Read the full userguide here: [http://mcteam.org/ancient-gates](http://mcteam.org/ancient-gates)</b><br>
+#AncientGates - Easily create portals with custom design#
 
-With this plugin the server operators (OPs) can create gates that will teleport anyone who enter to a location specific to that gate. The hightlights are: <b>It is so darn easy to use!</b> :D and <b>The gates can look any way you like</b> \o/
+Read the full userguide here: TODO
 
-Try the ingame command: <b>/gate</b><br>
-Thought first you should take a look at the demonstration I and karibu6 created:<br>
-<b>[http://www.youtube.com/watch?v=L4hyqTpeEaA](http://www.youtube.com/watch?v=L4hyqTpeEaA)</b>
+With this plugin the server operators (OPs) can create gates that will teleport anyone who enter to a location specific to that gate. The hightlights are: __It is so darn easy to use!__ :D and __The gates can look any way you like__ \o/
 
-Commands
----------
+Try the ingame command: __/gate__
+Thought first you should take a look at the demonstration bladedpenguin  and karibu6 created:
+__[http://www.youtube.com/watch?v=L4hyqTpeEaA](http://www.youtube.com/watch?v=L4hyqTpeEaA)__
 
-* <b>/gate help,h,? *[page]</b> Display a help page
-* <b>/gate create,new [id]</b> Create a gate
-* <b>/gate delete,del,remove [id]</b> Delete a gate
-* <b>/gate setfrom [id]</b> Set "from" to your location.
-* <b>/gate setto [id]</b> Set "to" to your location.
-* <b>/gate open [id]</b> Open that gate
-* <b>/gate close [id]</b> Close that gate
-* <b>/gate list,ls</b> Display a list of the gates
+##Commands##
 
-FAQ
----------
+* __/gate help,h,? *[page]__ Display a help page
+* __/gate create,new [id]__ Create a gate
+* __/gate createsetfrom,newsetfrom,csf,nsf [id]__ Create a gate
+* __/gate delete,del,remove,rm [id]__ Delete a gate
+* __/gate setfrom [id]__ Set "from" to your location.
+* __/gate setto [id]__ Set "to" to your location.
+* __/gate open [id]__ Open that gate
+* __/gate close [id]__ Close that gate
+* __/gate list,ls__ Display a list of the gates
 
-<b>Why the name AncientGates?</b><br>
+##FAQ##
+
+__Why the name AncientGates?__
+
 Because the purpose of this plugin that I envision is that players should not be able to create gates to other worlds themselves. The server operators build gates with cool ruins around them and in order to get to another world the players need to find one of those ruins.
 
-<b>Who can create a gate?</b><br>
+__Who can create a gate?__
+
 Only server operators! Not normal players. There is no suport for any permissions plugin.
 
-<b>Who can destroy a gate?</b><br>
+__Who can destroy a gate?__
+
 Anyone if you do not use a third-party protection plugin like Factions.
 
-<b>Are there IConnomy integration, Features for user to dial other gates etc?</b><br>
+__Are there IConnomy integration, Features for user to dial other gates etc?__
+
 Nope. This plugin is very minimalistic and plain. Server operators manage the portals players use them any time they are open.
 
 Installing
 ----------
-1. Download the latest release: [https://github.com/oloflarsson/minecraft-ancient-gates/downloads](https://github.com/oloflarsson/minecraft-ancient-gates/downloads)<br>
+1. Download the latest release: TODO
 1. Put AncientGates.jar in the plugins folder.
 
 License
