@@ -12,7 +12,7 @@ __[http://www.youtube.com/watch?v=L4hyqTpeEaA](http://www.youtube.com/watch?v=L4
 
 * __/gate help,h,? *[page]__ Display a help page
 * __/gate create,new [id]__ Create a gate
-* __/gate createsetfrom,newsetfrom,csf,nsf [id]__ Create a gate
+* __/gate createsetfrom,newsetfrom,csf,nsf [id]__ Create a gate and set "from"
 * __/gate delete,del,remove,rm [id]__ Delete a gate
 * __/gate setfrom [id]__ Set "from" to your location.
 * __/gate setto [id]__ Set "to" to your location.
