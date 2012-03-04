@@ -19,6 +19,7 @@ __[http://www.youtube.com/watch?v=L4hyqTpeEaA](http://www.youtube.com/watch?v=L4
 * __/gate open [id]__ Open that gate
 * __/gate close [id]__ Close that gate
 * __/gate list,ls [page]__ Display a list of the gates
+* __/gate info,details [id]__ Display information about a gate
 
 ##FAQ##
 
@@ -40,7 +41,7 @@ Nope. This plugin is very minimalistic and plain. Server operators manage the po
 
 Installing
 ----------
-1. Download the latest release: TODO
+1. Download the latest release: __[https://github.com/tomco/minecraft-ancient-gates/downloads](https://github.com/tomco/minecraft-ancient-gates/downloads)__
 1. Put AncientGates.jar in the plugins folder.
 
 License
