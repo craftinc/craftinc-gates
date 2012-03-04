@@ -124,9 +124,11 @@ public class CommandList extends BaseCommand
 						
 						
 						if (currentPage == page)
+						{
 							pageMessages.add(TextUtil.implode(currentIds, ", "));
-						if (currentPage == page && finishedCurrentIds == false)
-							pageMessages.set(pageMessages.size() -2, pageMessages.get(pageMessages.size() -2) + " (more on previous page)");
+							if (finishedCurrentIds == false)
+								pageMessages.set(pageMessages.size() -2, pageMessages.get(pageMessages.size() -2) + " (more on previous page)");
+						}
 						
 						finishedCurrentIds = true;
 					}
@@ -174,9 +176,11 @@ public class CommandList extends BaseCommand
 			return null;
 		else
 		{
-			// not nice! TODO: find a better way to send this message!
-			sendMessage(ChatColor.LIGHT_PURPLE + "This is page " + ChatColor.WHITE + page + ChatColor.LIGHT_PURPLE + "/" + ChatColor.WHITE + --currentPage + ChatColor.LIGHT_PURPLE + ". There are " + gates.size() + " gates on this server: ");
-			return pageMessages;
+			ArrayList<String> retVal = new ArrayList<String>();
+			retVal.add(ChatColor.LIGHT_PURPLE + "This is page " + ChatColor.WHITE + page + ChatColor.LIGHT_PURPLE + "/" + ChatColor.WHITE + --currentPage + ChatColor.LIGHT_PURPLE + ". There are " + gates.size() + " gates on this server: ");
+			retVal.addAll(pageMessages);
+			
+			return retVal;
 		}
 	}
 	
