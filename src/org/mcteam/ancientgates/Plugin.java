@@ -21,6 +21,7 @@ import org.mcteam.ancientgates.commands.CommandCreate;
 import org.mcteam.ancientgates.commands.CommandCreateSetFrom;
 import org.mcteam.ancientgates.commands.CommandDelete;
 import org.mcteam.ancientgates.commands.CommandHelp;
+import org.mcteam.ancientgates.commands.CommandInfo;
 import org.mcteam.ancientgates.commands.CommandList;
 import org.mcteam.ancientgates.commands.CommandOpen;
 import org.mcteam.ancientgates.commands.CommandRename;
@@ -74,6 +75,7 @@ public class Plugin extends JavaPlugin {
 		commands.add(new CommandRename());
 		commands.add(new CommandClose());
 		commands.add(new CommandList());
+		commands.add(new CommandInfo());
 		
 		// Ensure basefolder exists!
 		this.getDataFolder().mkdirs();
