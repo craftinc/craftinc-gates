@@ -5,7 +5,7 @@ Read the full userguide here: TODO
 With this plugin the server operators (OPs) can create gates that will teleport anyone who enter to a location specific to that gate. The hightlights are: __It is so darn easy to use!__ :D and __The gates can look any way you like__ \o/
 
 Try the ingame command: __/gate__
-Thought first you should take a look at the demonstration bladedpenguin  and karibu6 created:
+Thought first you should take a look at the demonstration oloflarsson and karibu6 created:
 __[http://www.youtube.com/watch?v=L4hyqTpeEaA](http://www.youtube.com/watch?v=L4hyqTpeEaA)__
 
 ##Commands##
@@ -18,7 +18,7 @@ __[http://www.youtube.com/watch?v=L4hyqTpeEaA](http://www.youtube.com/watch?v=L4
 * __/gate setto [id]__ Set "to" to your location.
 * __/gate open [id]__ Open that gate
 * __/gate close [id]__ Close that gate
-* __/gate list,ls__ Display a list of the gates
+* __/gate list,ls [page]__ Display a list of the gates
 
 ##FAQ##
 
