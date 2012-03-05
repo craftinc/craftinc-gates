@@ -8,7 +8,9 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.event.player.PlayerListener;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.mcteam.ancientgates.Conf;
 import org.mcteam.ancientgates.Gate;
@@ -16,15 +18,16 @@ import org.mcteam.ancientgates.Plugin;
 import org.mcteam.ancientgates.util.GeometryUtil;
 
 
-public class PluginPlayerListener extends PlayerListener {
-	@Override
+public class PluginPlayerListener implements Listener {
+    
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerMove(PlayerMoveEvent event) {
 		if (event.isCancelled()) {
 			return;
 		}
 		
 		Block blockTo = event.getTo().getBlock();
-		Block blockToUp = blockTo.getFace(BlockFace.UP);
+		Block blockToUp = blockTo.getRelative(BlockFace.UP);
 		
 		if (blockTo.getType() != Material.PORTAL && blockToUp.getType() != Material.PORTAL) {
 			return;

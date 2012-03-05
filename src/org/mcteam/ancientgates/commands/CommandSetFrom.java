@@ -19,7 +19,7 @@ public class CommandSetFrom extends BaseCommand {
 		// The player might stand in a halfblock or a sign or whatever
 		// Therefore we load som extra locations and blocks
 		Block playerBlock = player.getLocation().getBlock();
-		Block upBlock = playerBlock.getFace(BlockFace.UP);
+		Block upBlock = playerBlock.getRelative(BlockFace.UP);
 		
 		if (playerBlock.getType() == Material.AIR) {
 			gate.setFrom(playerBlock.getLocation());

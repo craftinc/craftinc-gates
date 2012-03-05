@@ -68,7 +68,7 @@ public class FloodUtil {
 			
 			// ... And flood away !
 			for (BlockFace face : expandFaces) {
-				Block potentialBlock = startBlock.getFace(face);
+				Block potentialBlock = startBlock.getRelative(face);
 				foundBlocks = getAirFloodBlocks(potentialBlock, foundBlocks, expandFaces, limit);
 			}
 		}

@@ -75,8 +75,8 @@ public class Plugin extends JavaPlugin {
 		
 		// Register events
 		PluginManager pm = this.getServer().getPluginManager();
-		pm.registerEvent(Event.Type.PLAYER_MOVE, this.playerListener, Event.Priority.Normal, this);
-		pm.registerEvent(Event.Type.BLOCK_PHYSICS, this.blockListener, Event.Priority.Normal, this);
+                pm.registerEvents(this.playerListener, this);
+                pm.registerEvents(this.blockListener, this);
 		
 		log("Enabled");
 	}
@@ -98,8 +98,7 @@ public class Plugin extends JavaPlugin {
 		if (this.baseCommand != null) {
 			return this.baseCommand;
 		}
-		
-		Map<String, Object> Commands = (Map<String, Object>)this.getDescription().getCommands();
+		Map<String, Map<String, Object>> Commands = this.getDescription().getCommands();
 		this.baseCommand = Commands.keySet().iterator().next();
 		return this.baseCommand;
 	}
