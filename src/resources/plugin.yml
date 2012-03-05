@@ -1,7 +1,0 @@
-name: AncientGates
-version: 1.1
-main: org.mcteam.ancientgates.Plugin
-commands:
-  gate:
-    description: All of the AncientGates commands
-    usage: See documentation.
