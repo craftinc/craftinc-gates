@@ -9,8 +9,8 @@ import org.bukkit.World;
 
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 
@@ -20,12 +20,13 @@ import org.mcteam.ancientgates.Plugin;
 import org.mcteam.ancientgates.util.GeometryUtil;
 
 
-public class PluginPlayerListener implements Listener
-{	
-	@EventHandler
+public class PluginPlayerListener implements Listener 
+{
+    
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerMove(PlayerMoveEvent event) 
 	{
-		if (event.isCancelled()) 
+		if (event.isCancelled())
 			return;
 		
 		Block blockTo = event.getTo().getBlock();
@@ -33,11 +34,9 @@ public class PluginPlayerListener implements Listener
 		
 
 		// Check if player is standing inside a portal
-		if (blockTo.getType() != Material.PORTAL && blockToUp.getType() != Material.PORTAL)
-		{            
+		if (blockTo.getType() != Material.PORTAL && blockToUp.getType() != Material.PORTAL)         
 			return;
-		}
-			
+		
 		
 		// Ok so a player walks into a portal block
 		// Find the nearest gate!
@@ -71,14 +70,14 @@ public class PluginPlayerListener implements Listener
                 {
                     nearestGate = gate;
                     break;
-                }
+			}
             }
-            
+			
 			/*if (shortestDistance == -1 || shortestDistance > distance) {
 				nearestGate = gate;
 				shortestDistance = distance;
 			}*/
-		}
+			}
 		
 		if (nearestGate != null) 
 		{

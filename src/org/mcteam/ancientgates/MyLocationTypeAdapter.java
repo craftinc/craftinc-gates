@@ -4,8 +4,8 @@ import java.lang.reflect.Type;
 
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.World.Environment;
 import org.bukkit.WorldCreator;
-
 import org.mcteam.ancientgates.gson.JsonDeserializationContext;
 import org.mcteam.ancientgates.gson.JsonDeserializer;
 import org.mcteam.ancientgates.gson.JsonElement;
@@ -63,10 +63,9 @@ public class MyLocationTypeAdapter implements JsonDeserializer<Location>, JsonSe
 	
 	private World getWorld(String name) {
 		World world = Plugin.instance.getServer().getWorld(name);
-		
-		if (world == null)
-			world = Plugin.instance.getServer().createWorld(new WorldCreator(name));
-		
+		if (world == null) {
+                    world = Plugin.instance.getServer().createWorld(new WorldCreator(name).environment(Environment.NORMAL));
+		}
 		return world;
 	}
 }

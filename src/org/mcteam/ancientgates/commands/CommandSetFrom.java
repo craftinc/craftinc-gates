@@ -31,7 +31,7 @@ public class CommandSetFrom extends BaseCommand {
                         player.getLocation().getZ(),
                         player.getLocation().getYaw(),
                         player.getLocation().getPitch());
-                
+		
                 Set<Block> gateBlocks = FloodUtil.getGateFrameBlocks(player.getLocation().getBlock());
                 if (gateBlocks == null) {
                         sendMessage("There is no portal here, or your portal is too large.\nMax size is: " + Conf.getGateMaxArea() + " Blocks.");
@@ -48,12 +48,12 @@ public class CommandSetFrom extends BaseCommand {
 			sendMessage("There is not enough room for a gate to open here");
 			return;
 		}
-                
+		
 
 		
 		sendMessage("From location for gate \""+gate.getId()+"\" is now where you stand.");
 		sendMessage("Your gate includes " + gateBlocks.size() + " Blocks.");
-
+		
 		Gate.save();
 	}
 	

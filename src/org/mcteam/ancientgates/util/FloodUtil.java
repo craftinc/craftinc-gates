@@ -47,7 +47,7 @@ public class FloodUtil {
 		if (blocks1.size() > blocks2.size()) {
 			return blocks2;
 		}
-
+		
 		return blocks1;
 	}
 	
@@ -55,11 +55,11 @@ public class FloodUtil {
 	{
 		if (foundBlocks == null)
 			return null;
-
+		
 		if  (foundBlocks.size() > limit) 
 		{
 			Plugin.log(Level.ALL, "exceeding gate size limit.");
-            return null;
+			return null;
 		}
 		
 		if (foundBlocks.contains(startBlock)) 
@@ -77,7 +77,7 @@ public class FloodUtil {
 				foundBlocks = getAirFloodBlocks(potentialBlock, foundBlocks, expandFaces, limit);
 			}
 		}
-
+		
 		return foundBlocks;
 	}
 	

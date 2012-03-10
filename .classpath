@@ -2,6 +2,10 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
-	<classpathentry kind="lib" path="C:/Users/Tim/minecraft/bukkit/1000/bukkit-0.0.1-SNAPSHOT.jar" sourcepath="/Bukkit"/>
+	<classpathentry kind="lib" path="/Volumes/Data HD/Users/tobi/Code/bukkit-1.1-R5-20120224.051137-12.jar" sourcepath="/Users/tobi/Desktop/Bukkit">
+		<attributes>
+			<attribute name="javadoc_location" value="http://jd.bukkit.org/apidocs/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

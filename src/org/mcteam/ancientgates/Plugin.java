@@ -7,27 +7,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.bukkit.Location;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-
 import org.bukkit.plugin.java.JavaPlugin;
-
-import org.mcteam.ancientgates.commands.BaseCommand;
-import org.mcteam.ancientgates.commands.CommandClose;
-import org.mcteam.ancientgates.commands.CommandCreate;
-import org.mcteam.ancientgates.commands.CommandCreateSetFrom;
-import org.mcteam.ancientgates.commands.CommandDelete;
-import org.mcteam.ancientgates.commands.CommandHelp;
-import org.mcteam.ancientgates.commands.CommandInfo;
-import org.mcteam.ancientgates.commands.CommandList;
-import org.mcteam.ancientgates.commands.CommandOpen;
-import org.mcteam.ancientgates.commands.CommandRename;
-import org.mcteam.ancientgates.commands.CommandSetFrom;
-import org.mcteam.ancientgates.commands.CommandSetTo;
-
+import org.mcteam.ancientgates.commands.*;
 import org.mcteam.ancientgates.gson.Gson;
 import org.mcteam.ancientgates.gson.GsonBuilder;
 
@@ -35,7 +20,8 @@ import org.mcteam.ancientgates.listeners.PluginBlockListener;
 import org.mcteam.ancientgates.listeners.PluginPlayerListener;
 
 
-public class Plugin extends JavaPlugin {
+public class Plugin extends JavaPlugin 
+{
 	public static Plugin instance;
 	
 	public PluginPlayerListener playerListener = new PluginPlayerListener();
@@ -52,7 +38,8 @@ public class Plugin extends JavaPlugin {
 	// Commands
 	public List<BaseCommand> commands = new ArrayList<BaseCommand>();
 	
-	public Plugin() {
+	public Plugin()
+	{
 		instance = this;
 	}
 
@@ -87,7 +74,7 @@ public class Plugin extends JavaPlugin {
 		// Register events
 		getServer().getPluginManager().registerEvents(this.playerListener, this);
 		getServer().getPluginManager().registerEvents(this.blockListener, this);
-
+		
 		log("Enabled");
 	}
 	
@@ -108,8 +95,7 @@ public class Plugin extends JavaPlugin {
 		if (this.baseCommand != null) {
 			return this.baseCommand;
 		}
-		
-		Map<String, Object> Commands = (Map<String, Object>)this.getDescription().getCommands();
+		Map<String, Map<String, Object>> Commands = (Map<String, Map<String, Object>>) this.getDescription().getCommands();
 		this.baseCommand = Commands.keySet().iterator().next();
 		return this.baseCommand;
 	}
