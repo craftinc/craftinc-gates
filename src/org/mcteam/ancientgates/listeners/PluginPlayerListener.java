@@ -4,6 +4,7 @@ import java.util.logging.Level;
 
 import org.bukkit.Chunk;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 
 import org.bukkit.block.Block;
@@ -30,13 +31,13 @@ public class PluginPlayerListener implements Listener
 		Block blockTo = event.getTo().getBlock();
 		Block blockToUp = blockTo.getRelative(BlockFace.UP);
 		
-		// Uncomment if you don't want portals to be always open. Portals then are only open, if the Material in the Portal is PORTAL
-			/*
-			if (blockTo.getType() != Material.PORTAL && blockToUp.getType() != Material.PORTAL) {
-	                    
-				return;
-			}
-			*/
+
+		// Check if player is standing inside a portal
+		if (blockTo.getType() != Material.PORTAL && blockToUp.getType() != Material.PORTAL)
+		{            
+			return;
+		}
+			
 		
 		// Ok so a player walks into a portal block
 		// Find the nearest gate!
