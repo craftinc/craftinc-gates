@@ -11,6 +11,7 @@ import org.bukkit.Location;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.mcteam.ancientgates.commands.*;
 import org.mcteam.ancientgates.gson.Gson;
@@ -72,8 +73,9 @@ public class Plugin extends JavaPlugin
 		Gate.load();
 		
 		// Register events
-		getServer().getPluginManager().registerEvents(this.playerListener, this);
-		getServer().getPluginManager().registerEvents(this.blockListener, this);
+		PluginManager pm = this.getServer().getPluginManager();
+		pm.registerEvents(this.playerListener, this);
+		pm.registerEvents(this.blockListener, this);
 		
 		log("Enabled");
 	}
@@ -90,13 +92,15 @@ public class Plugin extends JavaPlugin
 	// Commands
 	// -------------------------------------------- //
 	
-	@SuppressWarnings("unchecked")
-	public String getBaseCommand() {
-		if (this.baseCommand != null) {
+	public String getBaseCommand()
+	{
+		if (this.baseCommand != null)
 			return this.baseCommand;
-		}
-		Map<String, Map<String, Object>> Commands = (Map<String, Map<String, Object>>) this.getDescription().getCommands();
+		
+		Map<String, Map<String, Object>> Commands = this.getDescription().getCommands();
+		
 		this.baseCommand = Commands.keySet().iterator().next();
+		
 		return this.baseCommand;
 	}
 	
