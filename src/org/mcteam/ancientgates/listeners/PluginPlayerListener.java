@@ -71,15 +71,8 @@ public class PluginPlayerListener implements Listener
 			}*/
 			}
 		
-		if (nearestGate != null) 
-		{
-			if (nearestGate.isHidden() == false)
-			{
-				// Check if player is standing inside portal blocks
-				if (blockTo.getType() != Material.PORTAL && blockToUp.getType() != Material.PORTAL)         
-					return;
-			}
-			
+		if (nearestGate != null && nearestGate.isOpen()) 
+		{			
 			checkChunkLoad(nearestGate.getTo().getBlock());
             Float newYaw = nearestGate.getFrom().getYaw() - nearestGate.getTo().getYaw() + playerLocation.getYaw();
             Location teleportToLocation = new Location( nearestGate.getTo().getWorld(),

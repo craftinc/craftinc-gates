@@ -65,17 +65,19 @@ public class CommandHelp extends BaseCommand {
 		ArrayList<String> pageLines;
 
 		pageLines = new ArrayList<String>();
-		pageLines.add( new CommandHelp().getUseageTemplate(true, true) );
-		pageLines.add( new CommandCreate().getUseageTemplate(true, true) );
-		pageLines.add( new CommandCreateSetFrom().getUseageTemplate(true, true) );
-		pageLines.add( new CommandDelete().getUseageTemplate(true, true) );
-		pageLines.add( new CommandSetFrom().getUseageTemplate(true, true) );
-		pageLines.add( new CommandSetTo().getUseageTemplate(true, true) );
-		pageLines.add( new CommandOpen().getUseageTemplate(true, true) );
-		pageLines.add( new CommandRename().getUseageTemplate(true, true) );
-		pageLines.add( new CommandClose().getUseageTemplate(true, true) );
-		pageLines.add( new CommandList().getUseageTemplate(true, true) );
-		pageLines.add( new CommandInfo().getUseageTemplate(true, true) );
+		pageLines.add( new CommandHelp().getUsageTemplate(true, true) );
+		pageLines.add( new CommandCreate().getUsageTemplate(true, true) );
+		pageLines.add( new CommandCreateSetFrom().getUsageTemplate(true, true) );
+		pageLines.add( new CommandDelete().getUsageTemplate(true, true) );
+		pageLines.add( new CommandSetFrom().getUsageTemplate(true, true) );
+		pageLines.add( new CommandSetTo().getUsageTemplate(true, true) );
+		pageLines.add( new CommandOpen().getUsageTemplate(true, true) );
+		pageLines.add( new CommandRename().getUsageTemplate(true, true) );
+		pageLines.add( new CommandClose().getUsageTemplate(true, true) );
+		pageLines.add( new CommandList().getUsageTemplate(true, true) );
+		pageLines.add( new CommandInfo().getUsageTemplate(true, true) );
+		pageLines.add( new CommandHide().getUsageTemplate(true, true) );
+		pageLines.add( new CommandUnhide().getUsageTemplate(true, true) );
 		helpPages.add(pageLines);
 	}
 	

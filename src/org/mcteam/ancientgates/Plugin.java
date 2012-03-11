@@ -64,6 +64,8 @@ public class Plugin extends JavaPlugin
 		commands.add(new CommandClose());
 		commands.add(new CommandList());
 		commands.add(new CommandInfo());
+		commands.add(new CommandHide());
+		commands.add(new CommandUnhide());
 		
 		// Ensure basefolder exists!
 		this.getDataFolder().mkdirs();

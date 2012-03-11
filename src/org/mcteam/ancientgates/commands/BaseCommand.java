@@ -119,7 +119,7 @@ public class BaseCommand
 	// -------------------------------------------- //
 	// Help and usage description
 	// -------------------------------------------- //
-	public String getUseageTemplate(boolean withColor, boolean withDescription) {
+	public String getUsageTemplate(boolean withColor, boolean withDescription) {
 		String ret = "";
 		
 		if (withColor) {
@@ -151,7 +151,7 @@ public class BaseCommand
 	}
 	
 	public String getUseageTemplate(boolean withColor) {
-		return getUseageTemplate(withColor, false);
+		return getUsageTemplate(withColor, false);
 	}
 	
 	public String getUseageTemplate() {

@@ -15,13 +15,13 @@ public class CommandOpen extends BaseCommand {
 	public void perform() {
 		if (gate.getFrom() == null) {
 			sendMessage("You must set the from location first. To fix that:");
-			sendMessage(new CommandSetFrom().getUseageTemplate(true, true));
+			sendMessage(new CommandSetFrom().getUsageTemplate(true, true));
 			return;
 		}
 		
 		if (gate.getTo() == null) {
 			sendMessage("Sure, but note that this gate does not point anywhere :P");
-			sendMessage("To fix that: " + new CommandSetTo().getUseageTemplate(true, true));
+			sendMessage("To fix that: " + new CommandSetTo().getUsageTemplate(true, true));
 		}
 		
 		if (gate.getFrom().getBlock().getType() != Material.AIR) {
@@ -33,7 +33,7 @@ public class CommandOpen extends BaseCommand {
 			sendMessage("The gate was opened.");
 		} else {
 			sendMessage("Failed to open the gate. Have you built a frame?");
-			sendMessage("More info here: " + new CommandHelp().getUseageTemplate(true, true));
+			sendMessage("More info here: " + new CommandHelp().getUsageTemplate(true, true));
 		}
 	}
 }

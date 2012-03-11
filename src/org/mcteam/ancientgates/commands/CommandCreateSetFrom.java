@@ -63,12 +63,10 @@ public class CommandCreateSetFrom extends BaseCommand
 		if (playerBlock.getType() == Material.AIR) 
 		{
 			gate.setFrom(player.getLocation());
-			gate.setGateBlocks(gateBlocks);
 		} 
 		else if (upBlock.getType() == Material.AIR) 
 		{
 			gate.setFrom(playerUpLocation);
-            gate.setGateBlocks(gateBlocks);
 		} 
 		else 
 		{

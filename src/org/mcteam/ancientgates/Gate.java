@@ -29,6 +29,7 @@ public class Gate
 	private Location from;
 	private Location to;
 	private boolean isHidden = false;
+	private boolean isOpen = false; 
         
     private Integer[][] gateBlocks;
 
@@ -57,6 +58,7 @@ public class Gate
 	public void setFrom(Location from) 
 	{
 		this.from = from;
+		setGateBlocks(FloodUtil.getGateFrameBlocks(from.getBlock()));
 	}
 
 	
@@ -83,7 +85,7 @@ public class Gate
     }
 
     
-    public void setGateBlocks(Set<Block> gateBlocks) 
+    private void setGateBlocks(Set<Block> gateBlocks) 
     {
         if (gateBlocks == null)
             return;
@@ -116,6 +118,17 @@ public class Gate
 		if (blocks == null)
 			return false;
                 
+		if (isHidden() == false)
+			fillGate(blocks);
+		
+		setOpen(true);
+		
+		return true;
+	}
+	
+	
+	private void fillGate(Set<Block> blocks)
+	{
 		// This is not to do an effect
 		// It is to stop portal blocks from destroying themself as they cant rely on non created blocks :P
 		for (Block block : blocks)
@@ -123,13 +136,17 @@ public class Gate
 		
 		for (Block block : blocks)
 			block.setType(Material.PORTAL);
-		
-		
-		return true;
 	}
 	
 	
 	public void close() 
+	{
+		removeGateBlocks();
+		setOpen(false);
+	}
+	
+	
+	private void removeGateBlocks()
 	{
 		if (from != null)
 		{
@@ -148,15 +165,42 @@ public class Gate
 	// isHidden Setter and Getter
 	//----------------------------------------------//
 	
-	public void setHidden(boolean isHidden)
+	public boolean setHidden(boolean isHidden)
 	{
 		this.isHidden = isHidden;
+		
+		if (isHidden == true)
+			removeGateBlocks();
+		
+		else if (isOpen() && !open())
+		{
+			this.isHidden = false;
+			return false;
+		}
+		
+		return true;
 	}
 	
 	
 	public boolean isHidden()
 	{
 		return this.isHidden;
+	}
+	
+	
+	//----------------------------------------------//
+	// isOpen Setter and Getter
+	//----------------------------------------------//
+	
+	private void setOpen(boolean isOpen)
+	{
+		this.isOpen = isOpen;
+	}
+	
+	
+	public boolean isOpen()
+	{
+		return this.isOpen;
 	}
 	
 	
