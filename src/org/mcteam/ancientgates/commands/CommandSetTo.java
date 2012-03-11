@@ -6,6 +6,7 @@ public class CommandSetTo extends BaseCommand {
 	
 	public CommandSetTo() {
 		aliases.add("setto");
+		aliases.add("st");
 		
 		requiredParameters.add("id");		
 		
