@@ -32,13 +32,6 @@ public class PluginPlayerListener implements Listener
 		Block blockTo = event.getTo().getBlock();
 		Block blockToUp = blockTo.getRelative(BlockFace.UP);
 		
-
-		// Check if player is standing inside a portal
-		if (blockTo.getType() != Material.PORTAL && blockToUp.getType() != Material.PORTAL)         
-			return;
-		
-		
-		// Ok so a player walks into a portal block
 		// Find the nearest gate!
 		Gate nearestGate = null;
 		Location playerLocation = event.getPlayer().getLocation();
@@ -46,11 +39,11 @@ public class PluginPlayerListener implements Listener
 		
 		for (Gate gate : Gate.getAll()) 
 		{
-			if ( gate.getFrom() == null || gate.getTo() == null)
+			if (gate.getFrom() == null || gate.getTo() == null)
 				continue;
 			
 			
-			if ( ! gate.getFrom().getWorld().equals(playerLocation.getWorld()))
+			if (! gate.getFrom().getWorld().equals(playerLocation.getWorld()))
 				continue; // We can only be close to gates in the same world
 			
 			
@@ -60,17 +53,16 @@ public class PluginPlayerListener implements Listener
 				continue;
 			
 			
-			 Plugin.log(Level.ALL, "in gate search radius.");
+			Plugin.log(Level.ALL, "in gate search radius.");
             for (Integer[] blockXYZ: gate.getGateBlocks()) 
             {
-                if ( (blockTo.getX() == blockXYZ[0] || blockToUp.getX() == blockXYZ[0]) &&
-                     (blockTo.getY() == blockXYZ[1] || blockToUp.getY() == blockXYZ[1]) &&
-                     (blockTo.getZ() == blockXYZ[2] || blockToUp.getZ() == blockXYZ[2])
-                   ) 
+                if ((blockTo.getX() == blockXYZ[0] || blockToUp.getX() == blockXYZ[0]) &&
+                    (blockTo.getY() == blockXYZ[1] || blockToUp.getY() == blockXYZ[1]) &&
+                    (blockTo.getZ() == blockXYZ[2] || blockToUp.getZ() == blockXYZ[2])) 
                 {
                     nearestGate = gate;
                     break;
-			}
+                }
             }
 			
 			/*if (shortestDistance == -1 || shortestDistance > distance) {
@@ -81,10 +73,15 @@ public class PluginPlayerListener implements Listener
 		
 		if (nearestGate != null) 
 		{
-			checkChunkLoad(nearestGate.getTo().getBlock());
+			if (nearestGate.isHidden() == false)
+			{
+				// Check if player is standing inside portal blocks
+				if (blockTo.getType() != Material.PORTAL && blockToUp.getType() != Material.PORTAL)         
+					return;
+			}
 			
+			checkChunkLoad(nearestGate.getTo().getBlock());
             Float newYaw = nearestGate.getFrom().getYaw() - nearestGate.getTo().getYaw() + playerLocation.getYaw();
-            
             Location teleportToLocation = new Location( nearestGate.getTo().getWorld(),
                                 						nearestGate.getTo().getX(),
 						                                nearestGate.getTo().getY(),

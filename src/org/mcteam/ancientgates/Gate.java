@@ -28,6 +28,7 @@ public class Gate
 	private transient String id;
 	private Location from;
 	private Location to;
+	private boolean isHidden = false;
         
     private Integer[][] gateBlocks;
 
@@ -110,11 +111,10 @@ public class Gate
 	public boolean open() 
 	{
 		Set<Block> blocks = FloodUtil.getGateFrameBlocks(from.getBlock());
+		setGateBlocks(blocks);
 		
 		if (blocks == null)
 			return false;
-		
-        // Uncomment lines below to have the old Portal open functionality back.
                 
 		// This is not to do an effect
 		// It is to stop portal blocks from destroying themself as they cant rely on non created blocks :P
@@ -123,6 +123,7 @@ public class Gate
 		
 		for (Block block : blocks)
 			block.setType(Material.PORTAL);
+		
 		
 		return true;
 	}
@@ -140,6 +141,22 @@ public class Gate
 					block.setType(Material.AIR);
 			}
 		}
+	}
+	
+	
+	//----------------------------------------------//
+	// isHidden Setter and Getter
+	//----------------------------------------------//
+	
+	public void setHidden(boolean isHidden)
+	{
+		this.isHidden = isHidden;
+	}
+	
+	
+	public boolean isHidden()
+	{
+		return this.isHidden;
 	}
 	
 	
