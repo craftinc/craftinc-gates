@@ -81,7 +81,7 @@ public class Gate
 	
     public Integer[][] getGateBlocks() 
     {
-        return gateBlocks;
+    	return gateBlocks;
     }
 
     
@@ -200,6 +200,22 @@ public class Gate
 	
 	public boolean isOpen()
 	{
+		// check if gate is really open
+		if (getGateBlocks() == null)
+		{
+			isOpen = false;
+		}
+		else if (!isHidden())
+		{
+			Integer[] gateBlock = getGateBlocks()[0];
+			Block b = new Location(from.getWorld(), gateBlock[0], gateBlock[1], gateBlock[2]).getBlock();
+			
+			if (b.getType() != Material.PORTAL)
+			{
+				isOpen = false;
+			}
+		}
+		
 		return this.isOpen;
 	}
 	
@@ -294,6 +310,28 @@ public class Gate
 		
 		fillIds();
 			
+		// old releases did not save gate blocks - this fixes the problem
+		for (Gate g : getAll())
+		{
+	    	if (g.getGateBlocks() == null && g.getFrom() != null)
+	    	{
+	    		Plugin.log("Fixing problems with old gate: " + g.getId());
+	    		
+	    		Set<Block> gateBlocks = FloodUtil.getGateFrameBlocks(g.getFrom().getBlock());
+	    		
+	    		if (gateBlocks == null)
+	    			continue;
+	    		
+	    		g.setGateBlocks(gateBlocks);
+	    		
+	    		if (((Block) gateBlocks.toArray()[0]).getType() == Material.PORTAL )
+	    			g.setOpen(true);
+	    	}
+	    		
+		}
+		save();
+		// end of fix
+		
 		return true;
 	}
 	
