@@ -34,25 +34,24 @@ public class PluginPlayerListener implements Listener
 		// Find the nearest gate!
 		Gate nearestGate = null;
 		Location playerLocation = event.getPlayer().getLocation();
-		//double shortestDistance = -1;
 		
 		for (Gate gate : Gate.getAll()) 
 		{
-			if (gate.getFrom() == null || gate.getTo() == null)
+			if (gate.getFrom() == null ||
+				gate.getTo() == null || 
+				gate.isOpen() == false ||
+				!gate.getFrom().getWorld().equals(playerLocation.getWorld()))
+			{
 				continue;
-			
-			
-			if (! gate.getFrom().getWorld().equals(playerLocation.getWorld()))
-				continue; // We can only be close to gates in the same world
-			
-			
+			}
+
 			double distance = GeometryUtil.distanceBetweenLocations(playerLocation, gate.getFrom());
 			
 			if (distance > Conf.getGateSearchRadius())
 				continue;
 			
+			Plugin.log(Level.ALL, "in gate search radius of " + gate.getId());
 			
-			Plugin.log(Level.ALL, "in gate search radius.");
             for (Integer[] blockXYZ: gate.getGateBlocks()) 
             {
                 if ((blockTo.getX() == blockXYZ[0] || blockToUp.getX() == blockXYZ[0]) &&
@@ -63,15 +62,10 @@ public class PluginPlayerListener implements Listener
                     break;
                 }
             }
-			
-			/*if (shortestDistance == -1 || shortestDistance > distance) {
-				nearestGate = gate;
-				shortestDistance = distance;
-			}*/
-			}
+		}
 		
-		if (nearestGate != null && nearestGate.isOpen()) 
-		{			
+		if (nearestGate != null) 
+		{
 			checkChunkLoad(nearestGate.getTo().getBlock());
             Float newYaw = nearestGate.getFrom().getYaw() - nearestGate.getTo().getYaw() + playerLocation.getYaw();
             Location teleportToLocation = new Location( nearestGate.getTo().getWorld(),
