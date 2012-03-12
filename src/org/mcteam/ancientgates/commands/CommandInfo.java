@@ -20,6 +20,20 @@ public class CommandInfo extends BaseCommand
 	{
 		sendMessage(ChatColor.LIGHT_PURPLE + "Information about " + ChatColor.WHITE + gate.getId() + ChatColor.LIGHT_PURPLE + ":");
 		
+		String openHiddenMessage = "This gate is";
+		
+		if (gate.isOpen())
+			openHiddenMessage += " open";
+		else
+			openHiddenMessage += " closed";
+		
+		if (gate.isHidden())
+			openHiddenMessage += " and hidden";
+		
+		openHiddenMessage += ".";
+		
+		sendMessage(openHiddenMessage);
+		
 		if (gate.getFrom() != null)
 			sendMessage(ChatColor.GREEN + "'from' location:       " + ChatColor.YELLOW + "( " + gate.getFrom().getBlockX() + " | " + gate.getFrom().getBlockY() + " | " + gate.getFrom().getBlockZ() + " ) in " + gate.getFrom().getWorld().getName());
 		else
