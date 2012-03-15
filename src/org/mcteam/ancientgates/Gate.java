@@ -116,11 +116,15 @@ public class Gate
 		setGateBlocks(blocks);
 		
 		if (blocks == null)
+		{
 			return false;
+		}
                 
 		if (isHidden() == false)
+		{
 			fillGate(blocks);
-		
+		}
+
 		setOpen(true);
 		
 		return true;
@@ -170,14 +174,16 @@ public class Gate
 		this.isHidden = isHidden;
 		
 		if (isHidden == true)
-			removeGateBlocks();
-		
-		else if (isOpen() && !open())
 		{
+			removeGateBlocks();
+		}
+		else if (this.isOpen && !open()) 
+		{
+			// cannot open that gate (no frame!)
 			this.isHidden = false;
 			return false;
 		}
-		
+
 		return true;
 	}
 	
