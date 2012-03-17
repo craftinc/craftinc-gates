@@ -5,9 +5,11 @@ import java.util.ArrayList;
 import org.bukkit.command.CommandSender;
 import org.mcteam.ancientgates.util.TextUtil;
 
-public class CommandHelp extends BaseCommand {
+public class CommandHelp extends BaseCommand 
+{
 	
-	public CommandHelp() {
+	public CommandHelp() 
+	{
 		aliases.add("help");
 		aliases.add("h");
 		aliases.add("?");
@@ -19,7 +21,8 @@ public class CommandHelp extends BaseCommand {
 	}
 	
 	@Override
-	public boolean hasPermission(CommandSender sender) {
+	public boolean hasPermission(CommandSender sender) 
+	{
 		return true;
 	}
 	
@@ -65,6 +68,7 @@ public class CommandHelp extends BaseCommand {
 		ArrayList<String> pageLines;
 
 		pageLines = new ArrayList<String>();
+		
 		pageLines.add( new CommandHelp().getUsageTemplate(true, true) );
 		pageLines.add( new CommandCreate().getUsageTemplate(true, true) );
 		pageLines.add( new CommandCreateSetFrom().getUsageTemplate(true, true) );
@@ -72,12 +76,17 @@ public class CommandHelp extends BaseCommand {
 		pageLines.add( new CommandSetFrom().getUsageTemplate(true, true) );
 		pageLines.add( new CommandSetTo().getUsageTemplate(true, true) );
 		pageLines.add( new CommandOpen().getUsageTemplate(true, true) );
+		
+		helpPages.add(pageLines);
+		pageLines = new ArrayList<String>();
+		
 		pageLines.add( new CommandRename().getUsageTemplate(true, true) );
 		pageLines.add( new CommandClose().getUsageTemplate(true, true) );
 		pageLines.add( new CommandList().getUsageTemplate(true, true) );
 		pageLines.add( new CommandInfo().getUsageTemplate(true, true) );
 		pageLines.add( new CommandHide().getUsageTemplate(true, true) );
 		pageLines.add( new CommandUnhide().getUsageTemplate(true, true) );
+		
 		helpPages.add(pageLines);
 	}
 	
