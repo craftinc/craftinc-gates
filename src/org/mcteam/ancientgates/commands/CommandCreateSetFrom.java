@@ -36,7 +36,6 @@ public class CommandCreateSetFrom extends BaseCommand
 		}
 		
 		Gate.create(id);
-		Gate.save();
 		sendMessage("Gate with id \"" + id + "\" was created.");
 		
 		gate = Gate.get(id);
@@ -76,5 +75,7 @@ public class CommandCreateSetFrom extends BaseCommand
 		
 		sendMessage("From location for gate \""+gate.getId()+"\" is now where you stand.");
 		sendMessage("Your gate includes " + gateBlocks.size() + " Blocks.");
+		
+		Gate.save();
 	}
 }

@@ -1,5 +1,7 @@
 package org.mcteam.ancientgates.commands;
 
+import org.mcteam.ancientgates.Gate;
+
 public class CommandClose extends BaseCommand {
 	
 	public CommandClose() {
@@ -12,7 +14,10 @@ public class CommandClose extends BaseCommand {
 	
 	public void perform() {
 		gate.close();
+		
 		sendMessage("The gate was closed.");
+		
+		Gate.save();
 	}
 }
 

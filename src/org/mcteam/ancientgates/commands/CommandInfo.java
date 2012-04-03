@@ -1,6 +1,7 @@
 package org.mcteam.ancientgates.commands;
 
 import org.bukkit.ChatColor;
+import org.mcteam.ancientgates.Gate;
 
 
 public class CommandInfo extends BaseCommand 
@@ -44,5 +45,7 @@ public class CommandInfo extends BaseCommand
 		else
 			sendMessage(ChatColor.GREEN + "this gate has no 'to' location");
 		
+		
+		Gate.save();
 	}
 }

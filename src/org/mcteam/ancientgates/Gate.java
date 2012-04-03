@@ -274,6 +274,7 @@ public class Gate
 		try 
 		{
 			DiscUtil.write(file, Plugin.gson.toJson(instances));
+			Plugin.log("Saved gates to disk");
 		} 
 		catch (IOException e) 
 		{
@@ -287,6 +288,7 @@ public class Gate
 			e.printStackTrace();
 			return false;
 		}
+		
 		
 		return true;
 	}

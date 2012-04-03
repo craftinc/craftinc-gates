@@ -36,5 +36,7 @@ public class CommandRename extends BaseCommand
 		Gate.rename(gate, newId);
 		
 		sendMessage("Gate " + oldId + " is now known as " + newId + ".");
+		
+		Gate.save();
 	}
 }

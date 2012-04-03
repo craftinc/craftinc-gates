@@ -1,6 +1,7 @@
 package org.mcteam.ancientgates.commands;
 
 import org.bukkit.Material;
+import org.mcteam.ancientgates.Gate;
 
 public class CommandOpen extends BaseCommand {
 	
@@ -35,6 +36,8 @@ public class CommandOpen extends BaseCommand {
 			sendMessage("Failed to open the gate. Have you built a frame?");
 			sendMessage("More info here: " + new CommandHelp().getUsageTemplate(true, true));
 		}
+		
+		Gate.save();
 	}
 }
 

@@ -210,6 +210,8 @@ public class CommandList extends BaseCommand
 			else
 				sendMessage(messages);
 		}
+		
+		Gate.save();
 	}
 }
 
