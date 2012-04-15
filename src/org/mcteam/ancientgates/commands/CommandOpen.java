@@ -1,6 +1,7 @@
 package org.mcteam.ancientgates.commands;
 
 import org.bukkit.Material;
+import org.bukkit.command.CommandSender;
 import org.mcteam.ancientgates.Gate;
 
 public class CommandOpen extends BaseCommand {
@@ -38,6 +39,13 @@ public class CommandOpen extends BaseCommand {
 		}
 		
 		Gate.save();
+	}
+	
+	
+	@Override
+	public boolean hasPermission(CommandSender sender) 
+	{
+		return sender.hasPermission(permissionManage);
 	}
 }
 

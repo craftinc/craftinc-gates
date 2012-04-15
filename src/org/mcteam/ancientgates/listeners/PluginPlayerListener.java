@@ -28,6 +28,9 @@ public class PluginPlayerListener implements Listener
 		if (event.isCancelled())
 			return;
 		
+		if (!(event.getPlayer().hasPermission("ancientgates.use") || sender.hasPermission(permissionInfo) || sender.hasPermission(permissionManage)))
+			return;
+		
 		Block blockTo = event.getTo().getBlock();
 		Block blockToUp = blockTo.getRelative(BlockFace.UP);
 		

@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 import org.mcteam.ancientgates.Conf;
 import org.mcteam.ancientgates.Gate;
 import org.mcteam.ancientgates.util.TextUtil;
@@ -212,6 +213,13 @@ public class CommandList extends BaseCommand
 		}
 		
 		Gate.save();
+	}
+	
+	
+	@Override
+	public boolean hasPermission(CommandSender sender) 
+	{
+		return sender.hasPermission(permissionInfo) || sender.hasPermission(permissionManage);
 	}
 }
 

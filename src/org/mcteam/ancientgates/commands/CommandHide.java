@@ -1,5 +1,6 @@
 package org.mcteam.ancientgates.commands;
 
+import org.bukkit.command.CommandSender;
 import org.mcteam.ancientgates.Gate;
 
 public class CommandHide extends BaseCommand 
@@ -20,5 +21,11 @@ public class CommandHide extends BaseCommand
 		sendMessage("The gate " + gate.getId() + " is now hidden.");
 		
 		Gate.save();
+	}
+	
+	@Override
+	public boolean hasPermission(CommandSender sender) 
+	{
+		return sender.hasPermission(permissionManage);
 	}
 }

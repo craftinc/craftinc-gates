@@ -13,6 +13,9 @@ import org.mcteam.ancientgates.util.TextUtil;
 
 public class BaseCommand 
 {
+	public static final String permissionInfo = "ancientgates.info";
+	public static final String permissionManage = "ancientgates.manage";
+	
 	public List<String> aliases;
 	public List<String> requiredParameters;
 	public List<String> optionalParameters;
@@ -112,8 +115,9 @@ public class BaseCommand
 		return true;
 	}
 	
-	public boolean hasPermission(CommandSender sender) {
-		return Plugin.hasPermManage(sender);
+	public boolean hasPermission(CommandSender sender) 
+	{
+		return false; // make sure to overwrite this in all subclasses!
 	}
 	
 	// -------------------------------------------- //

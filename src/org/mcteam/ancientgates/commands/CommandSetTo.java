@@ -1,5 +1,6 @@
 package org.mcteam.ancientgates.commands;
 
+import org.bukkit.command.CommandSender;
 import org.mcteam.ancientgates.Gate;
 
 public class CommandSetTo extends BaseCommand {
@@ -20,5 +21,11 @@ public class CommandSetTo extends BaseCommand {
 		Gate.save();
 	}
 	
+	
+	@Override
+	public boolean hasPermission(CommandSender sender) 
+	{
+		return sender.hasPermission(permissionManage);
+	}
 }
 

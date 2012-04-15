@@ -5,6 +5,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.command.CommandSender;
 import org.mcteam.ancientgates.Conf;
 import org.mcteam.ancientgates.Gate;
 import org.mcteam.ancientgates.util.FloodUtil;
@@ -61,6 +62,13 @@ public class CommandSetFrom extends BaseCommand
 		sendMessage("Your gate includes " + gateBlocks.size() + " Blocks.");
 		
 		Gate.save();
+	}
+	
+	
+	@Override
+	public boolean hasPermission(CommandSender sender) 
+	{
+		return sender.hasPermission(permissionManage);
 	}
 	
 }

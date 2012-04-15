@@ -1,5 +1,6 @@
 package org.mcteam.ancientgates.commands;
 
+import org.bukkit.command.CommandSender;
 import org.mcteam.ancientgates.Gate;
 
 public class CommandDelete extends BaseCommand {
@@ -15,11 +16,19 @@ public class CommandDelete extends BaseCommand {
 		helpDescription = "Delete a gate";
 	}
 	
-	public void perform() {
+	public void perform() 
+	{
 		gate.close();
 		sendMessage("Gate with id \"" + gate.getId() + "\" was deleted.");
 		Gate.delete(gate.getId());
 		Gate.save();
+	}
+	
+	
+	@Override
+	public boolean hasPermission(CommandSender sender) 
+	{
+		return sender.hasPermission(permissionManage);
 	}
 }
 

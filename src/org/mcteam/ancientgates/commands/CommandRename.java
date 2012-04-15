@@ -1,5 +1,6 @@
 package org.mcteam.ancientgates.commands;
 
+import org.bukkit.command.CommandSender;
 import org.mcteam.ancientgates.Gate;
 
 
@@ -38,5 +39,12 @@ public class CommandRename extends BaseCommand
 		sendMessage("Gate " + oldId + " is now known as " + newId + ".");
 		
 		Gate.save();
+	}
+	
+	
+	@Override
+	public boolean hasPermission(CommandSender sender) 
+	{
+		return sender.hasPermission(permissionManage);
 	}
 }

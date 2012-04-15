@@ -1,6 +1,7 @@
 package org.mcteam.ancientgates.commands;
 
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 import org.mcteam.ancientgates.Gate;
 
 
@@ -47,5 +48,12 @@ public class CommandInfo extends BaseCommand
 		
 		
 		Gate.save();
+	}
+	
+	
+	@Override
+	public boolean hasPermission(CommandSender sender) 
+	{
+		return sender.hasPermission(permissionInfo) || sender.hasPermission(permissionManage);
 	}
 }

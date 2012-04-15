@@ -81,14 +81,7 @@ public class Plugin extends JavaPlugin
 		
 		log("Enabled");
 	}
-	
-	// -------------------------------------------- //
-	// Test rights
-	// -------------------------------------------- //
-	
-	public static boolean hasPermManage(CommandSender sender) {
-		return sender.isOp();
-	}
+
 	
 	// -------------------------------------------- //
 	// Commands

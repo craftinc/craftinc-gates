@@ -1,5 +1,6 @@
 package org.mcteam.ancientgates.commands;
 
+import org.bukkit.command.CommandSender;
 import org.mcteam.ancientgates.Gate;
 
 public class CommandUnhide extends BaseCommand 
@@ -22,5 +23,12 @@ public class CommandUnhide extends BaseCommand
 			sendMessage("Failed to unhide the gate. Does the portal have a frame?");
 		
 		Gate.save();
+	}
+	
+	
+	@Override
+	public boolean hasPermission(CommandSender sender) 
+	{
+		return sender.hasPermission(permissionManage);
 	}
 }
