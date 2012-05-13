@@ -66,13 +66,7 @@ public class Plugin extends JavaPlugin
 		commands.add(new CommandInfo());
 		commands.add(new CommandHide());
 		commands.add(new CommandUnhide());
-		
-		// Ensure basefolder exists!
-		this.getDataFolder().mkdirs();
-		
-		// Load from disc
-		Conf.load();
-		Gate.load();
+
 		
 		// Register events
 		PluginManager pm = this.getServer().getPluginManager();
@@ -106,8 +100,10 @@ public class Plugin extends JavaPlugin
 		return true;
 	}
 	
-	public void handleCommand(CommandSender sender, List<String> parameters) {
-		if (parameters.size() == 0) {
+	public void handleCommand(CommandSender sender, List<String> parameters) 
+	{
+		if (parameters.size() == 0) 
+		{
 			this.commands.get(0).execute(sender, parameters);
 			return;
 		}
@@ -115,14 +111,16 @@ public class Plugin extends JavaPlugin
 		String commandName = parameters.get(0).toLowerCase();
 		parameters.remove(0);
 		
-		for (BaseCommand fcommand : this.commands) {
-			if (fcommand.getAliases().contains(commandName)) {
+		for (BaseCommand fcommand : this.commands) 
+		{
+			if (fcommand.getAliases().contains(commandName)) 
+			{
 				fcommand.execute(sender, parameters);
 				return;
 			}
 		}
 		
-		sender.sendMessage(Conf.colorSystem+"Unknown gate-command \""+commandName+"\". Try "+Conf.colorCommand+"/"+getBaseCommand()+" help");
+		sender.sendMessage("Unknown gate-command \"" + commandName + "\". Try " + "/" + getBaseCommand() + " help");
 	}
 	
 	// -------------------------------------------- //

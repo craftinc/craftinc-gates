@@ -5,7 +5,6 @@ import java.util.logging.Level;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
-
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.event.EventHandler;
@@ -13,53 +12,48 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 
-import org.mcteam.ancientgates.Conf;
 import org.mcteam.ancientgates.Gate;
 import org.mcteam.ancientgates.Plugin;
-import org.mcteam.ancientgates.util.GeometryUtil;
 
 
 public class PluginPlayerListener implements Listener 
 {
-    
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerMove(PlayerMoveEvent event) 
 	{
 		if (event.isCancelled())
 			return;
 		
-		if (!(event.getPlayer().hasPermission("ancientgates.use") || sender.hasPermission(permissionInfo) || sender.hasPermission(permissionManage)))
+		// check for permission
+		if (!event.getPlayer().hasPermission("ancientgates.use")) {
 			return;
+		}
+		
+		
+		// Find the nearest gate!
+		Gate nearestGate = null;
+		
+		Location playerLocation = event.getPlayer().getLocation();
+		World playerWorld = playerLocation.getWorld();
 		
 		Block blockTo = event.getTo().getBlock();
 		Block blockToUp = blockTo.getRelative(BlockFace.UP);
 		
-		// Find the nearest gate!
-		Gate nearestGate = null;
-		Location playerLocation = event.getPlayer().getLocation();
 		
 		for (Gate gate : Gate.getAll()) 
 		{
-			if (gate.getFrom() == null ||
-				gate.getTo() == null || 
-				gate.isOpen() == false ||
-				!gate.getFrom().getWorld().equals(playerLocation.getWorld()))
-			{
+			// Check if the gate is open and useable
+			World gateWorld = gate.getLocation().getWorld();
+			
+			if (gate.getLocation() == null || gate.getExit() == null || gate.isOpen() == false || !gateWorld.equals(playerWorld)) {
 				continue;
 			}
-
-			double distance = GeometryUtil.distanceBetweenLocations(playerLocation, gate.getFrom());
 			
-			if (distance > Conf.getGateSearchRadius())
-				continue;
-			
-			Plugin.log(Level.ALL, "in gate search radius of " + gate.getId());
-			
-            for (Integer[] blockXYZ: gate.getGateBlocks()) 
+            
+			// Check if the location matches
+			for (Location l: gate.getGateBlockLocations()) 
             {
-                if ((blockTo.getX() == blockXYZ[0] || blockToUp.getX() == blockXYZ[0]) &&
-                    (blockTo.getY() == blockXYZ[1] || blockToUp.getY() == blockXYZ[1]) &&
-                    (blockTo.getZ() == blockXYZ[2] || blockToUp.getZ() == blockXYZ[2])) 
+				if (locationsAreAtSamePositions(l, blockTo.getLocation()) || locationsAreAtSamePositions(l, blockToUp.getLocation())) 
                 {
                     nearestGate = gate;
                     break;
@@ -69,12 +63,12 @@ public class PluginPlayerListener implements Listener
 		
 		if (nearestGate != null) 
 		{
-			checkChunkLoad(nearestGate.getTo().getBlock());
-            Float newYaw = nearestGate.getFrom().getYaw() - nearestGate.getTo().getYaw() + playerLocation.getYaw();
-            Location teleportToLocation = new Location( nearestGate.getTo().getWorld(),
-                                						nearestGate.getTo().getX(),
-						                                nearestGate.getTo().getY(),
-						                                nearestGate.getTo().getZ(),
+			checkChunkLoad(nearestGate.getLocation().getBlock());
+            Float newYaw = nearestGate.getExit().getYaw() - nearestGate.getExit().getYaw() + playerLocation.getYaw();
+            Location teleportToLocation = new Location( nearestGate.getExit().getWorld(),
+                                						nearestGate.getExit().getX(),
+						                                nearestGate.getExit().getY(),
+						                                nearestGate.getExit().getZ(),
 						                                newYaw, playerLocation.getPitch() );
                         
 			event.getPlayer().teleport(teleportToLocation);
@@ -94,4 +88,26 @@ public class PluginPlayerListener implements Listener
 			w.loadChunk(c);
 		}
 	}
+	
+	
+	/**
+     * Does the same as the equal method of Location but ignores fitch and yaw.
+     */
+	private static boolean locationsAreAtSamePositions(final Location l1, final Location l2)
+    {
+		if (l1.getWorld() != l2.getWorld() && (l1.getWorld() == null || !l1.getWorld().equals(l2.getWorld()))) {
+			return false;
+        }
+		if (Double.doubleToLongBits(l1.getX()) != Double.doubleToLongBits(l2.getX())) {
+			return false;
+		}
+		if (Double.doubleToLongBits(l1.getY()) != Double.doubleToLongBits(l2.getY())) {
+			return false;
+		}
+		if (Double.doubleToLongBits(l1.getZ()) != Double.doubleToLongBits(l2.getZ())) {
+			return false;
+		}
+		
+		return true;
+    }
 }
