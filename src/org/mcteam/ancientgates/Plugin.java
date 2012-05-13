@@ -1,21 +1,17 @@
 package org.mcteam.ancientgates;
 
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.bukkit.Location;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.mcteam.ancientgates.commands.*;
-import org.mcteam.ancientgates.gson.Gson;
-import org.mcteam.ancientgates.gson.GsonBuilder;
 
 import org.mcteam.ancientgates.listeners.PluginBlockListener;
 import org.mcteam.ancientgates.listeners.PluginPlayerListener;
@@ -29,12 +25,6 @@ public class Plugin extends JavaPlugin
 	public PluginBlockListener blockListener = new PluginBlockListener();
 	
 	private String baseCommand;
-	
-	public final static Gson gson = new GsonBuilder()
-	.setPrettyPrinting()
-	.excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE)
-	.registerTypeAdapter(Location.class, new MyLocationTypeAdapter())
-	.create();
 	
 	// Commands
 	public List<BaseCommand> commands = new ArrayList<BaseCommand>();
