@@ -13,6 +13,9 @@ import org.mcteam.ancientgates.util.LocationSerializer;
 
 
 
+/**
+ * Adds persistence and serialization to the base gate class.
+ */
 public class Gate extends BaseGate implements ConfigurationSerializable
 {
 	/*
@@ -128,7 +131,6 @@ public class Gate extends BaseGate implements ConfigurationSerializable
 		gate.id = id;
 		instances.put(gate.id, gate);
 		Plugin.log("created new gate " + gate.id);
-		//faction.save();
 		return gate;
 	}
 	
@@ -146,7 +148,6 @@ public class Gate extends BaseGate implements ConfigurationSerializable
 	
 	public static void delete(String id) 
 	{
-		// Remove the faction
 		instances.remove(id);
 	}
 	
