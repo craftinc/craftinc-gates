@@ -1,52 +1,67 @@
 package org.mcteam.ancientgates.util;
 
-
-
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.mcteam.ancientgates.Conf;
 
-public class TextUtil {
-	public static String titleize(String str) {
-		String line = Conf.colorChrome+repeat("_", 60);
-		String center = ".[ " + Conf.colorSystem + str + Conf.colorChrome + " ].";
+public class TextUtil 
+{
+	public static String titleize(String str) 
+	{
+		String line = ChatColor.GOLD + repeat("_", 60);
+		String center = ".[ " + ChatColor.YELLOW + str + ChatColor.GOLD + " ].";
 		int pivot = line.length() / 2;
 		int eatLeft = center.length() / 2;
 		int eatRight = center.length() - eatLeft;
+		
 		return line.substring(0, pivot - eatLeft) + center + line.substring(pivot + eatRight);
 	}
 	
-	public static String repeat(String s, int times) {
-	    if (times <= 0) return "";
-	    else return s + repeat(s, times-1);
+	
+	public static String repeat(String s, int times) 
+	{
+	    if (times <= 0) 
+	    	return "";
+	    
+	    return s + repeat(s, times-1);
 	}
 	
-	public static ArrayList<String> split(String str) {
-		return new ArrayList<String>(Arrays.asList(str.trim().split("\\s+")));
-	}
 	
-	public static String implode(List<String> list, String glue) {
-	    String ret = "";
-	    for (int i=0; i<list.size(); i++) {
-	        if (i!=0) {
-	        	ret += glue;
-	        }
-	        ret += list.get(i);
+	/**
+	 * Joins all emements of list into a single string, sperating the original strings with glue.
+	 */
+	public static String implode(List<String> list, String glue)
+	{
+	    if (list.size() == 0) {
+	    	return "";
 	    }
+		
+		String ret = list.get(0);
+	    
+	    for (int i=1; i<list.size(); i++) {
+	        ret += glue + list.get(i);
+	    }
+	    
 	    return ret;
 	}
+	
+	/**
+	 * Joins all emements of list into a single string.
+	 */
 	public static String implode(List<String> list) {
-		return implode(list, " ");
+		return implode(list, "");
 	}
 	
-	public static String getMaterialName(Material material) {
+	
+	
+	public static String getMaterialName(Material material) 
+	{
 		String ret = material.toString();
 		ret = ret.replace('_', ' ');
 		ret = ret.toLowerCase();
-		return ret.substring(0, 1).toUpperCase()+ret.substring(1);
+		
+		return ret.substring(0, 1).toUpperCase() + ret.substring(1);
 	}
 }
 
