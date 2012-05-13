@@ -104,7 +104,7 @@ public abstract class BaseGate
 	}
 	
 	
-	public Set<Location> getGateBlocks() 
+	public Set<Location> getGateBlockLocations() 
 	{
 		return gateBlockLocations;
 	}
