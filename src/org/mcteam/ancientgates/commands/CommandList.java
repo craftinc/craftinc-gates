@@ -8,9 +8,10 @@ import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.mcteam.ancientgates.Conf;
+
 import org.mcteam.ancientgates.Gate;
 import org.mcteam.ancientgates.util.TextUtil;
+
 
 public class CommandList extends BaseCommand
 {
@@ -29,11 +30,11 @@ public class CommandList extends BaseCommand
 	protected String intToTitleString(int i)
 	{
 		if ( i < 26 )
-			return Conf.colorMember + "" + (char)(i+65) + ":";
+			return ChatColor.GREEN + "" + (char)(i+65) + ":";
 		else if ( i == 26 )
-			return Conf.colorMember + "0 - 9:";
+			return ChatColor.GREEN + "0 - 9:";
 		else
-			return Conf.colorMember + "!@#$:";
+			return ChatColor.GREEN + "!@#$:";
 	}
 	
 	
@@ -211,8 +212,6 @@ public class CommandList extends BaseCommand
 			else
 				sendMessage(messages);
 		}
-		
-		Gate.save();
 	}
 	
 	

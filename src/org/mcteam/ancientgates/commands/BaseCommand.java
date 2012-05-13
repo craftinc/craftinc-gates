@@ -8,7 +8,6 @@ import org.bukkit.entity.Player;
 
 import org.mcteam.ancientgates.Gate;
 import org.mcteam.ancientgates.Plugin;
-import org.mcteam.ancientgates.Conf;
 import org.mcteam.ancientgates.util.TextUtil;
 
 public class BaseCommand 
@@ -67,7 +66,7 @@ public class BaseCommand
 	}
 	
 	public void sendMessage(String message) {
-		sender.sendMessage(Conf.colorSystem+message);
+		sender.sendMessage(message);
 	}
 	
 	public void sendMessage(List<String> messages) {
@@ -126,11 +125,11 @@ public class BaseCommand
 	public String getUsageTemplate(boolean withColor, boolean withDescription) {
 		String ret = "";
 		
-		if (withColor) {
-			ret += Conf.colorCommand;
-		}
+//		if (withColor) {
+//			ret += Conf.colorCommand;
+//		}
 		
-		ret += "/" + Plugin.instance.getBaseCommand()+ " " +TextUtil.implode(this.getAliases(), ",")+" ";
+		ret += "/" + Plugin.instance.getBaseCommand() + " " + TextUtil.implode(this.getAliases(), ",")+" ";
 		
 		List<String> parts = new ArrayList<String>();
 		
@@ -142,15 +141,15 @@ public class BaseCommand
 			parts.add("*["+optionalParameter+"]");
 		}
 		
-		if (withColor) {
-			ret += Conf.colorParameter;
-		}
+//		if (withColor) {
+//			ret += Conf.colorParameter;
+//		}
 		
 		ret += TextUtil.implode(parts, " ");
 		
-		if (withDescription) {
-			ret += "  "+Conf.colorSystem + this.helpDescription;
-		}
+//		if (withDescription) {
+//			ret += "  "+Conf.colorSystem + this.helpDescription;
+//		}
 		return ret;
 	}
 	

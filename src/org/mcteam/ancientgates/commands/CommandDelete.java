@@ -18,10 +18,9 @@ public class CommandDelete extends BaseCommand {
 	
 	public void perform() 
 	{
-		gate.close();
+		gate.setOpen(false);
 		sendMessage("Gate with id \"" + gate.getId() + "\" was deleted.");
 		Gate.delete(gate.getId());
-		Gate.save();
 	}
 	
 	

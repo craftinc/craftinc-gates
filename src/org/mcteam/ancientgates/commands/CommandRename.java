@@ -26,19 +26,15 @@ public class CommandRename extends BaseCommand
 	public void perform() 
 	{
 		String newId = parameters.get(1);
-		String oldId = gate.getId();
 		
-		if (Gate.exists(newId))
-		{
-			sendMessage("Cannot rename " + oldId + ". There is already a gate named " + newId + ".");
-			return;
+		try {
+			Gate.rename(gate, newId);
+		} 
+		catch (Exception e) {
+			sendMessage("Cannot rename " + gate.getId() + ". There is already a gate named " + newId + ".");
 		}
 		
-		Gate.rename(gate, newId);
-		
-		sendMessage("Gate " + oldId + " is now known as " + newId + ".");
-		
-		Gate.save();
+		sendMessage("Gate " + gate.getId() + " is now known as " + newId + ".");
 	}
 	
 	

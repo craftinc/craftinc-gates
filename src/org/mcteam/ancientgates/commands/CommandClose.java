@@ -1,7 +1,6 @@
 package org.mcteam.ancientgates.commands;
 
 import org.bukkit.command.CommandSender;
-import org.mcteam.ancientgates.Gate;
 
 public class CommandClose extends BaseCommand 
 {
@@ -17,9 +16,8 @@ public class CommandClose extends BaseCommand
 	@Override
 	public void perform() 
 	{
-		gate.close();
+		gate.setOpen(false);
 		sendMessage("The gate was closed.");
-		Gate.save();
 	}
 	
 	

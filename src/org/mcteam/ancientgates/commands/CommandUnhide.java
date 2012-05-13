@@ -1,7 +1,6 @@
 package org.mcteam.ancientgates.commands;
 
 import org.bukkit.command.CommandSender;
-import org.mcteam.ancientgates.Gate;
 
 public class CommandUnhide extends BaseCommand 
 {
@@ -17,12 +16,14 @@ public class CommandUnhide extends BaseCommand
 	
 	public void perform() 
 	{
-		if (gate.setHidden(false))
-			sendMessage("The gate " + gate.getId() + " is no longer hidden.");
-		else
-			sendMessage("Failed to unhide the gate. Does the portal have a frame?");
+		boolean isOpen = gate.isOpen();
 		
-		Gate.save();
+		gate.setHidden(false);
+		sendMessage("The gate " + gate.getId() + " is no longer hidden.");
+		
+		if (isOpen != gate.isOpen()) {
+			sendMessage("The Portal is now closed. Does the portal have a frame?");
+		}
 	}
 	
 	

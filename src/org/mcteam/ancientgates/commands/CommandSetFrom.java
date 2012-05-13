@@ -1,14 +1,15 @@
 package org.mcteam.ancientgates.commands;
 
 import java.util.Set;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.CommandSender;
-import org.mcteam.ancientgates.Conf;
-import org.mcteam.ancientgates.Gate;
+
 import org.mcteam.ancientgates.util.FloodUtil;
+
 
 public class CommandSetFrom extends BaseCommand 
 {
@@ -40,17 +41,17 @@ public class CommandSetFrom extends BaseCommand
         
         if (gateBlocks == null) 
         {
-                sendMessage("There is no portal here, or your portal is too large.\nMax size is: " + Conf.getGateMaxArea() + " Blocks.");
+                sendMessage("There is no portal here, or your portal is too large.\nMax size is: " /*+ Conf.getGateMaxArea()*/ + " Blocks.");
                 return;
         }
                 
 		if (playerBlock.getType() == Material.AIR) 
 		{
-			gate.setFrom(player.getLocation());
+			gate.setLocation(player.getLocation());
 		} 
 		else if (upBlock.getType() == Material.AIR) 
 		{
-			gate.setFrom(playerUpLocation);
+			gate.setLocation(playerUpLocation);
 		} 
 		else 
 		{
@@ -60,8 +61,6 @@ public class CommandSetFrom extends BaseCommand
 		
 		sendMessage("From location for gate \""+gate.getId()+"\" is now where you stand.");
 		sendMessage("Your gate includes " + gateBlocks.size() + " Blocks.");
-		
-		Gate.save();
 	}
 	
 	

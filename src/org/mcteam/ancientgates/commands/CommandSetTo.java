@@ -1,7 +1,6 @@
 package org.mcteam.ancientgates.commands;
 
 import org.bukkit.command.CommandSender;
-import org.mcteam.ancientgates.Gate;
 
 public class CommandSetTo extends BaseCommand {
 	
@@ -15,10 +14,8 @@ public class CommandSetTo extends BaseCommand {
 	}
 	
 	public void perform() {
-		gate.setTo(player.getLocation());
+		gate.setExit(player.getLocation());
 		sendMessage("To location for gate \""+gate.getId()+"\" is now where you stand.");
-		
-		Gate.save();
 	}
 	
 	
