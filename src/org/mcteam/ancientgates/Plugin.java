@@ -1,5 +1,7 @@
 package org.mcteam.ancientgates;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -9,6 +11,9 @@ import java.util.logging.Logger;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.mcteam.ancientgates.commands.*;
@@ -26,19 +31,36 @@ public class Plugin extends JavaPlugin
 	
 	private String baseCommand;
 	
+	private String gatesPath = "gates";
+	
+	
 	// Commands
 	public List<BaseCommand> commands = new ArrayList<BaseCommand>();
+	
 	
 	public Plugin()
 	{
 		instance = this;
 	}
+	
+	
+	@Override
+	public void onLoad() 
+	{
+		ConfigurationSerialization.registerClass(Gate.class);
+	}
+	
 
 	@Override
-	public void onDisable() {
+	public void onDisable() 
+	{
+		// Save gates
+		saveGates();
+		
 		log("Disabled");
 	}
 
+	
 	@Override
 	public void onEnable() 
 	{
@@ -63,6 +85,9 @@ public class Plugin extends JavaPlugin
 		pm.registerEvents(this.playerListener, this);
 		pm.registerEvents(this.blockListener, this);
 		
+		// Load gates
+		loadGates();
+		
 		log("Enabled");
 	}
 
@@ -83,12 +108,15 @@ public class Plugin extends JavaPlugin
 		return this.baseCommand;
 	}
 	
+	
 	@Override
-	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
+	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) 
+	{
 		List<String> parameters = new ArrayList<String>(Arrays.asList(args));
 		this.handleCommand(sender, parameters);
 		return true;
 	}
+	
 	
 	public void handleCommand(CommandSender sender, List<String> parameters) 
 	{
@@ -113,15 +141,45 @@ public class Plugin extends JavaPlugin
 		sender.sendMessage("Unknown gate-command \"" + commandName + "\". Try " + "/" + getBaseCommand() + " help");
 	}
 	
-	// -------------------------------------------- //
-	// Logging
-	// -------------------------------------------- //
-	public static void log(String msg) {
+	
+	/* 
+	 * Logging
+	 */
+	public static void log(String msg) 
+	{
 		log(Level.INFO, msg);
 	}
+	
 	
 	public static void log(Level level, String msg) {
 		Logger.getLogger("Minecraft").log(level, "["+instance.getDescription().getFullName()+"] "+msg);
 	}
-
+	
+	/*
+	 * Saving and Loading Gates
+	 */
+	public void loadGates() 
+	{
+		File gatesFile = new File(getDataFolder(), "gates.yml");
+		FileConfiguration gatesConfig = YamlConfiguration.loadConfiguration(gatesFile);
+		
+		gatesConfig.getList(gatesPath); // this will create all the gates
+	}
+	
+	
+	public void saveGates()
+	{
+		File gatesFile = new File(getDataFolder(), "gates.yml");
+		FileConfiguration gatesConfig = YamlConfiguration.loadConfiguration(gatesFile);
+		
+		gatesConfig.set(gatesPath, new ArrayList<Object>(Gate.getAll()));
+		
+		try {
+			gatesConfig.save(gatesFile);
+		} 
+		catch (IOException e) {
+			log("ERROR: Could not save gates to disk.");
+			e.printStackTrace();
+		}
+	}
 }
