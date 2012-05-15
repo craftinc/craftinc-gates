@@ -93,14 +93,14 @@ public abstract class BaseGate
 			if (!isHidden) {
 				fillGate();
 			}
-			
-			validate();
 		}
 		else if (isOpen == false && this.isOpen == true) {
 			emptyGate();
 		}
 		
 		this.isOpen = isOpen;
+		
+		validate();
 	}
 	
 	
@@ -131,7 +131,7 @@ public abstract class BaseGate
 	protected void emptyGate()
 	{
 		for (Location l : gateBlockLocations) {
-			if (l.getBlock().getType() == Material.PORTAL) {
+			if (l != null && l.getBlock().getType() == Material.PORTAL) {
 				l.getBlock().setType(Material.AIR);
 			}
 		}

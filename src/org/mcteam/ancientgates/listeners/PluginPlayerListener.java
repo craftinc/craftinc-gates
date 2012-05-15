@@ -45,7 +45,7 @@ public class PluginPlayerListener implements Listener
 			// Check if the gate is open and useable
 			World gateWorld = gate.getLocation().getWorld();
 			
-			if (gate.getLocation() == null || gate.getExit() == null || gate.isOpen() == false || !gateWorld.equals(playerWorld)) {
+			if (gate.isOpen() == false || !gateWorld.equals(playerWorld)) {
 				continue;
 			}
 			
