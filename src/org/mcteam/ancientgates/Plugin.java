@@ -72,7 +72,6 @@ public class Plugin extends JavaPlugin
 		// Add the commands
 		commands.add(new CommandHelp());
 		commands.add(new CommandCreate());
-		commands.add(new CommandCreateSetFrom());
 		commands.add(new CommandDelete());
 		commands.add(new CommandSetFrom());
 		commands.add(new CommandSetTo());
