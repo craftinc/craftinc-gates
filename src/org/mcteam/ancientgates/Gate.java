@@ -89,6 +89,8 @@ public class Gate extends BaseGate implements ConfigurationSerializable
 	
 	public Map<String, Object> serialize() 
 	{
+		validate(); // make sure to not write invalid stuff to disk
+		
 		Map<String, Object> retVal = new HashMap<String, Object>();
 		
 		retVal.put(idKey, id);
@@ -131,6 +133,7 @@ public class Gate extends BaseGate implements ConfigurationSerializable
 		gate.id = id;
 		instances.put(gate.id, gate);
 		Plugin.log("created new gate " + gate.id);
+		
 		return gate;
 	}
 	
