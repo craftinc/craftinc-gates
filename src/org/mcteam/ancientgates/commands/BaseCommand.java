@@ -10,11 +10,8 @@ import org.mcteam.ancientgates.Gate;
 import org.mcteam.ancientgates.Plugin;
 import org.mcteam.ancientgates.util.TextUtil;
 
-public class BaseCommand 
+public abstract class BaseCommand 
 {
-	public static final String permissionInfo = "ancientgates.info";
-	public static final String permissionManage = "ancientgates.manage";
-	
 	public List<String> aliases;
 	public List<String> requiredParameters;
 	public List<String> optionalParameters;
@@ -29,9 +26,10 @@ public class BaseCommand
 	
 	public List<String> parameters;
 	
+	public String requiredPermission;
 	
-	public BaseCommand() 
-	{
+	
+	public BaseCommand() {
 		aliases = new ArrayList<String>();
 		requiredParameters = new ArrayList<String>();
 		optionalParameters = new ArrayList<String>();
@@ -85,7 +83,7 @@ public class BaseCommand
 		}
 		
 		// validate permission
-		if( ! hasPermission(sender)) 
+		if( !hasPermission(sender)) 
 		{
 			sendMessage("You lack the permissions to "+this.helpDescription.toLowerCase()+".");
 			return false;
@@ -116,7 +114,15 @@ public class BaseCommand
 	
 	public boolean hasPermission(CommandSender sender) 
 	{
-		return false; // make sure to overwrite this in all subclasses!
+		if (sender.hasPermission(Plugin.permissionAll)) {
+			return true;
+		}
+		
+		if (sender.hasPermission(requiredPermission)) {
+			return true;
+		}
+		
+		return false; 
 	}
 	
 	// -------------------------------------------- //
