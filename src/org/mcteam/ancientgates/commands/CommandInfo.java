@@ -14,6 +14,8 @@ public class CommandInfo extends BaseCommand
 		requiredParameters.add("id");		
 		
 		helpDescription = "Prints information about a gate";
+		
+		requiredPermission = Plugin.permissionInfo;
 	}
 	
 	
@@ -45,11 +47,5 @@ public class CommandInfo extends BaseCommand
 		else
 			sendMessage(ChatColor.GREEN + "this gate has no 'to' location");
 	}
-	
-	
-	@Override
-	public boolean hasPermission(CommandSender sender) 
-	{
-		return sender.hasPermission(permissionInfo) || sender.hasPermission(permissionManage);
-	}
+
 }
