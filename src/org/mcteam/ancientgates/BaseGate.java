@@ -16,12 +16,12 @@ public abstract class BaseGate
 	 * ATTRIBUTES
 	 */
 	protected Location location; /* saving both location and gateBlockLocations is redundant but makes it easy to allow players to reshape gates */
-	protected Set<Location> gateBlockLocations; /* Locations of the blocks inside the gate */
+	protected Set<Location> gateBlockLocations = new HashSet<Location>(); /* Locations of the blocks inside the gate */
 	
 	protected Location exit;
 	
-	protected boolean isHidden;
-	protected boolean isOpen;
+	protected boolean isHidden = false;
+	protected boolean isOpen = false;
 	
 	
 	/*
@@ -131,7 +131,7 @@ public abstract class BaseGate
 	protected void emptyGate()
 	{
 		for (Location l : gateBlockLocations) {
-			if (l != null && l.getBlock().getType() == Material.PORTAL) {
+			if (l.getBlock().getType() == Material.PORTAL) {
 				l.getBlock().setType(Material.AIR);
 			}
 		}
@@ -162,7 +162,7 @@ public abstract class BaseGate
 	/**
 	 * Checks if valus attributes do add up; will close gate on wrong values.
 	 */
-	protected void validate() 
+	public void validate() 
 	{
 		if (!isOpen) {
 			return;
