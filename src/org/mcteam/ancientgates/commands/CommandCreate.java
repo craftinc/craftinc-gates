@@ -1,9 +1,11 @@
 package org.mcteam.ancientgates.commands;
 
-import org.bukkit.command.CommandSender;
+import org.bukkit.Location;
 import org.mcteam.ancientgates.Gate;
+import org.mcteam.ancientgates.Plugin;
 
-public class CommandCreate extends BaseCommand 
+
+public class CommandCreate extends BaseLocationCommand 
 {
 	public CommandCreate() 
 	{
@@ -16,6 +18,8 @@ public class CommandCreate extends BaseCommand
 		hasGateParam = false;
 		
 		helpDescription = "Create a gate";
+		
+		requiredPermission = Plugin.permissionManage;
 	}
 	
 	
@@ -28,16 +32,20 @@ public class CommandCreate extends BaseCommand
 			return;
 		}
 		
-		Gate.create(id);
-		sendMessage("Gate with id \"" + id + "\" was created. Now you should:");
-		sendMessage(new CommandSetFrom().getUsageTemplate(true, true));
+		gate = Gate.create(id);
+		
+		Location playerLocation = getValidPlayerLocation();
+		
+		if (playerLocation != null) {
+			gate.setLocation(playerLocation);
+			
+			sendMessage("Gate with id \"" + id + "\" was created.\n The gates location has been set to your current location.");
+		}
+		else {
+			sendMessage("Gate with id \"" + id + "\" was created.\n Now you should build a frame and:");
+			sendMessage(new CommandSetFrom().getUsageTemplate(true, true));
+		}
 	}
-	
-	
-	@Override
-	public boolean hasPermission(CommandSender sender) 
-	{
-		return sender.hasPermission(permissionManage);
-	}
+
 }
 
