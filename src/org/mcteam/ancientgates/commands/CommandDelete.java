@@ -1,10 +1,14 @@
 package org.mcteam.ancientgates.commands;
 
-import org.bukkit.command.CommandSender;
 import org.mcteam.ancientgates.Gate;
+import org.mcteam.ancientgates.Plugin;
 
-public class CommandDelete extends BaseCommand {
-	public CommandDelete() {
+
+public class CommandDelete extends BaseCommand 
+{
+	
+	public CommandDelete() 
+	{
 		aliases.add("delete");
 		aliases.add("del");
 		aliases.add("remove");
@@ -14,20 +18,17 @@ public class CommandDelete extends BaseCommand {
 		
 		senderMustBePlayer = false;
 		helpDescription = "Delete a gate";
+		
+		requiredPermission = Plugin.permissionManage;
 	}
+	
 	
 	public void perform() 
 	{
 		gate.setOpen(false);
-		sendMessage("Gate with id \"" + gate.getId() + "\" was deleted.");
 		Gate.delete(gate.getId());
-	}
-	
-	
-	@Override
-	public boolean hasPermission(CommandSender sender) 
-	{
-		return sender.hasPermission(permissionManage);
+		
+		sendMessage("Gate with id \"" + gate.getId() + "\" was deleted.");
 	}
 }
 
