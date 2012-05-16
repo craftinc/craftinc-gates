@@ -46,13 +46,17 @@ public class Gate extends BaseGate implements ConfigurationSerializable
 	}
 
 
-	public void setId(String id) throws Exception 
+	/**
+	 * @return true if the id has been changed; false otherwise
+	 */
+	public boolean setId(String id)
 	{
-		if (instances.get(id) != null) {
-			throw new Exception("Cannot set new ID: this ID is already in use");
+		if (!exists(id)) {
+			this.id = id;
+			return true;
 		}
 		
-		this.id = id;
+		return false;
 	}
 
 
@@ -112,7 +116,7 @@ public class Gate extends BaseGate implements ConfigurationSerializable
 
 
 	/*
-	 * PERSISTANCE and ENTITY MANAGEMENT
+	 * ENTITY MANAGEMENT
 	 */
 	
 	public static Gate get(String id) 
