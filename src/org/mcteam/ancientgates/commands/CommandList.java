@@ -7,9 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
 
 import org.mcteam.ancientgates.Gate;
+import org.mcteam.ancientgates.Plugin;
 import org.mcteam.ancientgates.util.TextUtil;
 
 
@@ -24,17 +24,22 @@ public class CommandList extends BaseCommand
 		hasGateParam = false;
 		
 		helpDescription = "Display a list of the gates";
+		
+		requiredPermission = Plugin.permissionInfo;
 	}
 	
 	
 	protected String intToTitleString(int i)
 	{
-		if ( i < 26 )
+		if ( i < 26 ) {
 			return ChatColor.GREEN + "" + (char)(i+65) + ":";
-		else if ( i == 26 )
+		}
+		else if ( i == 26 ) {
 			return ChatColor.GREEN + "0 - 9:";
-		else
+		} 
+		else {
 			return ChatColor.GREEN + "!@#$:";
+		}
 	}
 	
 	
@@ -45,8 +50,9 @@ public class CommandList extends BaseCommand
 	{
 		Collection<Gate> gates = Gate.getAll();
 		
-		if (gates.size() == 0)
+		if (gates.size() == 0) {
 			return null;
+		}
 		
 		/* sort all gates by there first character
 		 * put gates in corresponding Lists
@@ -56,22 +62,26 @@ public class CommandList extends BaseCommand
 		 */
 		List<List<String>> ids = new ArrayList<List<String>>();
 		
-		for (int i=0; i<28; i++)
+		for (int i=0; i<28; i++) {
 			ids.add(new ArrayList<String>());
+		}
 		
-		for (Gate gate : gates)
-		{
+		for (Gate gate : gates) {
 			String id = gate.getId();
 			int first = id.charAt(0);
 			
-			if (first > 96 && first < 123) // convert lower case chars
+			if (first > 96 && first < 123) { // convert lower case chars
 				first -= 97;
-			else if (first > 64 && first < 91) // convert upper case chars
+			}
+			else if (first > 64 && first < 91)  { // convert upper case chars
 				first -= 65;
-			else if (first > 47 && first < 58) // convert numbers
+			}
+			else if (first > 47 && first < 58) { // convert numbers
 				first = 26;
-			else // everything else
+			}
+			else { // everything else
 				first = 27;
+			}
 			
 			ids.get(first).add(id);
 		}
@@ -86,10 +96,10 @@ public class CommandList extends BaseCommand
 		// Integer: the number of lines neccessary for displaying the corresponding list
 		HashMap<List<String>, Integer> lines = new HashMap<List<String>, Integer>(27);
 		
-		for (List<String> currentIds : ids)
-		{
-			if (currentIds.size() == 0)
+		for (List<String> currentIds : ids) {
+			if (currentIds.size() == 0) {
 				continue;
+			}
 			
 			int characters = TextUtil.implode(currentIds, ", ").length();
 			lines.put(currentIds, characters / 52 + 2);
@@ -102,60 +112,49 @@ public class CommandList extends BaseCommand
 		
 		List<String> pageMessages = new ArrayList<String>();
 		
-		while (currentStartingCharList < ids.size())
-		{
+		while (currentStartingCharList < ids.size()) {
 			int linesLeftOnCurrentPage = 9;
 			
-			while (linesLeftOnCurrentPage > 1 && currentStartingCharList < ids.size())
-			{
+			while (linesLeftOnCurrentPage > 1 && currentStartingCharList < ids.size()) {
 				List<String> currentIds = ids.get(currentStartingCharList);
 				
-				if (currentIds.size() > 0)
-				{
+				if (currentIds.size() > 0) {
 					// add header line
-					if (currentPage == page)
+					if (currentPage == page) {
 						pageMessages.add(intToTitleString(currentStartingCharList));
+					}
 					
 					//sort
 					Collections.sort(currentIds);
 				
 					// add ids
-					if (lines.get(currentIds) <= linesLeftOnCurrentPage) // all ids fit on current page
-					{
+					if (lines.get(currentIds) <= linesLeftOnCurrentPage) { // all ids fit on current page
 						linesLeftOnCurrentPage -= lines.get(currentIds);
 						
-						
-						if (currentPage == page)
-						{
+						if (currentPage == page) {
 							pageMessages.add(TextUtil.implode(currentIds, ", "));
-							if (finishedCurrentIds == false)
+							if (finishedCurrentIds == false) {
 								pageMessages.set(pageMessages.size() -2, pageMessages.get(pageMessages.size() -2) + " (more on previous page)");
+							}
 						}
 						
 						finishedCurrentIds = true;
 					}
-					else // NOT all ids fit on current page
-					{
+					else { // NOT all ids fit on current page
 						int charsAvailible = (linesLeftOnCurrentPage - 1) * 52;
 						int idsPos = 0;
 						
-						while (true)
-						{
-							charsAvailible -= currentIds.get(idsPos).length() + 2;
-							
-							if (charsAvailible <= 0)
-								break;
-							
+						do {
+							charsAvailible -= currentIds.get(idsPos).length() + 2;				
 							idsPos++;
-						}
+						} while (charsAvailible > 0);
 						
 						List<String> idsToPutOnCurrentPage = currentIds.subList(0, idsPos);
 						currentIds.remove(idsToPutOnCurrentPage);
 						
 						String stringToPutOnCurrentPage = TextUtil.implode(idsToPutOnCurrentPage, ", ");
 						
-						if (currentPage == page)
-						{
+						if (currentPage == page) {
 							pageMessages.add(stringToPutOnCurrentPage);
 							pageMessages.set(pageMessages.size() -2, pageMessages.get(pageMessages.size() -2) + " (more on next page)");
 						}
@@ -167,17 +166,18 @@ public class CommandList extends BaseCommand
 					}
 				}
 				
-				if (finishedCurrentIds)
+				if (finishedCurrentIds) {
 					currentStartingCharList++;
+				}
 			}
 			
 			currentPage++;
 		}
 		
-		if (pageMessages.isEmpty())
+		if (pageMessages.isEmpty()) {
 			return null;
-		else
-		{
+		} 
+		else {
 			ArrayList<String> retVal = new ArrayList<String>();
 			retVal.add(ChatColor.LIGHT_PURPLE + "This is page " + ChatColor.WHITE + page + ChatColor.LIGHT_PURPLE + "/" + ChatColor.WHITE + --currentPage + ChatColor.LIGHT_PURPLE + ". There are " + gates.size() + " gates on this server: ");
 			retVal.addAll(pageMessages);
@@ -191,34 +191,27 @@ public class CommandList extends BaseCommand
 	{
 		Collection<Gate> gates = Gate.getAll();
 		
-		if (gates.size() == 0)
+		if (gates.size() == 0) {
 			sendMessage("There are no gates yet.");
-		else
-		{
+		}
+		else {
 			int page = 1;
 			
-			try
-			{
+			try {
 				page = new Integer(parameters.get(0));
 			} 
-			catch (Exception e)
-			{
+			catch (Exception e) {
 			}
 			
 			List<String> messages = message(page);
 			
-			if (messages == null)
+			if (messages == null) {
 				sendMessage("The requested page is not availible");
-			else
+			}
+			else {
 				sendMessage(messages);
+			}
 		}
-	}
-	
-	
-	@Override
-	public boolean hasPermission(CommandSender sender) 
-	{
-		return sender.hasPermission(permissionInfo) || sender.hasPermission(permissionManage);
 	}
 }
 
