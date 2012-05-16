@@ -7,6 +7,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -21,59 +22,40 @@ public class PluginPlayerListener implements Listener
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerMove(PlayerMoveEvent event) 
 	{
-		if (event.isCancelled())
-			return;
-		
-		// check for permission
-		if (!event.getPlayer().hasPermission("ancientgates.use")) {
+		if (event.isCancelled()) {
 			return;
 		}
 		
+		// Check for permission
+		if (!hasPermission(event.getPlayer())) {
+			return;
+		}
 		
 		// Find the nearest gate!
-		Gate nearestGate = null;
+		Gate gateAtLocation = getGateAtPlayerLocation(event);
 		
+		
+		if (gateAtLocation == null) {
+			return;
+		}
+		
+		// Teleport the player
+		checkChunkLoad(gateAtLocation.getLocation().getBlock());
+		
+		Location gateExit = gateAtLocation.getExit();
 		Location playerLocation = event.getPlayer().getLocation();
-		World playerWorld = playerLocation.getWorld();
 		
-		Block blockTo = event.getTo().getBlock();
-		Block blockToUp = blockTo.getRelative(BlockFace.UP);
-		
-		
-		for (Gate gate : Gate.getAll()) 
-		{
-			// Check if the gate is open and useable
-			World gateWorld = gate.getLocation().getWorld();
-			
-			if (gate.isOpen() == false || !gateWorld.equals(playerWorld)) {
-				continue;
-			}
-			
-            
-			// Check if the location matches
-			for (Location l: gate.getGateBlockLocations()) 
-            {
-				if (locationsAreAtSamePositions(l, blockTo.getLocation()) || locationsAreAtSamePositions(l, blockToUp.getLocation())) 
-                {
-                    nearestGate = gate;
-                    break;
-                }
-            }
-		}
-		
-		if (nearestGate != null) 
-		{
-			checkChunkLoad(nearestGate.getLocation().getBlock());
-            Float newYaw = nearestGate.getExit().getYaw() - nearestGate.getExit().getYaw() + playerLocation.getYaw();
-            Location teleportToLocation = new Location( nearestGate.getExit().getWorld(),
-                                						nearestGate.getExit().getX(),
-						                                nearestGate.getExit().getY(),
-						                                nearestGate.getExit().getZ(),
-						                                newYaw, playerLocation.getPitch() );
-                        
-			event.getPlayer().teleport(teleportToLocation);
-			event.setTo(teleportToLocation);
-		}
+        Float newYaw = gateExit.getYaw() - gateExit.getYaw() + playerLocation.getYaw();
+        
+        Location teleportToLocation = new Location( gateExit.getWorld(),
+        											gateExit.getX(),
+        											gateExit.getY(),
+        											gateExit.getZ(),
+					                                newYaw, 
+					                                playerLocation.getPitch() );
+                    
+		event.getPlayer().teleport(teleportToLocation);
+		event.setTo(teleportToLocation);
 	}
 	
 	
@@ -91,9 +73,9 @@ public class PluginPlayerListener implements Listener
 	
 	
 	/**
-     * Does the same as the equal method of Location but ignores fitch and yaw.
+     * Does the same as the equal method of Location but ignores pitch and yaw.
      */
-	private static boolean locationsAreAtSamePositions(final Location l1, final Location l2)
+	protected boolean locationsAreAtSamePositions(final Location l1, final Location l2)
     {
 		if (l1.getWorld() != l2.getWorld() && (l1.getWorld() == null || !l1.getWorld().equals(l2.getWorld()))) {
 			return false;
@@ -110,4 +92,56 @@ public class PluginPlayerListener implements Listener
 		
 		return true;
     }
+	
+	
+	protected boolean hasPermission(Player player) {
+		if (player.hasPermission(Plugin.permissionUse)) {
+			return true;
+		}
+		
+		if (player.hasPermission(Plugin.permissionAll)) {
+			return true;
+		}
+	
+		return false;
+	}
+	
+	
+	protected Gate getGateAtPlayerLocation(PlayerMoveEvent e) {
+		Gate gate = null;
+		
+		Location playerLocation = e.getPlayer().getLocation();
+		World playerWorld = playerLocation.getWorld();
+		
+		Block blockTo = e.getTo().getBlock();
+		Block blockToUp = blockTo.getRelative(BlockFace.UP);
+		
+		
+		for (Gate g : Gate.getAll()) {
+			// Check if the gate is open and useable
+			World gateWorld = g.getLocation().getWorld();
+			
+			if (g.isOpen() == false || !gateWorld.equals(playerWorld)) {
+				continue;
+			}
+			
+            
+			// Check if the location matches
+			for (Location l: g.getGateBlockLocations()) {
+				
+				if (locationsAreAtSamePositions(l, blockTo.getLocation()) || locationsAreAtSamePositions(l, blockToUp.getLocation())) {
+					// Check if the gate is still valid
+					g.validate();
+					
+					if (g.isOpen()) {
+						gate = g;
+	                    break;
+					}
+                }
+            }
+		}
+		
+		return gate;
+	}
+	
 }
