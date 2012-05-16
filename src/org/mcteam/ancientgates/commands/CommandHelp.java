@@ -23,7 +23,7 @@ public class CommandHelp extends BaseCommand
 	@Override
 	public boolean hasPermission(CommandSender sender) 
 	{
-		return sender.hasPermission(permissionInfo) || sender.hasPermission(permissionManage);
+		return true;
 	}
 	
 	
