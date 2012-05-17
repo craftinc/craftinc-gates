@@ -31,8 +31,9 @@ public class Gate extends BaseGate implements ConfigurationSerializable
 	 * CONSTRUCTORS
 	 */
 	
-	public Gate()
+	public Gate(String id) throws Exception
 	{
+		setId(id);
 	}
 	
 	
@@ -46,17 +47,14 @@ public class Gate extends BaseGate implements ConfigurationSerializable
 	}
 
 
-	/**
-	 * @return true if the id has been changed; false otherwise
-	 */
-	public boolean setId(String id)
+
+	public void setId(String id) throws Exception
 	{
-		if (!exists(id)) {
-			this.id = id;
-			return true;
+		if (exists(id)) {
+			throw new Exception("A gate with '" + id + "' already exists");
 		}
-		
-		return false;
+
+		this.id = id;
 	}
 
 
@@ -93,7 +91,11 @@ public class Gate extends BaseGate implements ConfigurationSerializable
 	
 	public Map<String, Object> serialize() 
 	{
-		validate(); // make sure to not write invalid stuff to disk
+		try {
+			validate(); // make sure to not write invalid stuff to disk
+		} 
+		catch (Exception e) {
+		}
 		
 		Map<String, Object> retVal = new HashMap<String, Object>();
 		
@@ -131,20 +133,18 @@ public class Gate extends BaseGate implements ConfigurationSerializable
 	}
 	
 	
-	public static Gate create(String id) 
+	public static Gate create(String id) throws Exception
 	{
-		Gate gate = new Gate();
-		gate.id = id;
-		instances.put(gate.id, gate);
-		Plugin.log("created new gate " + gate.id);
+		Gate gate = new Gate(id);
 		
+		instances.put(gate.id, gate);
 		return gate;
 	}
 	
 	
-	public static void rename(Gate gate, String newId) throws Exception
+	public static void rename(String oldId, String newId) throws Exception
 	{
-		String oldId = gate.id;
+		Gate gate = get(oldId);
 		
 		gate.setId(newId);
 		
@@ -155,6 +155,12 @@ public class Gate extends BaseGate implements ConfigurationSerializable
 	
 	public static void delete(String id) 
 	{
+		Gate g = get(id);
+		
+		if (g != null) {
+			g.emptyGate();
+		}
+		
 		instances.remove(id);
 	}
 	
