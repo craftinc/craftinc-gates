@@ -16,7 +16,6 @@ commands:
 permissions:
   ancientgates.*:
     description: Gives access to all ancient gates commands and lets you use open gates.
-    default: op
     children:
       ancientgates.info: true
       ancientgates.use: true
@@ -25,7 +24,6 @@ permissions:
     description: Gives access to info and list commands.
   ancientgates.use:
     description: Allows you to use open gates.
-    default: true
   acientgates.manage:
     description: Gives access to commands manipulating gates.
 
