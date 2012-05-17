@@ -137,8 +137,6 @@ public class PluginPlayerListener implements Listener
 	                    break;
 					} 
 					catch (Exception e2) {
-						System.out.println("gate is not valid");
-						
 						// do nothing - gate is closed
 					}
                 }
