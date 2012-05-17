@@ -6,7 +6,6 @@ import org.mcteam.ancientgates.Plugin;
 
 public class CommandDelete extends BaseCommand 
 {
-	
 	public CommandDelete() 
 	{
 		aliases.add("delete");
@@ -17,7 +16,7 @@ public class CommandDelete extends BaseCommand
 		requiredParameters.add("id");		
 		
 		senderMustBePlayer = false;
-		helpDescription = "Delete a gate";
+		helpDescription = "Removes the gate from the game.";
 		
 		requiredPermission = Plugin.permissionManage;
 	}
@@ -25,10 +24,8 @@ public class CommandDelete extends BaseCommand
 	
 	public void perform() 
 	{
-		gate.setOpen(false);
 		Gate.delete(gate.getId());
-		
-		sendMessage("Gate with id \"" + gate.getId() + "\" was deleted.");
+		sendMessage("Gate with id '" + gate.getId() + "' was deleted.");
 	}
 }
 

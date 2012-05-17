@@ -1,50 +1,34 @@
 package org.mcteam.ancientgates.commands;
 
-import org.bukkit.Material;
-import org.bukkit.command.CommandSender;
+import org.mcteam.ancientgates.Plugin;
 
-public class CommandOpen extends BaseCommand {
+
+public class CommandOpen extends BaseCommand 
+{
 	
-	public CommandOpen() {
+	public CommandOpen()
+	{
 		aliases.add("open");
 		
 		requiredParameters.add("id");		
 		
-		helpDescription = "Open that gate";
-	}
-	
-	public void perform() {
-		if (gate.getLocation() == null) {
-			sendMessage("You must set the from location first. To fix that:");
-			sendMessage(new CommandSetFrom().getUsageTemplate(true, true));
-			return;
-		}
+		helpDescription = "Open a gate so players can use it.";
 		
-		if (gate.getExit() == null) {
-			sendMessage("Sure, but note that this gate does not point anywhere :P");
-			sendMessage("To fix that: " + new CommandSetTo().getUsageTemplate(true, true));
-		}
-		
-		if (gate.getLocation().getBlock().getType() != Material.AIR) {
-			sendMessage("The gate could not open. The from location is not air.");
-			return;
-		}
-		
-		gate.setOpen(true);
-		
-		if (gate.isOpen()) {
-			sendMessage("The gate was opened.");
-		} else {
-			sendMessage("Failed to open the gate. Have you built a frame?");
-			sendMessage("More info here: " + new CommandHelp().getUsageTemplate(true, true));
-		}
+		requiredPermission = Plugin.permissionManage;
 	}
 	
 	
-	@Override
-	public boolean hasPermission(CommandSender sender) 
+	public void perform() 
 	{
-		return sender.hasPermission(permissionManage);
+		try {
+			gate.setOpen(true);
+		} catch (Exception e) {
+			sendMessage(e.getMessage());
+			return;
+		}
+		
+		sendMessage("The gate was opened.");
 	}
+
 }
 

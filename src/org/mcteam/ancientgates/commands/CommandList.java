@@ -23,7 +23,7 @@ public class CommandList extends BaseCommand
 		optionalParameters.add("page");
 		hasGateParam = false;
 		
-		helpDescription = "Display a list of the gates";
+		helpDescription = "Prints a list of all availible gates.";
 		
 		requiredPermission = Plugin.permissionInfo;
 	}

@@ -1,7 +1,7 @@
 package org.mcteam.ancientgates.commands;
 
 import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
+import org.mcteam.ancientgates.Plugin;
 
 
 public class CommandInfo extends BaseCommand 
@@ -13,7 +13,7 @@ public class CommandInfo extends BaseCommand
 		
 		requiredParameters.add("id");		
 		
-		helpDescription = "Prints information about a gate";
+		helpDescription = "Prints detailed informations about a certain gate.";
 		
 		requiredPermission = Plugin.permissionInfo;
 	}

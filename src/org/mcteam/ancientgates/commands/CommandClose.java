@@ -8,8 +8,11 @@ public class CommandClose extends BaseCommand
 	public CommandClose()
 	{
 		aliases.add("close");
-		requiredParameters.add("id");		
-		helpDescription = "Close that gate";
+		
+		requiredParameters.add("id");	
+		
+		helpDescription = "Closes a gate to prevent players from using it.";
+		
 		requiredPermission = Plugin.permissionManage;
 	}
 	
@@ -17,7 +20,12 @@ public class CommandClose extends BaseCommand
 	@Override
 	public void perform() 
 	{
-		gate.setOpen(false);
+		try {
+			gate.setOpen(false);
+		}
+		catch(Exception e) {
+		}
+		
 		sendMessage("The gate was closed.");
 	}
 }

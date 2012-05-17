@@ -17,7 +17,7 @@ public class CommandHelp extends BaseCommand
 		optionalParameters.add("page");
 		hasGateParam = false;
 		
-		helpDescription = "Display a help page";
+		helpDescription = "Prints a list of all availible commands.";
 	}
 	
 	@Override
@@ -72,8 +72,8 @@ public class CommandHelp extends BaseCommand
 		pageLines.add( new CommandHelp().getUsageTemplate(true, true) );
 		pageLines.add( new CommandCreate().getUsageTemplate(true, true) );
 		pageLines.add( new CommandDelete().getUsageTemplate(true, true) );
-		pageLines.add( new CommandSetFrom().getUsageTemplate(true, true) );
-		pageLines.add( new CommandSetTo().getUsageTemplate(true, true) );
+		pageLines.add( new CommandSetLocation().getUsageTemplate(true, true) );
+		pageLines.add( new CommandSetExit().getUsageTemplate(true, true) );
 		pageLines.add( new CommandOpen().getUsageTemplate(true, true) );
 		
 		helpPages.add(pageLines);
@@ -83,8 +83,8 @@ public class CommandHelp extends BaseCommand
 		pageLines.add( new CommandClose().getUsageTemplate(true, true) );
 		pageLines.add( new CommandList().getUsageTemplate(true, true) );
 		pageLines.add( new CommandInfo().getUsageTemplate(true, true) );
-		pageLines.add( new CommandHide().getUsageTemplate(true, true) );
-		pageLines.add( new CommandUnhide().getUsageTemplate(true, true) );
+		pageLines.add( new CommandSetHidden().getUsageTemplate(true, true) );
+		pageLines.add( new CommandSetVisible().getUsageTemplate(true, true) );
 		
 		helpPages.add(pageLines);
 	}

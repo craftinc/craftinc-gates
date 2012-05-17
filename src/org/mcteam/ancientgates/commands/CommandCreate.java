@@ -14,10 +14,10 @@ public class CommandCreate extends BaseLocationCommand
 		
 		requiredParameters.add("id");		
 		
-		senderMustBePlayer = false;
+		senderMustBePlayer = true;
 		hasGateParam = false;
 		
-		helpDescription = "Create a gate";
+		helpDescription = "Create a gate at the current location of the player.";
 		
 		requiredPermission = Plugin.permissionManage;
 	}
@@ -26,24 +26,30 @@ public class CommandCreate extends BaseLocationCommand
 	public void perform() 
 	{
 		String id = parameters.get(0);
-		if (Gate.exists(id)) 
-		{
-			sendMessage("There gate \"" + id + "\" already exists.");
-			return;
-		}
 		
-		gate = Gate.create(id);
+		try {
+			gate = Gate.create(id);
+		} 
+		catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 		
 		Location playerLocation = getValidPlayerLocation();
 		
 		if (playerLocation != null) {
-			gate.setLocation(playerLocation);
+			try {
+				gate.setLocation(playerLocation);
+			} 
+			catch (Exception e) {
+			}
 			
-			sendMessage("Gate with id \"" + id + "\" was created.\n The gates location has been set to your current location.");
+			sendMessage("Gate with id \"" + id + "\" was created.");
+			sendMessage("The gates location has been set to your current location.");
 		}
 		else {
-			sendMessage("Gate with id \"" + id + "\" was created.\n Now you should build a frame and:");
-			sendMessage(new CommandSetFrom().getUsageTemplate(true, true));
+			sendMessage("Gate with id \"" + id + "\" was created.");
+			sendMessage("Now you should build a frame and:");
+			sendMessage(new CommandSetLocation().getUsageTemplate(true, true));
 		}
 	}
 
