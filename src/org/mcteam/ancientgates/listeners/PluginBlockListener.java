@@ -30,17 +30,21 @@ public class PluginBlockListener implements Listener
 	
 	public boolean isBlockInPortal(Block block) 
 	{
-		if (block.getRelative(BlockFace.UP).getType() == Material.AIR)
+		if (block.getRelative(BlockFace.UP).getType() == Material.AIR) {
 			return false;
+		}
 		
-		if (block.getRelative(BlockFace.DOWN).getType() == Material.AIR)
+		if (block.getRelative(BlockFace.DOWN).getType() == Material.AIR) {
 			return false;
+		}
 		
-		if ( block.getRelative(BlockFace.NORTH).getType() != Material.AIR && block.getRelative(BlockFace.SOUTH).getType() != Material.AIR )
+		if ( block.getRelative(BlockFace.NORTH).getType() != Material.AIR && block.getRelative(BlockFace.SOUTH).getType() != Material.AIR ) {
 			return true;
+		}
 		
-		if ( block.getRelative(BlockFace.WEST).getType() != Material.AIR && block.getRelative(BlockFace.EAST).getType() != Material.AIR )
+		if ( block.getRelative(BlockFace.WEST).getType() != Material.AIR && block.getRelative(BlockFace.EAST).getType() != Material.AIR ) {
 			return true;
+		}
 		
 		return false;
 	}
