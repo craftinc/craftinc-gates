@@ -131,11 +131,15 @@ public class PluginPlayerListener implements Listener
 				
 				if (locationsAreAtSamePositions(l, blockTo.getLocation()) || locationsAreAtSamePositions(l, blockToUp.getLocation())) {
 					// Check if the gate is still valid
-					g.validate();
-					
-					if (g.isOpen()) {
+					try {
+						g.validate();
 						gate = g;
 	                    break;
+					} 
+					catch (Exception e2) {
+						System.out.println("gate is not valid");
+						
+						// do nothing - gate is closed
 					}
                 }
             }
