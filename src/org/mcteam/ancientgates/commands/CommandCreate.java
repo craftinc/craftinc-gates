@@ -17,7 +17,7 @@ public class CommandCreate extends BaseLocationCommand
 		senderMustBePlayer = true;
 		hasGateParam = false;
 		
-		helpDescription = "Create a gate at the current location of the player.";
+		helpDescription = "Create a gate at your current location.";
 		
 		requiredPermission = Plugin.permissionManage;
 	}
