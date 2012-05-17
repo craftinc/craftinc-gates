@@ -9,7 +9,6 @@ import org.bukkit.block.Block;
 import org.mcteam.ancientgates.util.FloodUtil;
 
 
-
 public abstract class BaseGate
 {
 	/*
@@ -34,12 +33,12 @@ public abstract class BaseGate
 	}
 	
 	
-	public void setLocation(Location location) 
+	public void setLocation(Location location)  throws Exception
 	{
 		this.location = location;
 		
 		if (isOpen) {
-			findPortalBlocks();
+			fillGate();
 			validate();
 		}
 	}
@@ -51,7 +50,7 @@ public abstract class BaseGate
 	}
 	
 	
-	public void setExit(Location exit) 
+	public void setExit(Location exit)  throws Exception
 	{
 		this.exit = exit;
 		validate();
@@ -64,7 +63,7 @@ public abstract class BaseGate
 	}
 	
 	
-	public void setHidden(boolean isHidden)
+	public void setHidden(boolean isHidden) throws Exception
 	{
 		this.isHidden = isHidden;
 		
@@ -85,7 +84,7 @@ public abstract class BaseGate
 	}
 	
 	
-	public void setOpen(boolean isOpen) 
+	public void setOpen(boolean isOpen) throws Exception
 	{
 		if (isOpen == true && this.isOpen == false) {
 			findPortalBlocks();
@@ -116,6 +115,9 @@ public abstract class BaseGate
 	
 	protected void fillGate()
 	{	
+		emptyGate();
+		findPortalBlocks();
+		
 		// This is not to do an effect
 		// It is to stop portal blocks from destroying themself as they cant rely on non created blocks :P
 		for (Location l : gateBlockLocations) {
@@ -140,14 +142,10 @@ public abstract class BaseGate
 	
 	protected void findPortalBlocks() 
 	{
+		gateBlockLocations = new HashSet<Location>();
 		Set<Block> gateBlocks = FloodUtil.getGateFrameBlocks(location.getBlock());
 		
-		if (gateBlocks == null) {
-			gateBlockLocations = null;
-		}
-		else {
-			gateBlockLocations = new HashSet<Location>();
-			
+		if (gateBlocks != null) {
 			for (Block b : gateBlocks) {
 				gateBlockLocations.add(b.getLocation());
 			}
@@ -162,24 +160,33 @@ public abstract class BaseGate
 	/**
 	 * Checks if valus attributes do add up; will close gate on wrong values.
 	 */
-	public void validate() 
+	public void validate() throws Exception
 	{
 		if (!isOpen) {
 			return;
 		}
 		
-		if (location == null || exit == null) {
-			isOpen = false;
-			emptyGate();
-			return;
+		if (location == null) {
+			setOpen(false);
+			throw new Exception("Gate got closed. It has no location.");
 		}
 		
-		if (isHidden == false) {
+		if (exit == null) {
+			setOpen(false);
+			throw new Exception("Gate got closed. It has no exit.");
+		}
+		
+		if (gateBlockLocations.size() == 0) {
+			setOpen(false);
+			throw new Exception("Gate got closed. The frame is missing or broken.");
+		}
+		
+		
+		if (isHidden == false) {			
 			for (Location l : gateBlockLocations) {
-				if (l.getBlock().getType() != Material.PORTAL) {
-					isOpen = false;
-					emptyGate();
-					return;
+				if (l.getBlock().getType() == Material.AIR) {
+					setOpen(false);
+					throw new Exception("Gate got closed. The frame is missing or broken.");
 				}
 			}
 		}	
