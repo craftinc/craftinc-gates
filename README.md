@@ -31,7 +31,7 @@ Nope. This plugin is very minimalistic and plain. Server operators manage the po
 Installing
 ----------
 1. Download the latest release: __[https://github.com/tomco/minecraft-ancient-gates/downloads](https://github.com/tomco/minecraft-ancient-gates/downloads)__
-1. Put AncientGates.jar in the plugins folder.
+2. Put AncientGates.jar in the plugins folder.
 
 License
 ----------
