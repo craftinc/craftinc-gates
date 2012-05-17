@@ -6,7 +6,6 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -17,7 +16,7 @@ import org.mcteam.ancientgates.Gate;
 import org.mcteam.ancientgates.Plugin;
 
 
-public class PluginPlayerListener implements Listener 
+public class PluginPlayerListener extends BaseLocationListener implements Listener 
 {
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerMove(PlayerMoveEvent event) 
@@ -31,8 +30,8 @@ public class PluginPlayerListener implements Listener
 			return;
 		}
 		
-		// Find the nearest gate!
-		Gate gateAtLocation = getGateAtPlayerLocation(event);
+		// Find the gate at the current location.
+		Gate gateAtLocation = getValidGateAtPlayerLocation(event);
 		
 		
 		if (gateAtLocation == null) {
@@ -72,28 +71,6 @@ public class PluginPlayerListener implements Listener
 	}
 	
 	
-	/**
-     * Does the same as the equal method of Location but ignores pitch and yaw.
-     */
-	protected boolean locationsAreAtSamePositions(final Location l1, final Location l2)
-    {
-		if (l1.getWorld() != l2.getWorld() && (l1.getWorld() == null || !l1.getWorld().equals(l2.getWorld()))) {
-			return false;
-        }
-		if (Double.doubleToLongBits(l1.getX()) != Double.doubleToLongBits(l2.getX())) {
-			return false;
-		}
-		if (Double.doubleToLongBits(l1.getY()) != Double.doubleToLongBits(l2.getY())) {
-			return false;
-		}
-		if (Double.doubleToLongBits(l1.getZ()) != Double.doubleToLongBits(l2.getZ())) {
-			return false;
-		}
-		
-		return true;
-    }
-	
-	
 	protected boolean hasPermission(Player player) {
 		if (player.hasPermission(Plugin.permissionUse)) {
 			return true;
@@ -105,45 +82,4 @@ public class PluginPlayerListener implements Listener
 	
 		return false;
 	}
-	
-	
-	protected Gate getGateAtPlayerLocation(PlayerMoveEvent e) {
-		Gate gate = null;
-		
-		Location playerLocation = e.getPlayer().getLocation();
-		World playerWorld = playerLocation.getWorld();
-		
-		Block blockTo = e.getTo().getBlock();
-		Block blockToUp = blockTo.getRelative(BlockFace.UP);
-		
-		
-		for (Gate g : Gate.getAll()) {
-			// Check if the gate is open and useable
-			World gateWorld = g.getLocation().getWorld();
-			
-			if (g.isOpen() == false || !gateWorld.equals(playerWorld)) {
-				continue;
-			}
-			
-            
-			// Check if the location matches
-			for (Location l: g.getGateBlockLocations()) {
-				
-				if (locationsAreAtSamePositions(l, blockTo.getLocation()) || locationsAreAtSamePositions(l, blockToUp.getLocation())) {
-					// Check if the gate is still valid
-					try {
-						g.validate();
-						gate = g;
-	                    break;
-					} 
-					catch (Exception e2) {
-						// do nothing - gate is closed
-					}
-                }
-            }
-		}
-		
-		return gate;
-	}
-	
 }

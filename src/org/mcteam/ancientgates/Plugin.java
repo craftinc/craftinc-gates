@@ -20,6 +20,7 @@ import org.mcteam.ancientgates.commands.*;
 
 import org.mcteam.ancientgates.listeners.PluginBlockListener;
 import org.mcteam.ancientgates.listeners.PluginPlayerListener;
+import org.mcteam.ancientgates.listeners.PluginPortalListener;
 
 
 public class Plugin extends JavaPlugin 
@@ -33,6 +34,7 @@ public class Plugin extends JavaPlugin
 	
 	public PluginPlayerListener playerListener = new PluginPlayerListener();
 	public PluginBlockListener blockListener = new PluginBlockListener();
+	public PluginPortalListener portalListener = new PluginPortalListener();
 	
 	private String baseCommand;
 	
@@ -88,6 +90,7 @@ public class Plugin extends JavaPlugin
 		PluginManager pm = this.getServer().getPluginManager();
 		pm.registerEvents(this.playerListener, this);
 		pm.registerEvents(this.blockListener, this);
+		pm.registerEvents(this.portalListener, this);
 		
 		// Load gates
 		loadGates();
