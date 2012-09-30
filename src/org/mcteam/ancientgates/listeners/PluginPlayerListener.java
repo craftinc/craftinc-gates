@@ -72,14 +72,6 @@ public class PluginPlayerListener extends BaseLocationListener implements Listen
 	
 	
 	protected boolean hasPermission(Player player) {
-		if (player.hasPermission(Plugin.permissionUse)) {
-			return true;
-		}
-		
-		if (player.hasPermission(Plugin.permissionAll)) {
-			return true;
-		}
-	
-		return false;
-	}
+        return player.hasPermission(Plugin.permissionUse) || player.hasPermission(Plugin.permissionAll);
+    }
 }

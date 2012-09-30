@@ -3,7 +3,7 @@ version: 1.1.1
 description: A plugin to create gates for fast traveling.
 author: tomco
 authors: [oloflarsson, locutus, DrAgonmoray, s1m0ne, tomco]
-website: http://www.craftinc.de/blog/?p=255
+website: http://www.craftinc.de/ancient-gates/
 
 main: org.mcteam.ancientgates.Plugin
 database: false
@@ -26,5 +26,3 @@ permissions:
     description: Allows you to use open gates.
   acientgates.manage:
     description: Gives access to commands manipulating gates.
-
-

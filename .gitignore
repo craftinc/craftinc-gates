@@ -6,6 +6,13 @@
 # netbeans
 /nbproject
 
+# intelliJ
+.idea/
+*.iml
+
+# maven
+target/
+
 # vim
 .*.sw[a-p]
 

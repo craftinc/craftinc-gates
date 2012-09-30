@@ -24,7 +24,10 @@ public class LocationSerializer
 	protected static World getWorld(String name) 
 	{
 		World world = Plugin.instance.getServer().getWorld(name);
-		
+
+        // TODO: Creating a world silently in the background is not a good thing I think. No one expects a Gate
+        // Plugin to do that. It would be better to handle gates which point to non-existing worlds safely (not
+        // teleporting at all)
 		if (world == null) {
 			world = Plugin.instance.getServer().createWorld(new WorldCreator(name).environment(Environment.NORMAL));
 		}
