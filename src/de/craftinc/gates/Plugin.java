@@ -1,4 +1,4 @@
-package org.mcteam.ancientgates;
+package de.craftinc.gates;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,11 +16,12 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.mcteam.ancientgates.commands.*;
 
-import org.mcteam.ancientgates.listeners.PluginBlockListener;
-import org.mcteam.ancientgates.listeners.PluginPlayerListener;
-import org.mcteam.ancientgates.listeners.PluginPortalListener;
+
+import de.craftinc.gates.commands.*;
+import de.craftinc.gates.listeners.PluginBlockListener;
+import de.craftinc.gates.listeners.PluginPlayerListener;
+import de.craftinc.gates.listeners.PluginPortalListener;
 
 
 public class Plugin extends JavaPlugin 

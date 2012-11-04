@@ -1,4 +1,4 @@
-package org.mcteam.ancientgates.util;
+package de.craftinc.gates.util;
 
 import org.bukkit.Location;
 

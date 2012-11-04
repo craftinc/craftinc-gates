@@ -1,9 +1,10 @@
-package org.mcteam.ancientgates.commands;
+package de.craftinc.gates.commands;
 
 import java.util.ArrayList;
 
 import org.bukkit.command.CommandSender;
-import org.mcteam.ancientgates.util.TextUtil;
+
+import de.craftinc.gates.util.TextUtil;
 
 public class CommandHelp extends BaseCommand 
 {

@@ -1,4 +1,4 @@
-package org.mcteam.ancientgates;
+package de.craftinc.gates;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -6,7 +6,8 @@ import java.util.Set;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.mcteam.ancientgates.util.FloodUtil;
+
+import de.craftinc.gates.util.FloodUtil;
 
 
 public abstract class BaseGate

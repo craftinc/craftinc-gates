@@ -1,4 +1,4 @@
-package org.mcteam.ancientgates.util;
+package de.craftinc.gates.util;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -7,7 +7,8 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.World.Environment;
 import org.bukkit.WorldCreator;
-import org.mcteam.ancientgates.Plugin;
+
+import de.craftinc.gates.Plugin;
 
 
 /**

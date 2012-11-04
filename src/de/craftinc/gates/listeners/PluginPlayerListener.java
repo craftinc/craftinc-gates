@@ -1,4 +1,4 @@
-package org.mcteam.ancientgates.listeners;
+package de.craftinc.gates.listeners;
 
 import java.util.logging.Level;
 
@@ -12,8 +12,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 
-import org.mcteam.ancientgates.Gate;
-import org.mcteam.ancientgates.Plugin;
+import de.craftinc.gates.Gate;
+import de.craftinc.gates.Plugin;
 
 
 public class PluginPlayerListener extends BaseLocationListener implements Listener 

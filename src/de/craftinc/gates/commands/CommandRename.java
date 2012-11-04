@@ -1,7 +1,7 @@
-package org.mcteam.ancientgates.commands;
+package de.craftinc.gates.commands;
 
-import org.mcteam.ancientgates.Gate;
-import org.mcteam.ancientgates.Plugin;
+import de.craftinc.gates.Gate;
+import de.craftinc.gates.Plugin;
 
 
 public class CommandRename extends BaseCommand 

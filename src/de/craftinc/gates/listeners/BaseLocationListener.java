@@ -1,11 +1,13 @@
-package org.mcteam.ancientgates.listeners;
+package de.craftinc.gates.listeners;
 
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.mcteam.ancientgates.Gate;
+
+import de.craftinc.gates.Gate;
+
 
 public abstract class BaseLocationListener 
 {

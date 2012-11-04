@@ -1,4 +1,4 @@
-package org.mcteam.ancientgates.commands;
+package de.craftinc.gates.commands;
 
 import org.bukkit.Location;
 import org.bukkit.Material;

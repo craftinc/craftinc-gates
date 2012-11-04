@@ -1,4 +1,4 @@
-package org.mcteam.ancientgates.listeners;
+package de.craftinc.gates.listeners;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;

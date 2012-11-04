@@ -1,4 +1,4 @@
-package org.mcteam.ancientgates.commands;
+package de.craftinc.gates.commands;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,9 +6,9 @@ import java.util.List;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import org.mcteam.ancientgates.Gate;
-import org.mcteam.ancientgates.Plugin;
-import org.mcteam.ancientgates.util.TextUtil;
+import de.craftinc.gates.Gate;
+import de.craftinc.gates.Plugin;
+import de.craftinc.gates.util.TextUtil;
 
 public abstract class BaseCommand 
 {

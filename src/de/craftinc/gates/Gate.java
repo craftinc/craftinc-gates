@@ -1,4 +1,4 @@
-package org.mcteam.ancientgates;
+package de.craftinc.gates;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -9,7 +9,8 @@ import java.util.Map;
 
 import org.bukkit.Location;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.mcteam.ancientgates.util.LocationSerializer;
+
+import de.craftinc.gates.util.LocationSerializer;
 
 
 

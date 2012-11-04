@@ -1,10 +1,11 @@
-package org.mcteam.ancientgates.listeners;
+package de.craftinc.gates.listeners;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerPortalEvent;
-import org.mcteam.ancientgates.Gate;
+
+import de.craftinc.gates.Gate;
 
 public class PluginPortalListener extends BaseLocationListener implements Listener
 {

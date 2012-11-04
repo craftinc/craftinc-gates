@@ -1,4 +1,4 @@
-package org.mcteam.ancientgates.util;
+package de.craftinc.gates.util;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -7,7 +7,9 @@ import java.util.logging.Level;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.mcteam.ancientgates.Plugin;
+
+import de.craftinc.gates.Plugin;
+
 
 public class FloodUtil 
 {

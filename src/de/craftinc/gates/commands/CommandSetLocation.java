@@ -1,8 +1,9 @@
-package org.mcteam.ancientgates.commands;
+package de.craftinc.gates.commands;
 
 
 import org.bukkit.Location;
-import org.mcteam.ancientgates.Plugin;
+
+import de.craftinc.gates.Plugin;
 
 
 public class CommandSetLocation extends BaseLocationCommand 

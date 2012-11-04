@@ -1,7 +1,8 @@
-package org.mcteam.ancientgates.commands;
+package de.craftinc.gates.commands;
 
 import org.bukkit.ChatColor;
-import org.mcteam.ancientgates.Plugin;
+
+import de.craftinc.gates.Plugin;
 
 
 public class CommandInfo extends BaseCommand 
