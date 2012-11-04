@@ -28,10 +28,10 @@ public class Plugin extends JavaPlugin
 {
 	public static Plugin instance;
 	
-	public static final String permissionInfo = "ancientgates.info";
-	public static final String permissionManage = "ancientgates.manage";
-	public static final String permissionAll = "ancientgates.*";
-	public static final String permissionUse = "ancientgates.use";
+	public static final String permissionInfo = "craftincgates.info";
+	public static final String permissionManage = "craftincgates.manage";
+	public static final String permissionAll = "craftincgates.*";
+	public static final String permissionUse = "craftincgates.use";
 	
 	public PluginPlayerListener playerListener = new PluginPlayerListener();
 	public PluginBlockListener blockListener = new PluginBlockListener();

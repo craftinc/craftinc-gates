@@ -1,28 +1,28 @@
-name: AncientGates
+name: Craft Inc. Gates
 version: 1.1.1
 description: A plugin to create gates for fast traveling.
-author: tomco
+author: tomco,  s1m0ne
 authors: [oloflarsson, locutus, DrAgonmoray, s1m0ne, tomco]
 website: http://www.craftinc.de/ancient-gates/
 
-main: org.mcteam.ancientgates.Plugin
+main: de.craftinc.Plugin
 database: false
 
 commands:
   gate:
-    description: All of the AncientGates commands
+    description: All of the Craft Inc. Gates commands
     usage: See documentation or type '/gate help' while playing.
 
 permissions:
-  ancientgates.*:
+  craftincgates.*:
     description: Gives access to all ancient gates commands and lets you use open gates.
     children:
-      ancientgates.info: true
-      ancientgates.use: true
-      ancientgates.manage: true
-  ancientgates.info:
+      craftincgates.info: true
+      craftincgates.use: true
+      craftincgates.manage: true
+  craftincgates.info:
     description: Gives access to info and list commands.
-  ancientgates.use:
+  craftincgates.use:
     description: Allows you to use open gates.
-  acientgates.manage:
+  craftincgates.manage:
     description: Gives access to commands manipulating gates.
