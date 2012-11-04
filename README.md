@@ -31,15 +31,15 @@ Nope. This plugin is very minimalistic and plain. Server operators manage the po
 
  __craftincgates.info__
 
-    Gives access to info and list commands.
+ Gives access to info and list commands.
 
   __craftincgates.use__
 
-    Allows you to travel via gates.
+ Allows you to travel via gates.
 
   __craftincgates.manage__
 
-    Gives access to commands manipulating gates.
+ Gives access to commands manipulating gates.
 
 ## Installing
 
