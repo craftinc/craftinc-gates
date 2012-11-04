@@ -1,6 +1,9 @@
-#AncientGates - Easily create portals with custom design#
+# Craft Inc. Gates - Easily create portals with custom design
 
-With this plugin the server operators (OPs) can create gates that will teleport anyone who enter to a location specific to that gate. The hightlights are: __It is so darn easy to use!__ :D and __The gates can look any way you like__ \o/
+(previously known as __AncientGates__)
+
+With this plugin players can create gates that will teleport anyone who enter the gate to specific a location.
+The hightlights are: __It is so darn easy to use!__ and __The gates can look any way you like__
 
 Try the ingame command: __/gate__
 
@@ -10,15 +13,11 @@ Thought first you should take a look at the demonstration oloflarsson and karibu
 __[http://www.youtube.com/watch?v=L4hyqTpeEaA](http://www.youtube.com/watch?v=L4hyqTpeEaA)__
 
 
-##FAQ##
-
-__Why the name AncientGates?__
-
-Because the purpose of this plugin that I envision is that players should not be able to create gates to other worlds themselves. The server operators build gates with cool ruins around them and in order to get to another world the players need to find one of those ruins.
+## FAQ
 
 __Who can create a gate?__
 
-Only server operators! Not normal players. There is no suport for any permissions plugin.
+See the _Permissions_ section.
 
 __Who can destroy a gate?__
 
@@ -28,11 +27,20 @@ __Are there IConnomy integration, Features for user to dial other gates etc?__
 
 Nope. This plugin is very minimalistic and plain. Server operators manage the portals players use them any time they are open.
 
-Installing
-----------
-1. Download the latest release: __[https://github.com/tomco/minecraft-ancient-gates/downloads](https://github.com/tomco/minecraft-ancient-gates/downloads)__
+## Permissions
+
+ __craftincgates.info__
+    Gives access to info and list commands.
+  __craftincgates.use__
+    Allows you to travel via gates.
+  __craftincgates.manage__
+    Gives access to commands manipulating gates.
+
+## Installing
+
+1. Download the latest release: __[https://github.com/tomco/minecraft-craftinc-gates/downloads](https://github.com/tomco/minecraft-craftinc-gates/downloads)__
 2. Put AncientGates.jar in the plugins folder.
 
-License
-----------
-This project has a LGPL license just like the Bukkit project.<br>
+## License
+
+This project has a LGPL license just like the Bukkit project.
