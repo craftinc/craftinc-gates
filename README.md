@@ -21,7 +21,7 @@ See the _Permissions_ section.
 
 __Who can destroy a gate?__
 
-Anyone if you do not use a third-party protection plugin like Factions.
+Anyone if you do not use a third-party protection plugin like Grief Prevention.
 
 __Are there IConnomy integration, Features for user to dial other gates etc?__
 
