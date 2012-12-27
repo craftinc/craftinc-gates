@@ -5,7 +5,7 @@ author: tomco,  s1m0ne
 authors: [oloflarsson, locutus, DrAgonmoray, s1m0ne, tomco]
 website: http://www.craftinc.de/ancient-gates/
 
-main: de.craftinc.Plugin
+main: de.craftinc.gates.Plugin
 database: false
 
 commands:
