@@ -1,6 +1,7 @@
 package de.craftinc.gates;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,7 +17,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-
 
 import de.craftinc.gates.commands.*;
 import de.craftinc.gates.listeners.PluginBlockListener;
@@ -187,6 +187,62 @@ public class Plugin extends JavaPlugin
 		} 
 		catch (IOException e) {
 			log("ERROR: Could not save gates to disk.");
+			e.printStackTrace();
+		}
+	}
+	
+	
+	public void storeInvalidGate(Map<String, Object> map)
+	{
+		File invalidGatesFile = new File(getDataFolder(), "invalid_gates.yml");
+		Boolean invalidGatesFileExists = invalidGatesFile.exists();
+		
+		try {
+			FileWriter fileWriter = new FileWriter(invalidGatesFile, true);
+			
+			if (!invalidGatesFileExists) {
+				fileWriter.write("gates:\n");
+			}
+			
+			fileWriter.write("- ==: ");
+			fileWriter.write(map.get("==").toString() + "\n");
+			map.remove("==");
+			
+			fileWriter.write("\topen: false\n");
+			map.remove("open");
+			
+			fileWriter.write("\tgateBlocks: []\n");
+			map.remove("gateBlocks");
+			
+			
+			for (String key : map.keySet()) {
+				Object value = map.get(key);
+				
+				fileWriter.write("\t" + key + ": ");
+				
+				if (value instanceof Map) {
+					fileWriter.write("\n");
+					
+					@SuppressWarnings("unchecked")
+					Map<String, Object> valueMap = (Map<String, Object>)value;
+					
+					for (String k : valueMap.keySet()) {
+						Object v = valueMap.get(k);
+					
+						fileWriter.write("\t\t" + k + ": " + v.toString() + "\n");
+					}
+
+				}
+				else {
+					fileWriter.write(value.toString() + "\n");
+				}
+				
+			}
+			
+			fileWriter.close();
+		}
+		catch (IOException e) {
+			log("ERROR: Could not save invalid gates to disk.");
 			e.printStackTrace();
 		}
 	}

@@ -25,8 +25,7 @@ public class Gate extends BaseGate implements ConfigurationSerializable
 	
 	protected String id;
 	
-	protected static Map<String, Gate> instances = new HashMap<String, Gate>();
-	
+	protected static Map<String, Gate> instances = new HashMap<String, Gate>();	
 	
 	/*
 	 * CONSTRUCTORS
@@ -74,16 +73,27 @@ public class Gate extends BaseGate implements ConfigurationSerializable
 	public Gate(Map<String, Object> map) 
 	{
 		id = (String)map.get(idKey);
-		location = LocationSerializer.deserializeLocation((Map<String, Object>) map.get(locationKey));
-		exit = LocationSerializer.deserializeLocation((Map<String, Object>) map.get(exitKey));
 		isHidden = (Boolean)map.get(isHiddenKey);
 		isOpen = (Boolean)map.get(isOpenKey);
 		
-		gateBlockLocations = new HashSet<Location>();
-		List<Map<String, Object>> serializedGateBlocks = (List<Map<String, Object>>)map.get(gateBlocksKey);
-		
-		for (Map<String, Object> sgb : serializedGateBlocks) {
-			gateBlockLocations.add(LocationSerializer.deserializeLocation(sgb));
+		try {
+			location = LocationSerializer.deserializeLocation((Map<String, Object>) map.get(locationKey));
+			exit = LocationSerializer.deserializeLocation((Map<String, Object>) map.get(exitKey));
+			
+			gateBlockLocations = new HashSet<Location>();
+			List<Map<String, Object>> serializedGateBlocks = (List<Map<String, Object>>)map.get(gateBlocksKey);
+			
+			for (Map<String, Object> sgb : serializedGateBlocks) {
+				gateBlockLocations.add(LocationSerializer.deserializeLocation(sgb));
+			}
+		}
+		catch (Exception e) {
+			Plugin.log("ERROR: Failed to load gate '" + id + "'! (" + e.getMessage() + ")");
+			Plugin.log("NOTE:  This gate will be removed from 'gates.yml' and added to 'invalid_gates.yml'!");
+			
+			Plugin.instance.storeInvalidGate(map);
+
+			return;
 		}
 		
 		instances.put(id, this);
