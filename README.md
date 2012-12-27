@@ -1,4 +1,4 @@
-# Craft Inc. Gates - Easily create portals with custom design
+# Craft Inc. Gates – Easily create portals with custom design
 
 (previously known as __AncientGates__)
 
