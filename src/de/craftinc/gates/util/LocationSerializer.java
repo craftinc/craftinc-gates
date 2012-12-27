@@ -5,8 +5,6 @@ import java.util.Map;
 
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.World.Environment;
-import org.bukkit.WorldCreator;
 
 import de.craftinc.gates.Plugin;
 
@@ -20,17 +18,14 @@ public class LocationSerializer
 	protected static String xKey = "x";
 	protected static String yKey = "y";
 	protected static String zKey = "z";
-	
 
-	protected static World getWorld(String name) 
+	
+	protected static World getWorld(String name) throws Exception 
 	{
 		World world = Plugin.instance.getServer().getWorld(name);
 
-        // TODO: Creating a world silently in the background is not a good thing I think. No one expects a Gate
-        // Plugin to do that. It would be better to handle gates which point to non-existing worlds safely (not
-        // teleporting at all)
 		if (world == null) {
-			world = Plugin.instance.getServer().createWorld(new WorldCreator(name).environment(Environment.NORMAL));
+			throw new Exception("World '" + name + "' does not exists anymore! Cannot get instance!");
 		}
 		
 		return world;
@@ -49,8 +44,8 @@ public class LocationSerializer
 		return serializedLocation;
 	}
 	
-	
-	public static Location deserializeLocation(Map<String, Object> map)
+
+	public static Location deserializeLocation(Map<String, Object> map) throws Exception
 	{
 		World w = getWorld((String)map.get(worldKey));
 		double x = (Double) map.get(xKey);
