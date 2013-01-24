@@ -48,9 +48,30 @@ public class LocationSerializer
 	public static Location deserializeLocation(Map<String, Object> map) throws Exception
 	{
 		World w = getWorld((String)map.get(worldKey));
-		double x = (Double) map.get(xKey);
-		double y = (Double) map.get(yKey);
-		double z = (Double) map.get(zKey);
+		
+		
+		// verbose loading of coordinates (they might be Double or Integer)
+		Object objX =  map.get(xKey);
+		Object objY =  map.get(yKey);
+		Object objZ =  map.get(zKey);
+		
+		double x,y,z;
+		
+		if (objX instanceof Integer)
+			x = (double)(Integer)objX;
+		else
+			x = (Double)objX;
+		
+		if (objY instanceof Integer)
+			y = (double)(Integer)objY;
+		else
+			y = (Double)objY;
+		
+		if (objZ instanceof Integer)
+			z = (double)(Integer)objZ;
+		else
+			z = (Double)objZ;
+		
 		
 		return new Location(w, x, y, z);
 	}
