@@ -44,7 +44,7 @@ public class CommandHelp extends BaseCommand
 			}
 		}
 		
-		sendMessage(TextUtil.titleize("AncientGates Help ("+page+"/"+helpPages.size()+")"));
+		sendMessage(TextUtil.titleize("Craft Inc. Gates Help ("+page+"/"+helpPages.size()+")"));
 		
 		page -= 1;
 		if (page < 0 || page >= helpPages.size()) 
