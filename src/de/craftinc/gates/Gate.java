@@ -61,12 +61,16 @@ public class Gate extends BaseGate implements ConfigurationSerializable
 	/*
 	 * INTERFACE: ConfigurationSerializable
 	 */
-	static String idKey = "id";
-	static String locationKey = "location";
-	static String gateBlocksKey = "gateBlocks";
-	static String exitKey = "exit";
-	static String isHiddenKey = "hidden";
-	static String isOpenKey = "open";
+	static protected String idKey = "id";
+	static protected String locationKey = "location";
+	static protected String gateBlocksKey = "gateBlocks";
+	static protected String exitKey = "exit";
+	static protected String isHiddenKey = "hidden";
+	static protected String isOpenKey = "open";
+	static protected String locationYawKey = "locationYaw";
+	static protected String locationPitchKey = "locationPitch";
+	static protected String exitYawKey = "exitYaw";
+	static protected String exitPitchKey = "exitPitch";
 	
 	
 	@SuppressWarnings("unchecked")
@@ -79,6 +83,14 @@ public class Gate extends BaseGate implements ConfigurationSerializable
 			
 			location = LocationSerializer.deserializeLocation((Map<String, Object>) map.get(locationKey));
 			exit = LocationSerializer.deserializeLocation((Map<String, Object>) map.get(exitKey));
+			
+			if (exit != null) {
+				exit.setPitch(((Double)map.get(exitPitchKey)).floatValue());
+				exit.setYaw(((Double)map.get(exitYawKey)).floatValue());
+			}
+			
+			location.setPitch(((Double)map.get(locationPitchKey)).floatValue());
+			location.setYaw(((Double)map.get(locationYawKey)).floatValue());
 			
 			gateBlockLocations = new HashSet<Location>();
 			List<Map<String, Object>> serializedGateBlocks = (List<Map<String, Object>>)map.get(gateBlocksKey);
@@ -115,6 +127,14 @@ public class Gate extends BaseGate implements ConfigurationSerializable
 		retVal.put(exitKey, LocationSerializer.serializeLocation(exit));
 		retVal.put(isHiddenKey, isHidden);
 		retVal.put(isOpenKey, isOpen);
+		
+		if (exit != null) {
+			retVal.put(exitPitchKey, exit.getPitch());
+			retVal.put(exitYawKey, exit.getYaw());
+		}
+		
+		retVal.put(locationPitchKey, location.getPitch());
+		retVal.put(locationYawKey, location.getYaw());
 		
 		List<Map<String, Object>> serializedGateBlocks = new ArrayList<Map<String, Object>>();
 		
