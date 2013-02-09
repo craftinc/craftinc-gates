@@ -23,6 +23,7 @@ permissions:
   craftincgates.info:
     description: Gives access to info and list commands.
   craftincgates.use:
+    default: true
     description: Allows you to use open gates.
   craftincgates.manage:
     description: Gives access to commands manipulating gates.
