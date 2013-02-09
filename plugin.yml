@@ -3,7 +3,7 @@ version: 1.1.1
 description: A plugin to create gates for fast traveling.
 author: tomco,  s1m0ne
 authors: [oloflarsson, locutus, DrAgonmoray, s1m0ne, tomco]
-website: http://www.craftinc.de/ancient-gates/
+website: http://www.craftinc.de/craftinc-gates/
 
 main: de.craftinc.gates.Plugin
 database: false
