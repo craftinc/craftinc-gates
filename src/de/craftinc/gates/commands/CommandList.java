@@ -3,7 +3,6 @@ package de.craftinc.gates.commands;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 
 import org.bukkit.ChatColor;
@@ -92,20 +91,6 @@ public class CommandList extends BaseCommand
 		 * great. (tell me if there is a better way!)
 		 */
 		
-		// list<string>: a list from ids
-		// Integer: the number of lines neccessary for displaying the corresponding list
-		HashMap<List<String>, Integer> lines = new HashMap<List<String>, Integer>(27);
-		
-		for (List<String> currentIds : ids) {
-			if (currentIds.size() == 0) {
-				continue;
-			}
-			
-			int characters = TextUtil.implode(currentIds, ", ").length();
-			lines.put(currentIds, characters / 52 + 2);
-		}
-		
-		
 		int currentPage = 1;
 		int currentStartingCharList = 0;
 		boolean finishedCurrentIds = true;
@@ -128,8 +113,10 @@ public class CommandList extends BaseCommand
 					Collections.sort(currentIds);
 				
 					// add ids
-					if (lines.get(currentIds) <= linesLeftOnCurrentPage) { // all ids fit on current page
-						linesLeftOnCurrentPage -= lines.get(currentIds);
+					int numLinesForCurrentChar = TextUtil.implode(currentIds, ", ").length() / 52 + 2;
+					
+					if (numLinesForCurrentChar <= linesLeftOnCurrentPage) { // all ids fit on current page
+						linesLeftOnCurrentPage -= numLinesForCurrentChar;
 						
 						if (currentPage == page) {
 							pageMessages.add(TextUtil.implode(currentIds, ", "));
@@ -159,7 +146,6 @@ public class CommandList extends BaseCommand
 							pageMessages.set(pageMessages.size() -2, pageMessages.get(pageMessages.size() -2) + " (more on next page)");
 						}
 						
-						lines.put(currentIds, TextUtil.implode(currentIds, ", ").length() / 52 + 2);
 						linesLeftOnCurrentPage -= stringToPutOnCurrentPage.length() / 52 + 2;
 						
 						finishedCurrentIds = false;
