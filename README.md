@@ -44,7 +44,7 @@ Nope. This plugin is very minimalistic and plain. Server operators manage the po
 ## Installing
 
 1. Download the latest release: __[http://dev.bukkit.org/server-mods/craftinc-gates/files/](http://dev.bukkit.org/server-mods/craftinc-gates/files/)__
-2. Put AncientGates.jar in the plugins folder.
+2. Put CraftIncGates.jar in the plugins folder.
 
 ## License
 
