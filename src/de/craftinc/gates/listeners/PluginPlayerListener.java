@@ -42,9 +42,10 @@ public class PluginPlayerListener extends BaseLocationListener implements Listen
 		checkChunkLoad(gateAtLocation.getLocation().getBlock());
 		
 		Location gateExit = gateAtLocation.getExit();
+		Location gateLocation = gateAtLocation.getLocation();
 		Location playerLocation = event.getPlayer().getLocation();
 		
-        Float newYaw = gateExit.getYaw() - gateExit.getYaw() + playerLocation.getYaw();
+        Float newYaw = gateExit.getYaw() - gateLocation.getYaw() + playerLocation.getYaw();
         
         Location teleportToLocation = new Location( gateExit.getWorld(),
         											gateExit.getX(),
