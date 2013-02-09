@@ -34,6 +34,10 @@ public class LocationSerializer
 	
 	public static Map<String, Object> serializeLocation(Location l)
 	{
+		if (l == null) {
+			return null;
+		}
+		
 		Map<String, Object> serializedLocation = new HashMap<String, Object>();
 		
 		serializedLocation.put(worldKey, l.getWorld().getName());
@@ -47,6 +51,10 @@ public class LocationSerializer
 
 	public static Location deserializeLocation(Map<String, Object> map) throws Exception
 	{
+		if (map == null) {
+			return null;
+		}
+		
 		World w = getWorld((String)map.get(worldKey));
 		
 		

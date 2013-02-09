@@ -72,11 +72,11 @@ public class Gate extends BaseGate implements ConfigurationSerializable
 	@SuppressWarnings("unchecked")
 	public Gate(Map<String, Object> map) 
 	{
-		id = (String)map.get(idKey);
-		isHidden = (Boolean)map.get(isHiddenKey);
-		isOpen = (Boolean)map.get(isOpenKey);
-		
 		try {
+			id = map.get(idKey).toString();
+			isHidden = (Boolean)map.get(isHiddenKey);
+			isOpen = (Boolean)map.get(isOpenKey);
+			
 			location = LocationSerializer.deserializeLocation((Map<String, Object>) map.get(locationKey));
 			exit = LocationSerializer.deserializeLocation((Map<String, Object>) map.get(exitKey));
 			
