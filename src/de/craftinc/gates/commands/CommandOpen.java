@@ -15,6 +15,8 @@ public class CommandOpen extends BaseCommand
 		helpDescription = "Open a gate so players can use it.";
 		
 		requiredPermission = Plugin.permissionManage;
+		
+		needsPermissionAtCurrentLocation = false;
 	}
 	
 	

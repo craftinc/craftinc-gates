@@ -21,6 +21,8 @@ public class CommandCreate extends BaseLocationCommand
 		helpDescription = "Create a gate at your current location.";
 		
 		requiredPermission = Plugin.permissionManage;
+		
+		needsPermissionAtCurrentLocation = true;
 	}
 	
 	

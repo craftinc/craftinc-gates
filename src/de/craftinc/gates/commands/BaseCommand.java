@@ -12,24 +12,26 @@ import de.craftinc.gates.util.TextUtil;
 
 public abstract class BaseCommand 
 {
-	public List<String> aliases;
-	public List<String> requiredParameters;
-	public List<String> optionalParameters;
+	protected List<String> aliases;
+	protected List<String> requiredParameters;
+	protected List<String> optionalParameters;
 	
-	public String helpDescription;
+	protected String helpDescription;
 	
-	public CommandSender sender;
-	public boolean senderMustBePlayer;
-	public boolean hasGateParam;
-	public Player player;
-	public Gate gate;
+	protected List<String> parameters;
+	protected CommandSender sender;
+	protected Player player;
+	protected Gate gate;
 	
-	public List<String> parameters;
+	protected boolean senderMustBePlayer;
+	protected boolean hasGateParam;
 	
-	public String requiredPermission;
+	protected String requiredPermission;
+	protected boolean needsPermissionAtCurrentLocation;
 	
 	
-	public BaseCommand() {
+	public BaseCommand() 
+	{
 		aliases = new ArrayList<String>();
 		requiredParameters = new ArrayList<String>();
 		optionalParameters = new ArrayList<String>();
@@ -43,12 +45,13 @@ public abstract class BaseCommand
 	public List<String> getAliases() {
 		return aliases;
 	}
-		
+	
+	
 	public void execute(CommandSender sender, List<String> parameters) {
 		this.sender = sender;
 		this.parameters = parameters;
 		
-		if ( ! validateCall()) {
+		if (!this.validateCall()) {
 			return;
 		}
 		
@@ -56,79 +59,146 @@ public abstract class BaseCommand
 			this.player = (Player)sender;
 		}
 		
-		perform();
+		this.perform();
 	}
 	
-	public void perform() {
-		
-	}
 	
-	public void sendMessage(String message) {
+	abstract protected void perform();
+	
+	
+	protected void sendMessage(String message) {
 		sender.sendMessage(message);
 	}
 	
-	public void sendMessage(List<String> messages) {
+	
+	protected void sendMessage(List<String> messages) {
 		for(String message : messages) {
 			this.sendMessage(message);
 		}
 	}
 	
-	public boolean validateCall() 
+	
+	protected boolean validateCall() 
 	{
-		// validate player		
-		if ( this.senderMustBePlayer && ! (sender instanceof Player)) 
+		boolean allParamtertersThere = parameters.size() < requiredParameters.size();
+		boolean senderIsPlayer = this.sender instanceof Player;
+		boolean parameterIsGate = this.parameters.size() > 0 ? this.getGateForParamater(this.parameters.get(0)) : false;
+		boolean senderHasPermission;
+		
+		try {
+			senderHasPermission = this.hasPermission();
+		} 
+		catch (Exception e) { // the gate paramter is missing or incorrect!
+			senderHasPermission = parameterIsGate ? false : true; // only display the lack of permission message if there is a gate
+																  // this should prevent giving permission to the user if there is
+																  // a bug inside the permission validation code.
+		}
+		
+
+		if(!senderHasPermission) 
+		{
+			sendMessage("You lack the permissions to " + this.helpDescription.toLowerCase() + ".");
+			return false;
+		}
+		
+			
+		if (this.senderMustBePlayer && !senderIsPlayer) 
 		{
 			sendMessage("This command can only be used by ingame players.");
 			return false;
 		}
 		
-		// validate permission
-		if( !hasPermission(sender)) 
+		if (this.hasGateParam && !parameterIsGate) 
 		{
-			sendMessage("You lack the permissions to "+this.helpDescription.toLowerCase()+".");
+			sendMessage("There exists no gate with id " + this.parameters.get(0));
 			return false;
 		}
-		
-		// valide parameter count
-		if (parameters.size() < requiredParameters.size()) 
+	
+		if (allParamtertersThere) 
 		{
-			sendMessage("Usage: "+this.getUseageTemplate(true));
+			sendMessage("Usage: " + this.getUseageTemplate(true));
 			return false;
-		}
-		
-		// validate gate parameter
-		if (this.hasGateParam) 
-		{
-			String id = parameters.get(0);
-			
-			if ( ! Gate.exists(id)) 
-			{
-				sendMessage("There exists no gate with id "+id);
-				return false;
-			}
-			gate = Gate.get(id);
 		}
 		
 		return true;
 	}
 	
-	public boolean hasPermission(CommandSender sender) 
+	
+	protected boolean getGateForParamater(String param)
 	{
-		if (sender.hasPermission(Plugin.permissionAll)) {
+		if (!Gate.exists(param))
+		{
+			return false;
+		}
+		else
+		{
+			gate = Gate.get(param);
 			return true;
 		}
-		
-		if (sender.hasPermission(requiredPermission)) {
-			return true;
-		}
-		
-		return false; 
 	}
+	
+	
+	
+	protected boolean hasPermission() throws Exception
+	{		
+		if (Plugin.permission == null) // fallback Ð use the standard bukkit permission system
+		{
+			return this.sender.hasPermission(this.requiredPermission);
+		}
+		
+		
+		if (this.requiredPermission.equals(Plugin.permissionInfo))
+		{
+			return Plugin.permission.has(this.player.getWorld(), this.player.getName(), this.requiredPermission);
+		}
+		
+		
+		if (this.requiredPermission.equals(Plugin.permissionUse) )
+		{
+			return this.hasPermissionAtGateLocationAndExit();
+		}
+			
+		
+		if (this.requiredPermission.equals(Plugin.permissionManage))
+		{
+			if (this.needsPermissionAtCurrentLocation && this.hasGateParam)
+			{
+				boolean hasPersmissionAtCurrentLocation = Plugin.permission.has(this.player.getWorld(), this.player.getName(), this.requiredPermission);
+				return hasPersmissionAtCurrentLocation && this.hasPermissionAtGateLocationAndExit();
+			}
+			else if (this.needsPermissionAtCurrentLocation)
+			{
+				return Plugin.permission.has(this.player.getWorld(), this.player.getName(), this.requiredPermission);
+			}
+			else
+			{
+				return this.hasPermissionAtGateLocationAndExit();
+			}
+		}
+			
+		
+		return false;
+	}
+	
+	
+	protected boolean hasPermissionAtGateLocationAndExit() throws Exception
+	{
+		if (this.gate == null) // make sure we don't run into a nullpointer exception
+		{
+			throw new Exception("Cannot check permissons with no gate provided!");
+		}
+		
+		boolean permAtLocation = Plugin.permission.has(this.gate.getLocation().getWorld(), player.getName(), this.requiredPermission);
+		boolean permAtExit = Plugin.permission.has(this.gate.getExit().getWorld(), player.getName(), this.requiredPermission);
+		
+		return permAtLocation && permAtExit;
+	}
+	
 	
 	// -------------------------------------------- //
 	// Help and usage description
 	// -------------------------------------------- //
-	public String getUsageTemplate(boolean withColor, boolean withDescription) {
+	protected String getUsageTemplate(boolean withColor, boolean withDescription) {
 		String ret = "";
 		
 //		if (withColor) {
@@ -159,11 +229,11 @@ public abstract class BaseCommand
 		return ret;
 	}
 	
-	public String getUseageTemplate(boolean withColor) {
+	protected String getUseageTemplate(boolean withColor) {
 		return getUsageTemplate(withColor, false);
 	}
 	
-	public String getUseageTemplate() {
+	protected String getUseageTemplate() {
 		return getUseageTemplate(true);
 	}
 }
