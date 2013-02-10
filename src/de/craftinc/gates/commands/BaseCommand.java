@@ -188,11 +188,6 @@ public abstract class BaseCommand
 			throw new Exception("Cannot check permissons with no gate provided!");
 		}
 		
-		System.out.println("************");
-		System.out.println(this.gate.getLocation().getWorld());
-		System.out.println(this.gate.getExit().getWorld());
-		System.out.println("************");
-		
 		boolean permAtLocation = Plugin.permission.has(this.gate.getLocation().getWorld(), player.getName(), this.requiredPermission);
 		boolean permAtExit = Plugin.permission.has(this.gate.getExit().getWorld(), player.getName(), this.requiredPermission);
 		
