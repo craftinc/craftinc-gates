@@ -25,16 +25,17 @@ public class PluginPlayerListener extends BaseLocationListener implements Listen
 			return;
 		}
 		
-		// Check for permission
-		if (!hasPermission(event.getPlayer())) {
-			return;
-		}
 		
 		// Find the gate at the current location.
 		Gate gateAtLocation = getValidGateAtPlayerLocation(event);
 		
 		
 		if (gateAtLocation == null) {
+			return;
+		}
+		
+		// Check for permission
+		if (!hasPermission(event.getPlayer(), gateAtLocation)) {
 			return;
 		}
 		
@@ -72,7 +73,17 @@ public class PluginPlayerListener extends BaseLocationListener implements Listen
 	}
 	
 	
-	protected boolean hasPermission(Player player) {
-        return player.hasPermission(Plugin.permissionUse) || player.hasPermission(Plugin.permissionAll);
+	protected boolean hasPermission(Player player, Gate gate) 
+	{
+		if (Plugin.permission == null) // fallback Ð use the standard bukkit permission system
+		{
+			return player.hasPermission(Plugin.permissionUse);
+		}
+		else {
+			boolean permAtLocation = Plugin.permission.has(gate.getLocation().getWorld(), player.getName(), Plugin.permissionUse);
+			boolean permAtExit = Plugin.permission.has(gate.getExit().getWorld(), player.getName(), Plugin.permissionUse);
+			
+			return permAtLocation && permAtExit;
+		}
     }
 }

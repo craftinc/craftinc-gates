@@ -57,8 +57,6 @@ public abstract class BaseLocationListener
 		Block blockTo = e.getFrom().getBlock();
 		Block blockToUp = blockTo.getRelative(BlockFace.UP);
 		
-		System.out.println(blockTo.getLocation().getWorld().getName());
-		
 		
 		for (Gate g : Gate.getAll()) {
 			// Check if the location matches

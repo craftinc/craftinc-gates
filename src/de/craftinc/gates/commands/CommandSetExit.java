@@ -16,6 +16,8 @@ public class CommandSetExit extends BaseCommand
 		helpDescription = "Changes the location where the gate will teleport players to your current location.";
 		
 		requiredPermission = Plugin.permissionManage;
+		
+		needsPermissionAtCurrentLocation = true;
 	}
 	
 	

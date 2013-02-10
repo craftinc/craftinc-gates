@@ -16,6 +16,8 @@ public class CommandSetVisible extends BaseCommand
 		helpDescription = "Make that gate visible";
 		
 		requiredPermission = Plugin.permissionManage;
+		
+		needsPermissionAtCurrentLocation = false;
 	}
 	
 	
