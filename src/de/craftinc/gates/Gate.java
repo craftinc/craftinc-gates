@@ -84,13 +84,15 @@ public class Gate extends BaseGate implements ConfigurationSerializable
 			location = LocationSerializer.deserializeLocation((Map<String, Object>) map.get(locationKey));
 			exit = LocationSerializer.deserializeLocation((Map<String, Object>) map.get(exitKey));
 			
-			if (exit != null) {
+			if (map.containsKey(exitPitchKey)) {
 				exit.setPitch(((Double)map.get(exitPitchKey)).floatValue());
 				exit.setYaw(((Double)map.get(exitYawKey)).floatValue());
 			}
 			
-			location.setPitch(((Double)map.get(locationPitchKey)).floatValue());
-			location.setYaw(((Double)map.get(locationYawKey)).floatValue());
+			if (map.containsKey(locationPitchKey)) {
+				location.setPitch(((Double)map.get(locationPitchKey)).floatValue());
+				location.setYaw(((Double)map.get(locationYawKey)).floatValue());
+			}
 			
 			gateBlockLocations = new HashSet<Location>();
 			List<Map<String, Object>> serializedGateBlocks = (List<Map<String, Object>>)map.get(gateBlocksKey);
