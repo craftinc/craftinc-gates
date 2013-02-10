@@ -25,6 +25,8 @@ public class CommandList extends BaseCommand
 		helpDescription = "Prints a list of all availible gates.";
 		
 		requiredPermission = Plugin.permissionInfo;
+		
+		needsPermissionAtCurrentLocation = false;
 	}
 	
 	

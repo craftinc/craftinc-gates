@@ -19,6 +19,8 @@ public class CommandDelete extends BaseCommand
 		helpDescription = "Removes the gate from the game.";
 		
 		requiredPermission = Plugin.permissionManage;
+		
+		needsPermissionAtCurrentLocation = false;
 	}
 	
 	

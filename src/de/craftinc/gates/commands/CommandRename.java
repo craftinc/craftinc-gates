@@ -21,6 +21,8 @@ public class CommandRename extends BaseCommand
 		helpDescription = "Changes the id of a gate.";
 		
 		requiredPermission = Plugin.permissionManage;
+		
+		needsPermissionAtCurrentLocation = false;
 	}
 	
 	

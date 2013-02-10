@@ -19,6 +19,8 @@ public class CommandSetLocation extends BaseLocationCommand
 		helpDescription = "Set the entrance of the gate to your current location.";
 		
 		requiredPermission = Plugin.permissionManage;
+		
+		needsPermissionAtCurrentLocation = true;
 	}
 	
 	

@@ -17,6 +17,8 @@ public class CommandInfo extends BaseCommand
 		helpDescription = "Prints detailed informations about a certain gate.";
 		
 		requiredPermission = Plugin.permissionInfo;
+		
+		needsPermissionAtCurrentLocation = false;
 	}
 	
 	

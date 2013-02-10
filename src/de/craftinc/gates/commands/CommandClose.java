@@ -14,6 +14,8 @@ public class CommandClose extends BaseCommand
 		helpDescription = "Closes a gate to prevent players from using it.";
 		
 		requiredPermission = Plugin.permissionManage;
+		
+		needsPermissionAtCurrentLocation = false;
 	}
 	
 	

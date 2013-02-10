@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.bukkit.command.CommandSender;
 
+import de.craftinc.gates.Gate;
 import de.craftinc.gates.util.TextUtil;
 
 public class CommandHelp extends BaseCommand 
@@ -19,10 +20,12 @@ public class CommandHelp extends BaseCommand
 		hasGateParam = false;
 		
 		helpDescription = "Prints a list of all availible commands.";
+		
+		needsPermissionAtCurrentLocation = false;
 	}
 	
-	@Override
-	public boolean hasPermission(CommandSender sender) 
+
+	public boolean hasPermission(CommandSender sender, Gate gate) 
 	{
 		return true;
 	}

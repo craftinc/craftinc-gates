@@ -10,12 +10,15 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import net.milkbowl.vault.permission.Permission;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import de.craftinc.gates.commands.*;
@@ -30,8 +33,10 @@ public class Plugin extends JavaPlugin
 	
 	public static final String permissionInfo = "craftincgates.info";
 	public static final String permissionManage = "craftincgates.manage";
-	public static final String permissionAll = "craftincgates.*";
+//	public static final String permissionAll = "craftincgates.*";
 	public static final String permissionUse = "craftincgates.use";
+	
+	public static Permission permission = null;
 	
 	public PluginPlayerListener playerListener = new PluginPlayerListener();
 	public PluginBlockListener blockListener = new PluginBlockListener();
@@ -55,7 +60,23 @@ public class Plugin extends JavaPlugin
 	@Override
 	public void onLoad() 
 	{
+		setupPermissions();
 		ConfigurationSerialization.registerClass(Gate.class);
+	}
+	
+	
+	private void setupPermissions()
+	{
+		if (getServer().getPluginManager().getPlugin("Vault") == null) {
+            return;
+        }
+		
+		RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
+		
+		if (rsp != null)
+		{
+			permission = rsp.getProvider();
+		}
 	}
 	
 
