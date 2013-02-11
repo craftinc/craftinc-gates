@@ -1,6 +1,9 @@
 package de.craftinc.gates.commands;
 
 
+import java.util.logging.Level;
+
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 
 import de.craftinc.gates.Plugin;
@@ -28,19 +31,23 @@ public class CommandSetLocation extends BaseLocationCommand
 	{
 		Location playerLocation = getValidPlayerLocation();
 		
-		if (playerLocation == null) {
+		if (playerLocation == null) 
+		{
 			sendMessage("There is not enough room for a gate to open here");
 			return;
 		}
 		
-		try {
+		try 
+		{
 			gate.setLocation(playerLocation);
+			sendMessage(ChatColor.GREEN + "The location of '" + gate.getId() + "' is now at your current location.");
 		} 
-		catch (Exception e) {
-			sendMessage(e.getMessage());
+		catch (Exception e) 
+		{
+			sendMessage(ChatColor.RED + "Setting the location for the gate failed! See server log for more information");
+			Plugin.log(Level.WARNING, e.getMessage());
+			e.printStackTrace();
 		}
-		
-		sendMessage("The location of '" + gate.getId() + "' is now at your current location.");
 	}
 	
 }

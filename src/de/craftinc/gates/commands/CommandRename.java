@@ -1,5 +1,7 @@
 package de.craftinc.gates.commands;
 
+import org.bukkit.ChatColor;
+
 import de.craftinc.gates.Gate;
 import de.craftinc.gates.Plugin;
 
@@ -30,14 +32,15 @@ public class CommandRename extends BaseCommand
 	{
 		String newId = parameters.get(1);
 		
-		try {
+		try 
+		{
 			Gate.rename(gate.getId(), newId);
+			sendMessage(ChatColor.GREEN + "Gate " + gate.getId() + " is now known as " + newId + ".");
 		} 
-		catch (Exception e) {
-			sendMessage("Cannot rename " + gate.getId() + ". There is already a gate named " + newId + ".");
+		catch (Exception e) 
+		{
+			sendMessage(ChatColor.RED + "Cannot rename " + gate.getId() + ". There is already a gate named " + newId + ".");
 		}
-		
-		sendMessage("Gate " + gate.getId() + " is now known as " + newId + ".");
 	}
 
 }

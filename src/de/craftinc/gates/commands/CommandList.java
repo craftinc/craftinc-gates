@@ -21,25 +21,24 @@ public class CommandList extends BaseCommand
 		
 		optionalParameters.add("page");
 		hasGateParam = false;
+		needsPermissionAtCurrentLocation = false;
 		
-		helpDescription = "Prints a list of all availible gates.";
+		helpDescription = "lists all availible gates.";
 		
 		requiredPermission = Plugin.permissionInfo;
-		
-		needsPermissionAtCurrentLocation = false;
 	}
 	
 	
 	protected String intToTitleString(int i)
 	{
 		if ( i < 26 ) {
-			return ChatColor.GREEN + "" + (char)(i+65) + ":";
+			return ChatColor.DARK_AQUA + "" + (char)(i+65) + ":";
 		}
 		else if ( i == 26 ) {
-			return ChatColor.GREEN + "0 - 9:";
+			return ChatColor.DARK_AQUA + "0 - 9:";
 		} 
 		else {
-			return ChatColor.GREEN + "!@#$:";
+			return ChatColor.DARK_AQUA + "!@#$:";
 		}
 	}
 	
@@ -121,7 +120,7 @@ public class CommandList extends BaseCommand
 						linesLeftOnCurrentPage -= numLinesForCurrentChar;
 						
 						if (currentPage == page) {
-							pageMessages.add(TextUtil.implode(currentIds, ", "));
+							pageMessages.add(ChatColor.AQUA + TextUtil.implode(currentIds, ", "));
 							if (finishedCurrentIds == false) {
 								pageMessages.set(pageMessages.size() -2, pageMessages.get(pageMessages.size() -2) + " (more on previous page)");
 							}
@@ -144,7 +143,7 @@ public class CommandList extends BaseCommand
 						String stringToPutOnCurrentPage = TextUtil.implode(idsToPutOnCurrentPage, ", ");
 						
 						if (currentPage == page) {
-							pageMessages.add(stringToPutOnCurrentPage);
+							pageMessages.add(ChatColor.AQUA + stringToPutOnCurrentPage);
 							pageMessages.set(pageMessages.size() -2, pageMessages.get(pageMessages.size() -2) + " (more on next page)");
 						}
 						
@@ -167,7 +166,7 @@ public class CommandList extends BaseCommand
 		} 
 		else {
 			ArrayList<String> retVal = new ArrayList<String>();
-			retVal.add(ChatColor.LIGHT_PURPLE + "This is page " + ChatColor.WHITE + page + ChatColor.LIGHT_PURPLE + "/" + ChatColor.WHITE + --currentPage + ChatColor.LIGHT_PURPLE + ". There are " + gates.size() + " gates on this server: ");
+			retVal.add(TextUtil.titleize("List of all gates (" + page + "/" + + --currentPage + ")"));
 			retVal.addAll(pageMessages);
 			
 			return retVal;
@@ -180,7 +179,7 @@ public class CommandList extends BaseCommand
 		Collection<Gate> gates = Gate.getAll();
 		
 		if (gates.size() == 0) {
-			sendMessage("There are no gates yet.");
+			sendMessage(ChatColor.RED + "There are no gates yet.");
 		}
 		else {
 			int page = 1;
@@ -194,7 +193,7 @@ public class CommandList extends BaseCommand
 			List<String> messages = message(page);
 			
 			if (messages == null) {
-				sendMessage("The requested page is not availible");
+				sendMessage(ChatColor.RED + "The requested page is not availible");
 			}
 			else {
 				sendMessage(messages);

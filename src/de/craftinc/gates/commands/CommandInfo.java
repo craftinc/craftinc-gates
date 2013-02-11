@@ -1,8 +1,10 @@
 package de.craftinc.gates.commands;
 
+
 import org.bukkit.ChatColor;
 
 import de.craftinc.gates.Plugin;
+import de.craftinc.gates.util.TextUtil;
 
 
 public class CommandInfo extends BaseCommand 
@@ -24,31 +26,31 @@ public class CommandInfo extends BaseCommand
 	
 	public void perform() 
 	{
-		sendMessage(ChatColor.LIGHT_PURPLE + "Information about " + ChatColor.WHITE + gate.getId() + ChatColor.LIGHT_PURPLE + ":");
+		sendMessage(TextUtil.titleize("Information about: '" + ChatColor.WHITE + gate.getId() + ChatColor.YELLOW + "'"));
 		
-		String openHiddenMessage = "This gate is";
+		String openHiddenMessage = ChatColor.DARK_AQUA + "This gate is";
 		
 		if (gate.isOpen())
-			openHiddenMessage += " open";
+			openHiddenMessage += ChatColor.AQUA + " open";
 		else
-			openHiddenMessage += " closed";
+			openHiddenMessage += ChatColor.AQUA + " closed";
 		
 		if (gate.isHidden())
-			openHiddenMessage += " and hidden";
+			openHiddenMessage += ChatColor.DARK_AQUA +" and" + ChatColor.AQUA + " hidden";
 		
-		openHiddenMessage += ".";
+		openHiddenMessage += ".\n";
 		
 		sendMessage(openHiddenMessage);
 		
 		if (gate.getLocation() != null)
-			sendMessage(ChatColor.GREEN + "'from' location:       " + ChatColor.YELLOW + "( " + gate.getLocation().getBlockX() + " | " + gate.getLocation().getBlockY() + " | " + gate.getLocation().getBlockZ() + " ) in " + gate.getLocation().getWorld().getName());
+			sendMessage(ChatColor.DARK_AQUA + "from:  " + ChatColor.AQUA + "( " + gate.getLocation().getBlockX() + " | " + gate.getLocation().getBlockY() + " | " + gate.getLocation().getBlockZ() + " ) in " + gate.getLocation().getWorld().getName());
 		else
-			sendMessage(ChatColor.GREEN + "this gate has no 'from' location");
+			sendMessage(ChatColor.DARK_AQUA + "NOTE: this gate has no 'from' location");
 		
 		if (gate.getExit() != null)
-			sendMessage(ChatColor.GREEN + "'to' location:          " + ChatColor.YELLOW + "( " + gate.getExit().getBlockX() + " | " + gate.getExit().getBlockY() + " | " + gate.getExit().getBlockZ() + " ) in " + gate.getExit().getWorld().getName());
+			sendMessage(ChatColor.DARK_AQUA + "to:     " + ChatColor.AQUA + "( " + gate.getExit().getBlockX() + " | " + gate.getExit().getBlockY() + " | " + gate.getExit().getBlockZ() + " ) in " + gate.getExit().getWorld().getName());
 		else
-			sendMessage(ChatColor.GREEN + "this gate has no 'to' location");
+			sendMessage(ChatColor.DARK_AQUA + "NOTE: this gate has no 'to' location");
 	}
 
 }

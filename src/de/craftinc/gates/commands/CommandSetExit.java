@@ -1,5 +1,9 @@
 package de.craftinc.gates.commands;
 
+import java.util.logging.Level;
+
+import org.bukkit.ChatColor;
+
 import de.craftinc.gates.Plugin;
 
 
@@ -23,14 +27,16 @@ public class CommandSetExit extends BaseCommand
 	
 	public void perform() 
 	{
-		try {
+		try 
+		{
 			gate.setExit(player.getLocation());
+			sendMessage(ChatColor.GREEN + "The exit of gate '" + gate.getId() + "' is now where you stand.");
 		} 
 		catch (Exception e) {
-			sendMessage(e.getMessage());
+			sendMessage(ChatColor.RED + "Setting the exit for the gate failed! See server log for more information");
+			Plugin.log(Level.WARNING, e.getMessage());
+			e.printStackTrace();
 		}
-		
-		sendMessage("The exit of gate '" + gate.getId() + "' is now where you stand.");
 	}
 }
 

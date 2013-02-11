@@ -3,6 +3,7 @@ package de.craftinc.gates.commands;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -89,28 +90,28 @@ public abstract class BaseCommand
 			senderHasPermission = this.hasPermission();
 		} 
 		catch (Exception e) { // the gate paramter is missing or incorrect!
-			senderHasPermission = parameterIsGate ? false : true; // only display the lack of permission message if there is a gate
-																  // this should prevent giving permission to the user if there is
-																  // a bug inside the permission validation code.
+			senderHasPermission = this.hasGateParam ? false : true; // only display the lack of permission message if there is a gate
+																    // this should prevent giving permission to the user if there is
+																    // a bug inside the permission validation code.
 		}
 		
 
 		if(!senderHasPermission) 
 		{
-			sendMessage("You lack the permissions to " + this.helpDescription.toLowerCase() + ".");
+			sendMessage(ChatColor.RED + "You lack the permissions to " + this.helpDescription.toLowerCase() + ".");
 			return false;
 		}
 		
 			
 		if (this.senderMustBePlayer && !senderIsPlayer) 
 		{
-			sendMessage("This command can only be used by ingame players.");
+			sendMessage(ChatColor.RED + "This command can only be used by ingame players.");
 			return false;
 		}
 		
 		if (this.hasGateParam && !parameterIsGate) 
 		{
-			sendMessage("There exists no gate with id " + this.parameters.get(0));
+			sendMessage(ChatColor.RED + "There exists no gate with id " + this.parameters.get(0));
 			return false;
 		}
 	
@@ -201,9 +202,9 @@ public abstract class BaseCommand
 	protected String getUsageTemplate(boolean withColor, boolean withDescription) {
 		String ret = "";
 		
-//		if (withColor) {
-//			ret += Conf.colorCommand;
-//		}
+		if (withColor) {
+			ret += ChatColor.AQUA;
+		}
 		
 		ret += "/" + Plugin.instance.getBaseCommand() + " " + TextUtil.implode(this.getAliases(), ",")+" ";
 		
@@ -217,15 +218,21 @@ public abstract class BaseCommand
 			parts.add("*["+optionalParameter+"]");
 		}
 		
-//		if (withColor) {
-//			ret += Conf.colorParameter;
-//		}
+		if (withColor) {
+			ret += ChatColor.DARK_AQUA;
+		}
 		
 		ret += TextUtil.implode(parts, " ");
 		
-//		if (withDescription) {
-//			ret += "  "+Conf.colorSystem + this.helpDescription;
-//		}
+		if (withDescription) {
+			ret += " ";
+			
+			if (withColor) {
+				ret += ChatColor.YELLOW;
+			}
+			
+			ret += this.helpDescription;
+		}
 		return ret;
 	}
 	

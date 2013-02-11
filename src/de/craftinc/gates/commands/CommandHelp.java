@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.bukkit.command.CommandSender;
 
 import de.craftinc.gates.Gate;
+import de.craftinc.gates.Plugin;
 import de.craftinc.gates.util.TextUtil;
 
 public class CommandHelp extends BaseCommand 
@@ -17,10 +18,11 @@ public class CommandHelp extends BaseCommand
 		aliases.add("?");
 		
 		optionalParameters.add("page");
+		helpDescription = "prints this help page";
+		
+		requiredPermission = Plugin.permissionInfo;
+		
 		hasGateParam = false;
-		
-		helpDescription = "Prints a list of all availible commands.";
-		
 		needsPermissionAtCurrentLocation = false;
 	}
 	
@@ -47,7 +49,7 @@ public class CommandHelp extends BaseCommand
 			}
 		}
 		
-		sendMessage(TextUtil.titleize("Craft Inc. Gates Help ("+page+"/"+helpPages.size()+")"));
+		sendMessage(TextUtil.titleize("Craft Inc. Gates Help (" + page + "/" + helpPages.size() + ")"));
 		
 		page -= 1;
 		if (page < 0 || page >= helpPages.size()) 

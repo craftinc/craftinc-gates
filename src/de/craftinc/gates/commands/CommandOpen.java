@@ -1,5 +1,8 @@
 package de.craftinc.gates.commands;
 
+
+import org.bukkit.ChatColor;
+
 import de.craftinc.gates.Plugin;
 
 
@@ -22,15 +25,15 @@ public class CommandOpen extends BaseCommand
 	
 	public void perform() 
 	{
-		try {
+		try 
+		{
 			gate.setOpen(true);
-		} catch (Exception e) {
-			sendMessage(e.getMessage());
-			return;
+			sendMessage(ChatColor.GREEN + "The gate was opened.");
+		} 
+		catch (Exception e) 
+		{
+			sendMessage(ChatColor.RED + e.getMessage());
 		}
-		
-		sendMessage("The gate was opened.");
 	}
-
 }
 

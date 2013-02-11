@@ -1,5 +1,9 @@
 package de.craftinc.gates.commands;
 
+import java.util.logging.Level;
+
+import org.bukkit.ChatColor;
+
 import de.craftinc.gates.Plugin;
 
 
@@ -22,13 +26,16 @@ public class CommandSetHidden extends BaseCommand
 	
 	public void perform() 
 	{
-		try {
+		try 
+		{
 			gate.setHidden(true);
+			sendMessage(ChatColor.GREEN + "The gate '" + gate.getId() + "' is now hidden.");
 		} 
-		catch (Exception e) {
-			sendMessage(e.getMessage());
+		catch (Exception e) 
+		{
+			sendMessage(ChatColor.RED + "Hiding the gate failed! See server log for more information");
+			Plugin.log(Level.WARNING, e.getMessage());
+			e.printStackTrace();
 		}
-		
-		sendMessage("The gate '" + gate.getId() + "' is now hidden.");
 	}
 }

@@ -1,5 +1,9 @@
 package de.craftinc.gates.commands;
 
+import java.util.logging.Level;
+
+import org.bukkit.ChatColor;
+
 import de.craftinc.gates.Plugin;
 
 
@@ -22,13 +26,19 @@ public class CommandClose extends BaseCommand
 	@Override
 	public void perform() 
 	{
-		try {
+		try 
+		{
 			gate.setOpen(false);
+			sendMessage(ChatColor.GREEN + "The gate was closed.");
 		}
-		catch(Exception e) {
+		catch(Exception e) 
+		{
+			sendMessage(ChatColor.RED + "Opening the gate failed! See server log for more information");
+			Plugin.log(Level.WARNING, e.getMessage());
+			e.printStackTrace();
 		}
 		
-		sendMessage("The gate was closed.");
+		
 	}
 }
 

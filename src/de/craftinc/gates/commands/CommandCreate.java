@@ -1,5 +1,8 @@
 package de.craftinc.gates.commands;
 
+import java.util.logging.Level;
+
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 
 import de.craftinc.gates.Gate;
@@ -30,27 +33,36 @@ public class CommandCreate extends BaseLocationCommand
 	{
 		String id = parameters.get(0);
 		
-		try {
+		try 
+		{
 			gate = Gate.create(id);
+			sendMessage("ChatColor.GREEN + Gate with id \"" + id + "\" was created.");
 		} 
-		catch (Exception e) {
-			System.out.println(e.getMessage());
+		catch (Exception e) 
+		{
+			sendMessage(ChatColor.RED + "Creating the gate failed! See server log for more information");
+			Plugin.log(Level.WARNING, e.getMessage());
+			e.printStackTrace();
+			return;
 		}
 		
 		Location playerLocation = getValidPlayerLocation();
 		
-		if (playerLocation != null) {
-			try {
+		if (playerLocation != null) 
+		{
+			try 
+			{
 				gate.setLocation(playerLocation);
+				sendMessage(ChatColor.AQUA + "The gates location has been set to your current location.");
 			} 
-			catch (Exception e) {
+			catch (Exception e) 
+			{
 			}
 			
-			sendMessage("Gate with id \"" + id + "\" was created.");
-			sendMessage("The gates location has been set to your current location.");
 		}
-		else {
-			sendMessage("Gate with id \"" + id + "\" was created.");
+		else 
+		{
+			sendMessage(ChatColor.GREEN + "Gate with id \"" + id + "\" was created.");
 			sendMessage("Now you should build a frame and:");
 			sendMessage(new CommandSetLocation().getUsageTemplate(true, true));
 		}
