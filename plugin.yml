@@ -1,5 +1,5 @@
 name: Craft Inc. Gates
-version: 2.0.1a
+version: 2.2.0-dev
 description: A plugin to create gates for fast traveling.
 softdepend: [Vault]
 author: tomco,  s1m0ne
