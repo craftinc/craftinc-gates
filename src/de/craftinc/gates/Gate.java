@@ -181,7 +181,7 @@ public class Gate extends BaseGate implements ConfigurationSerializable
 		
 		gate.setId(newId);
 		
-		delete(oldId);
+		instances.remove(oldId);
 		instances.put(gate.id, gate);
 	}
 	
