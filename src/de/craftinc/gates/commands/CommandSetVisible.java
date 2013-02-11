@@ -1,7 +1,5 @@
 package de.craftinc.gates.commands;
 
-import java.util.logging.Level;
-
 import org.bukkit.ChatColor;
 
 import de.craftinc.gates.Plugin;
