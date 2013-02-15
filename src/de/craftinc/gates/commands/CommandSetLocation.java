@@ -24,6 +24,7 @@ public class CommandSetLocation extends BaseLocationCommand
 		requiredPermission = Plugin.permissionManage;
 		
 		needsPermissionAtCurrentLocation = true;
+		shouldPersistToDisk = true;
 	}
 	
 	

@@ -30,6 +30,8 @@ public abstract class BaseCommand
 	protected String requiredPermission;
 	protected boolean needsPermissionAtCurrentLocation;
 	
+	protected boolean shouldPersistToDisk;
+	
 	
 	public BaseCommand() 
 	{
@@ -61,6 +63,10 @@ public abstract class BaseCommand
 		}
 		
 		this.perform();
+		
+		if (this.shouldPersistToDisk) {
+			Plugin.instance.saveGates();
+		}
 	}
 	
 	

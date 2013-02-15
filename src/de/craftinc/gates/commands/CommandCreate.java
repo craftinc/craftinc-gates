@@ -25,6 +25,7 @@ public class CommandCreate extends BaseLocationCommand
 		requiredPermission = Plugin.permissionManage;
 		
 		needsPermissionAtCurrentLocation = true;
+		shouldPersistToDisk = true;
 	}
 	
 	

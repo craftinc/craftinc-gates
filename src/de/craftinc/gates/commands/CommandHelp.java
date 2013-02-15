@@ -24,6 +24,7 @@ public class CommandHelp extends BaseCommand
 		
 		hasGateParam = false;
 		needsPermissionAtCurrentLocation = false;
+		shouldPersistToDisk = false;
 	}
 	
 

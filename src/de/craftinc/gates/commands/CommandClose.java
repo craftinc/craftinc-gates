@@ -20,6 +20,7 @@ public class CommandClose extends BaseCommand
 		requiredPermission = Plugin.permissionManage;
 		
 		needsPermissionAtCurrentLocation = false;
+		shouldPersistToDisk = true;
 	}
 	
 	

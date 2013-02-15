@@ -20,6 +20,7 @@ public class CommandOpen extends BaseCommand
 		requiredPermission = Plugin.permissionManage;
 		
 		needsPermissionAtCurrentLocation = false;
+		shouldPersistToDisk = true;
 	}
 	
 	

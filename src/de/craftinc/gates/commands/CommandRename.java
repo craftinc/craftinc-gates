@@ -25,6 +25,7 @@ public class CommandRename extends BaseCommand
 		requiredPermission = Plugin.permissionManage;
 		
 		needsPermissionAtCurrentLocation = false;
+		shouldPersistToDisk = true;
 	}
 	
 	

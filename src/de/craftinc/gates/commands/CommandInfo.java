@@ -21,6 +21,7 @@ public class CommandInfo extends BaseCommand
 		requiredPermission = Plugin.permissionInfo;
 		
 		needsPermissionAtCurrentLocation = false;
+		shouldPersistToDisk = false;
 	}
 	
 	

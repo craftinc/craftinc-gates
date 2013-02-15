@@ -21,6 +21,7 @@ public class CommandSetHidden extends BaseCommand
 		requiredPermission = Plugin.permissionManage;
 		
 		needsPermissionAtCurrentLocation = false;
+		shouldPersistToDisk = true;
 	}
 	
 	

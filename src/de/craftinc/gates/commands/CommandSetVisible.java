@@ -20,6 +20,7 @@ public class CommandSetVisible extends BaseCommand
 		requiredPermission = Plugin.permissionManage;
 		
 		needsPermissionAtCurrentLocation = false;
+		shouldPersistToDisk = true;
 	}
 	
 	
