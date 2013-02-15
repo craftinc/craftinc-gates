@@ -42,6 +42,9 @@ public class Plugin extends JavaPlugin
 	public PluginBlockListener blockListener = new PluginBlockListener();
 	public PluginPortalListener portalListener = new PluginPortalListener();
 	
+	private File gatesConfigFile;
+	private FileConfiguration gatesConfig;
+	
 	private String baseCommand;
 	
 	private String gatesPath = "gates";
@@ -85,7 +88,6 @@ public class Plugin extends JavaPlugin
 	{
 		// Save gates
 		saveGates();
-		
 		log("Disabled");
 	}
 
@@ -115,6 +117,19 @@ public class Plugin extends JavaPlugin
 		pm.registerEvents(this.portalListener, this);
 		
 		// Load gates
+		this.gatesConfigFile  = new File(getDataFolder(), "gates.yml");
+		
+		if(!this.gatesConfigFile.exists()) 
+		{
+			try {
+				this.gatesConfigFile.createNewFile();
+			} catch (IOException e) {
+				log(Level.SEVERE, "Cannot create gate config file! No gates will be persisted.");
+			}
+		}
+		
+		this.gatesConfig = YamlConfiguration.loadConfiguration(gatesConfigFile);
+		
 		loadGates();
 		
 		log("Enabled");
@@ -198,13 +213,11 @@ public class Plugin extends JavaPlugin
 	
 	public void saveGates()
 	{
-		File gatesFile = new File(getDataFolder(), "gates.yml");
-		FileConfiguration gatesConfig = YamlConfiguration.loadConfiguration(gatesFile);
-		
 		gatesConfig.set(gatesPath, new ArrayList<Object>(Gate.getAll()));
 		
 		try {
-			gatesConfig.save(gatesFile);
+			gatesConfig.save(gatesConfigFile);
+			log("Saved gates to disk.");
 		} 
 		catch (IOException e) {
 			log("ERROR: Could not save gates to disk.");
