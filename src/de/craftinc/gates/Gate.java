@@ -120,12 +120,13 @@ public class Gate extends BaseGate implements ConfigurationSerializable
 			validate(); // make sure to not write invalid stuff to disk
 		} 
 		catch (Exception e) {
+			Plugin.log("Gate " + this.getId() + " seems to be not valid. It got closed before serializing!");
 		}
 		
 		Map<String, Object> retVal = new HashMap<String, Object>();
 		
 		retVal.put(idKey, id);
-		retVal.put(locationKey, LocationSerializer.serializeLocation(location));
+		retVal.put(locationKey, LocationSerializer.serializeLocation(location));		
 		retVal.put(exitKey, LocationSerializer.serializeLocation(exit));
 		retVal.put(isHiddenKey, isHidden);
 		retVal.put(isOpenKey, isOpen);
