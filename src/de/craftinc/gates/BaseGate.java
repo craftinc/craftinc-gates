@@ -190,6 +190,6 @@ public abstract class BaseGate
 					throw new Exception("Gate got closed. The frame is missing or broken.");
 				}
 			}
-		}	
+		}
 	}
 }
