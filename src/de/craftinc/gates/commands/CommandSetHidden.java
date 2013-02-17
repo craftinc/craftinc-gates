@@ -11,8 +11,8 @@ public class CommandSetHidden extends BaseCommand
 {
 	public CommandSetHidden() 
 	{
-		aliases.add("setHidden");
-		aliases.add("sh");
+		aliases.add("hide");
+		aliases.add("h");
 		
 		requiredParameters.add("id");		
 		

@@ -12,6 +12,7 @@ public class CommandClose extends BaseCommand
 	public CommandClose()
 	{
 		aliases.add("close");
+		aliases.add("c");
 		
 		requiredParameters.add("id");	
 		

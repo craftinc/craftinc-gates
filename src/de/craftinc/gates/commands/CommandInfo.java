@@ -13,6 +13,8 @@ public class CommandInfo extends BaseCommand
 	{
 		aliases.add("info");
 		aliases.add("details");
+		aliases.add("i");
+		aliases.add("d");
 		
 		requiredParameters.add("id");		
 		

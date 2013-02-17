@@ -10,8 +10,8 @@ public class CommandSetVisible extends BaseCommand
 	
 	public CommandSetVisible() 
 	{
-		aliases.add("makevisible");
-		aliases.add("mv");
+		aliases.add("unhide");
+		aliases.add("uh");
 		
 		requiredParameters.add("id");		
 		

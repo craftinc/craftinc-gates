@@ -12,6 +12,7 @@ public class CommandOpen extends BaseCommand
 	public CommandOpen()
 	{
 		aliases.add("open");
+		aliases.add("o");
 		
 		requiredParameters.add("id");		
 		
