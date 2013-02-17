@@ -13,7 +13,7 @@ import de.craftinc.gates.Plugin;
 
 public class FloodUtil 
 {
-	private final static int frameBlockSearchLimit = 20;
+	private final static int frameBlockSearchLimit = 40;
 	
 	private static final Set<BlockFace> exp1 = new HashSet<BlockFace>();
 	private static final Set<BlockFace> exp2 = new HashSet<BlockFace>();
@@ -38,19 +38,23 @@ public class FloodUtil
 		Set<Block> blocks1 = getAirFloodBlocks(block, new HashSet<Block>(), exp1, frameBlockSearchLimit);
 		Set<Block> blocks2 = getAirFloodBlocks(block, new HashSet<Block>(), exp2, frameBlockSearchLimit);
 		
-		if (blocks1 == null && blocks2 == null) {
+		if (blocks1 == null && blocks2 == null) 
+		{
 			return null;
 		}
 		
-		if (blocks1 == null) {
+		if (blocks1 == null)
+		{
 			return blocks2;
 		}
 		
-		if (blocks2 == null) {
+		if (blocks2 == null)
+		{
 			return blocks1;
 		}
 		
-		if (blocks1.size() > blocks2.size()) {
+		if (blocks1.size() > blocks2.size())
+		{
 			return blocks2;
 		}
 		
@@ -58,10 +62,12 @@ public class FloodUtil
 	}
 	
 	
-	public static Set<Block> getAirFloodBlocks(Block startBlock, Set<Block> foundBlocks, Set<BlockFace> expandFaces, int limit) 
+	private static Set<Block> getAirFloodBlocks(Block startBlock, Set<Block> foundBlocks, Set<BlockFace> expandFaces, int limit) 
 	{
 		if (foundBlocks == null)
+		{
 			return null;
+		}
 		
 		if  (foundBlocks.size() > limit) 
 		{
