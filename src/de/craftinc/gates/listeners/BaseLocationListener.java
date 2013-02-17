@@ -25,7 +25,7 @@ public abstract class BaseLocationListener
 			// Check if the gate is open and useable
 			World gateWorld = g.getLocation().getWorld();
 			
-			if (g.isOpen() == false || !gateWorld.equals(playerWorld)) {
+			if (!g.isOpen() || !gateWorld.equals(playerWorld)) {
 				continue;
 			}
 			
@@ -37,11 +37,12 @@ public abstract class BaseLocationListener
 					// Check if the gate is still valid
 					try {
 						g.validate();
+	
 						gate = g;
 	                    break;
 					} 
 					catch (Exception e2) {
-						// do nothing - gate is closed
+						break; // do nothing - gate got closed
 					}
                 }
             }
