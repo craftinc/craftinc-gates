@@ -2,8 +2,8 @@ package de.craftinc.gates.util;
 
 import org.bukkit.Location;
 
-public class GeometryUtil {
-	
+public class GeometryUtil 
+{	
 	// How long between two locations?
 	public static double distanceBetweenLocations(Location location1, Location location2) 
 	{

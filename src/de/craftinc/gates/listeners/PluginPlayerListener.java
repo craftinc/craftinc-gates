@@ -14,9 +14,10 @@ import org.bukkit.event.player.PlayerMoveEvent;
 
 import de.craftinc.gates.Gate;
 import de.craftinc.gates.Plugin;
+import de.craftinc.gates.util.GateUtil;
 
 
-public class PluginPlayerListener extends BaseLocationListener implements Listener 
+public class PluginPlayerListener implements Listener 
 {
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerMove(PlayerMoveEvent event) 
@@ -27,7 +28,7 @@ public class PluginPlayerListener extends BaseLocationListener implements Listen
 		
 		
 		// Find the gate at the current location.
-		Gate gateAtLocation = getValidGateAtPlayerLocation(event);
+		Gate gateAtLocation = GateUtil.getGateAtPlayerLocation(event.getTo());
 		
 		
 		if (gateAtLocation == null) {

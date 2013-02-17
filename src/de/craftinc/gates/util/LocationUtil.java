@@ -12,7 +12,7 @@ import de.craftinc.gates.Plugin;
 /**
  * NOTE: We do not care about yaw and pitch for gate locations. So we won't serialize them.
  */
-public class LocationSerializer 
+public class LocationUtil 
 {
 	protected static String worldKey = "world";
 	protected static String xKey = "x";
@@ -83,4 +83,23 @@ public class LocationSerializer
 		
 		return new Location(w, x, y, z);
 	}
+	
+	
+	public static boolean locationsAreAtSamePositions(final Location l1, final Location l2)
+    {
+		if (l1.getWorld() != l2.getWorld() && (l1.getWorld() == null || !l1.getWorld().equals(l2.getWorld()))) {
+			return false;
+        }
+		if (new Double(l1.getX()).longValue() !=  new Double(l2.getX()).longValue()) {
+			return false;
+		}
+		if (new Double(l1.getY()).longValue() != new Double(l2.getY()).longValue()) {
+			return false;
+		}
+		if (new Double(l1.getZ()).longValue() != new Double(l2.getZ()).longValue()) {
+			return false;
+		}
+		
+		return true;
+    }
 }

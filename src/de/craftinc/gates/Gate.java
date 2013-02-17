@@ -10,7 +10,7 @@ import java.util.Map;
 import org.bukkit.Location;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
-import de.craftinc.gates.util.LocationSerializer;
+import de.craftinc.gates.util.LocationUtil;
 
 
 
@@ -81,8 +81,8 @@ public class Gate extends BaseGate implements ConfigurationSerializable
 			isHidden = (Boolean)map.get(isHiddenKey);
 			isOpen = (Boolean)map.get(isOpenKey);
 			
-			location = LocationSerializer.deserializeLocation((Map<String, Object>) map.get(locationKey));
-			exit = LocationSerializer.deserializeLocation((Map<String, Object>) map.get(exitKey));
+			location = LocationUtil.deserializeLocation((Map<String, Object>) map.get(locationKey));
+			exit = LocationUtil.deserializeLocation((Map<String, Object>) map.get(exitKey));
 			
 			if (map.containsKey(exitPitchKey)) {
 				exit.setPitch(((Double)map.get(exitPitchKey)).floatValue());
@@ -98,7 +98,7 @@ public class Gate extends BaseGate implements ConfigurationSerializable
 			List<Map<String, Object>> serializedGateBlocks = (List<Map<String, Object>>)map.get(gateBlocksKey);
 			
 			for (Map<String, Object> sgb : serializedGateBlocks) {
-				gateBlockLocations.add(LocationSerializer.deserializeLocation(sgb));
+				gateBlockLocations.add(LocationUtil.deserializeLocation(sgb));
 			}
 		}
 		catch (Exception e) {
@@ -126,8 +126,8 @@ public class Gate extends BaseGate implements ConfigurationSerializable
 		Map<String, Object> retVal = new HashMap<String, Object>();
 		
 		retVal.put(idKey, id);
-		retVal.put(locationKey, LocationSerializer.serializeLocation(location));		
-		retVal.put(exitKey, LocationSerializer.serializeLocation(exit));
+		retVal.put(locationKey, LocationUtil.serializeLocation(location));		
+		retVal.put(exitKey, LocationUtil.serializeLocation(exit));
 		retVal.put(isHiddenKey, isHidden);
 		retVal.put(isOpenKey, isOpen);
 		
@@ -142,7 +142,7 @@ public class Gate extends BaseGate implements ConfigurationSerializable
 		List<Map<String, Object>> serializedGateBlocks = new ArrayList<Map<String, Object>>();
 		
 		for (Location l : gateBlockLocations) {
-			serializedGateBlocks.add(LocationSerializer.serializeLocation(l));
+			serializedGateBlocks.add(LocationUtil.serializeLocation(l));
 		}
 		
 		retVal.put(gateBlocksKey, serializedGateBlocks);
