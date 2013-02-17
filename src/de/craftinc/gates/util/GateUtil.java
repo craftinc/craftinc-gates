@@ -25,6 +25,7 @@ public class GateUtil
 			if (tempDist < minmalDist) 
 			{
 				gate = g;
+				minmalDist = tempDist;
 			}
 			
 		}
@@ -41,8 +42,6 @@ public class GateUtil
 		
 		// players are sometime stuck into the ground
 		Location locationUp = location.getBlock().getRelative(BlockFace.UP).getLocation();
-
-		System.out.println("player location: " + location);
 		
 		for (Gate g : Gate.getAll()) 
 		{
@@ -65,8 +64,6 @@ public class GateUtil
 				
 				if (LocationUtil.locationsAreAtSamePositions(l, location) || LocationUtil.locationsAreAtSamePositions(l, locationUp)) 
 				{
-					System.out.println("gate location: " + l);
-					
 					// Check if the gate is still valid
 					try {
 						g.validate();
