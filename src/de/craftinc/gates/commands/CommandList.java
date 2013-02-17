@@ -27,6 +27,7 @@ public class CommandList extends BaseCommand
 		
 		requiredPermission = Plugin.permissionInfo;
 		shouldPersistToDisk = false;
+		senderMustBePlayer = false;
 	}
 	
 	

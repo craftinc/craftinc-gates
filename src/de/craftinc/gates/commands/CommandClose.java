@@ -21,6 +21,8 @@ public class CommandClose extends BaseCommand
 		
 		needsPermissionAtCurrentLocation = false;
 		shouldPersistToDisk = true;
+		
+		senderMustBePlayer = false;
 	}
 	
 	

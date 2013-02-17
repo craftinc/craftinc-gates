@@ -22,6 +22,7 @@ public class CommandSetHidden extends BaseCommand
 		
 		needsPermissionAtCurrentLocation = false;
 		shouldPersistToDisk = true;
+		senderMustBePlayer = false;
 	}
 	
 	

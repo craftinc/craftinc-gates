@@ -25,6 +25,7 @@ public class CommandSetLocation extends BaseLocationCommand
 		
 		needsPermissionAtCurrentLocation = true;
 		shouldPersistToDisk = true;
+		senderMustBePlayer = true;
 	}
 	
 	

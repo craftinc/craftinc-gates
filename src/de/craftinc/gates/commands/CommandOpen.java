@@ -21,6 +21,7 @@ public class CommandOpen extends BaseCommand
 		
 		needsPermissionAtCurrentLocation = false;
 		shouldPersistToDisk = true;
+		senderMustBePlayer = false;
 	}
 	
 	

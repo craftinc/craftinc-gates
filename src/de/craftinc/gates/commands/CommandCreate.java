@@ -26,6 +26,8 @@ public class CommandCreate extends BaseLocationCommand
 		
 		needsPermissionAtCurrentLocation = true;
 		shouldPersistToDisk = true;
+		
+		senderMustBePlayer = true;
 	}
 	
 	

@@ -23,6 +23,7 @@ public class CommandSetExit extends BaseCommand
 		
 		needsPermissionAtCurrentLocation = true;
 		shouldPersistToDisk = true;
+		senderMustBePlayer = true;
 	}
 	
 	

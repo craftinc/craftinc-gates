@@ -13,37 +13,25 @@ import de.craftinc.gates.util.TextUtil;
 
 public abstract class BaseCommand 
 {
-	protected List<String> aliases;
-	protected List<String> requiredParameters;
-	protected List<String> optionalParameters;
+	protected List<String> aliases = new ArrayList<String>();
+	protected List<String> requiredParameters = new ArrayList<String>();
+	protected List<String> optionalParameters = new ArrayList<String>();
 	
-	protected String helpDescription;
+	protected String helpDescription = "no description";
 	
 	protected List<String> parameters;
 	protected CommandSender sender;
 	protected Player player;
 	protected Gate gate;
 	
-	protected boolean senderMustBePlayer;
-	protected boolean hasGateParam;
+	protected boolean senderMustBePlayer = true;
+	protected boolean hasGateParam = true; 
 	
 	protected String requiredPermission;
 	protected boolean needsPermissionAtCurrentLocation;
 	
 	protected boolean shouldPersistToDisk;
-	
-	
-	public BaseCommand() 
-	{
-		aliases = new ArrayList<String>();
-		requiredParameters = new ArrayList<String>();
-		optionalParameters = new ArrayList<String>();
-		
-		senderMustBePlayer = true;
-		hasGateParam = true;
-		
-		helpDescription = "no description";
-	}
+
 	
 	public List<String> getAliases() {
 		return aliases;

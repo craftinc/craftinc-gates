@@ -21,6 +21,7 @@ public class CommandSetVisible extends BaseCommand
 		
 		needsPermissionAtCurrentLocation = false;
 		shouldPersistToDisk = true;
+		senderMustBePlayer = false;
 	}
 	
 	

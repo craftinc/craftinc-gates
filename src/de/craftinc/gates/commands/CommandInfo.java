@@ -22,6 +22,7 @@ public class CommandInfo extends BaseCommand
 		
 		needsPermissionAtCurrentLocation = false;
 		shouldPersistToDisk = false;
+		senderMustBePlayer = false;
 	}
 	
 	
