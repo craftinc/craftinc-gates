@@ -69,7 +69,10 @@ Prints all availiable gates.
 * __/gate location,l [id]__
 Sets the entrance of the gate to your current location.
 
-* __/gate rename,changename,cn__ [current name] [new name]
+* __/gate open,o [id]__
+ Open a gate so players can use it.
+
+* __/gate rename,changename,cn [current name] [new name]__
 Changes the name/id of the gate.
 
 * __/gate unhide,uh [id]__
