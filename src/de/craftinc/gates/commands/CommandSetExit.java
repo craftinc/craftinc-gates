@@ -12,8 +12,8 @@ public class CommandSetExit extends BaseCommand
 	
 	public CommandSetExit() 
 	{
-		aliases.add("setExit");
-		aliases.add("se");
+		aliases.add("exit");
+		aliases.add("e");
 		
 		requiredParameters.add("id");		
 		

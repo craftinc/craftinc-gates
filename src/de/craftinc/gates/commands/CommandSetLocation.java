@@ -14,8 +14,8 @@ public class CommandSetLocation extends BaseLocationCommand
 	
 	public CommandSetLocation() 
 	{
-		aliases.add("setLocation");
-		aliases.add("sl");
+		aliases.add("location");
+		aliases.add("l");
 		
 		requiredParameters.add("id");		
 		
