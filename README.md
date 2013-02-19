@@ -31,7 +31,7 @@ Nope. This plugin is very minimalistic and plain. Server operators manage the po
 
 ## Usage
 
-__Note that the commands mentioned in this section commands will be made available with the upcoming 2.1 release of Craft Inc. Gates! Meanwhile type '/gate help' while playing to see the current set of commands.__
+__Note that the commands mentioned in this section will be made available with the upcoming 2.1 release of Craft Inc. Gates! Meanwhile type '/gate help' while playing to see the current set of commands.__
 
 With the __/gate__ plugin you can create gates which will teleport players anywhere you want. Just build a portal (like those nether portal). The gates can look any way you like.
 
