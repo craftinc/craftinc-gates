@@ -1,29 +1,39 @@
 package de.craftinc.gates.listeners;
 
+import java.util.HashMap;
+
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityPortalEnterEvent;
 import org.bukkit.event.player.PlayerPortalEvent;
 
 import de.craftinc.gates.Gate;
 import de.craftinc.gates.Plugin;
 import de.craftinc.gates.util.GateUtil;
 
+
 public class PluginPortalListener implements Listener
 {
+	private HashMap<Player, Gate> currentGateAtEvent = new HashMap<Player, Gate>();
+	
+	
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerPortal(PlayerPortalEvent event)
 	{		
 		if (event.isCancelled())
 		{
-			Plugin.log("event has already been cancelled");
 			return;
 		}
 		
-		Location playerLocation = event.getPlayer().getLocation();
 		
+//		System.out.println(event.getPortalTravelAgent().get);
+		
+		Location playerLocation = event.getPlayer().getLocation();
+
 		// Find the gate at the current location.
 		Gate gateAtLocation = GateUtil.getGateAtPlayerLocation(playerLocation);
 		
@@ -34,26 +44,74 @@ public class PluginPortalListener implements Listener
 		// 
 		if (gateAtLocation == null && event.getPlayer().getGameMode() == GameMode.CREATIVE) 
 		{
-			Gate closestGate = GateUtil.closestGate(playerLocation);
+			Plugin.log("no gate at current location");
 			
-			if (closestGate != null) 
-			{	
-				// Make sure gate and player locations are on the same height (y-value).
-				// Otherwise the distance will be messed up when players are flying.
-				// FIX ME: this could potentially let a nearby nether portal fail!
-				playerLocation.setY(closestGate.getLocation().getY());
-				double distToClosestGate = closestGate.getLocation().distance(playerLocation);
-				
-				if (distToClosestGate <= 5.0) // the player location is often not very accurate
-				{
-					gateAtLocation = closestGate;
-				}
+			gateAtLocation = this.currentGateAtEvent.get(event.getPlayer());
+			
+			if (gateAtLocation != null) {
+				Plugin.log("got gate via EntityPortalEnterEvent");
 			}
+			
+			
+//			Gate closestGate = GateUtil.closestGate(playerLocation);
+//			if (closestGate != null) 
+//			{	
+//				// Make sure gate and player locations are on the same height (y-value).
+//				// Otherwise the distance will be messed up when players are flying.
+//				// FIX ME: this could potentially let a nearby nether portal fail!
+//				playerLocation.setY(closestGate.getLocation().getY());
+//				double distToClosestGate = closestGate.getLocation().distance(playerLocation);
+//				
+//				Plugin.log("closest gate: " + closestGate.getId());
+//				Plugin.log("distance: " + distToClosestGate);
+//				
+//				if (distToClosestGate <= 5.0) // the player location is often not very accurate
+//				{
+//					gateAtLocation = closestGate;
+//				}
+//			}
 		}
 		
 		if (gateAtLocation != null) 
 		{
 			event.setCancelled(true);
+		}
+		
+		
+		this.currentGateAtEvent.put(event.getPlayer(), null);
+	}
+	
+	
+	@EventHandler(priority = EventPriority.NORMAL)
+	public void onEntityPortalEnterEvent(EntityPortalEnterEvent event)
+	{
+		if (event.getEntity() instanceof Player)
+		{
+			Player player = (Player)event.getEntity();
+			
+			if (player.getGameMode() == GameMode.CREATIVE)
+			{
+				Location eventLocation = event.getLocation();
+				Gate closestGate = GateUtil.closestGate(eventLocation);
+				
+				// Make sure gate and event locations are on the same height (y-value).
+				// Otherwise the distance will be messed up when players are flying.
+				// FIX ME: this could potentially let a nearby nether portal fail!
+				eventLocation.setY(closestGate.getLocation().getY());
+				
+				double distToClosestGate = closestGate.getLocation().distance(eventLocation);
+				
+				Plugin.log("closest gate: " + closestGate.getId());
+				Plugin.log("distance: " + distToClosestGate);
+				
+				if (distToClosestGate < 2.0) {
+					this.currentGateAtEvent.put(player, closestGate);
+					return;
+				}
+				
+			}
+			
+			this.currentGateAtEvent.put(player, null);
 		}
 	}
 
