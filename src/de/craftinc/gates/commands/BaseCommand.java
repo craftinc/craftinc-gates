@@ -75,7 +75,7 @@ public abstract class BaseCommand
 	
 	protected boolean validateCall() 
 	{
-		boolean allParamtertersThere = parameters.size() < requiredParameters.size();
+		boolean allParamtertersThere = parameters.size() >= requiredParameters.size();
 		boolean senderIsPlayer = this.sender instanceof Player;
 		boolean parameterIsGate = this.parameters.size() > 0 ? this.getGateForParamater(this.parameters.get(0)) : false;
 		boolean senderHasPermission;
@@ -103,15 +103,16 @@ public abstract class BaseCommand
 			return false;
 		}
 		
+		if (!allParamtertersThere) 
+		{
+			sendMessage("Usage: " + this.getUseageTemplate(true));
+			return false;
+		}
+		
+		
 		if (this.hasGateParam && !parameterIsGate) 
 		{
 			sendMessage(ChatColor.RED + "There exists no gate with id " + this.parameters.get(0));
-			return false;
-		}
-	
-		if (allParamtertersThere) 
-		{
-			sendMessage("Usage: " + this.getUseageTemplate(true));
 			return false;
 		}
 		
