@@ -60,7 +60,7 @@ public class PluginPortalListener implements Listener
 			
 			if (player.getGameMode() == GameMode.CREATIVE)
 			{
-				if (this.currentGateAtEvent.containsKey(player)) 
+				if (this.currentGateAtEvent.get(player) != null) 
 				{
 					return;
 				}
