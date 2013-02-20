@@ -28,48 +28,17 @@ public class PluginPortalListener implements Listener
 		{
 			return;
 		}
-		
-		
-//		System.out.println(event.getPortalTravelAgent().get);
-		
-		Location playerLocation = event.getPlayer().getLocation();
 
-		// Find the gate at the current location.
+		Location playerLocation = event.getPlayer().getLocation();
 		Gate gateAtLocation = GateUtil.getGateAtPlayerLocation(playerLocation);
 		
 		
 		// If the player's gamemode is creative no gate might be found!
 		// It seems like players get teleported on a move event when the 'to' location is
 		// inside a gate. This meens the location obtained earlier is NOT inside a gate.
-		// 
 		if (gateAtLocation == null && event.getPlayer().getGameMode() == GameMode.CREATIVE) 
 		{
-			Plugin.log("no gate at current location");
-			
 			gateAtLocation = this.currentGateAtEvent.get(event.getPlayer());
-			
-			if (gateAtLocation != null) {
-				Plugin.log("got gate via EntityPortalEnterEvent");
-			}
-			
-			
-//			Gate closestGate = GateUtil.closestGate(playerLocation);
-//			if (closestGate != null) 
-//			{	
-//				// Make sure gate and player locations are on the same height (y-value).
-//				// Otherwise the distance will be messed up when players are flying.
-//				// FIX ME: this could potentially let a nearby nether portal fail!
-//				playerLocation.setY(closestGate.getLocation().getY());
-//				double distToClosestGate = closestGate.getLocation().distance(playerLocation);
-//				
-//				Plugin.log("closest gate: " + closestGate.getId());
-//				Plugin.log("distance: " + distToClosestGate);
-//				
-//				if (distToClosestGate <= 5.0) // the player location is often not very accurate
-//				{
-//					gateAtLocation = closestGate;
-//				}
-//			}
 		}
 		
 		if (gateAtLocation != null) 
@@ -91,6 +60,11 @@ public class PluginPortalListener implements Listener
 			
 			if (player.getGameMode() == GameMode.CREATIVE)
 			{
+				if (this.currentGateAtEvent.containsKey(player)) 
+				{
+					return;
+				}
+				
 				Location eventLocation = event.getLocation();
 				Gate closestGate = GateUtil.closestGate(eventLocation);
 				
