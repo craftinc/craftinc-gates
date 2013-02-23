@@ -3,6 +3,7 @@
 * Fixed a bug where players in creative mode would not be teleported correctly.
 * Made various commands available via the server console.
 * Simplified command names.
+* Improved permissions handling. (Added soft dependency for Vault.)
 
 ## 2.0.1a
 * Fixed broken import for gates created with version 2.0.0
