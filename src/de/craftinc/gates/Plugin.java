@@ -63,7 +63,6 @@ public class Plugin extends JavaPlugin
 	@Override
 	public void onLoad() 
 	{
-		setupPermissions();
 		ConfigurationSerialization.registerClass(Gate.class);
 	}
 	
@@ -73,12 +72,17 @@ public class Plugin extends JavaPlugin
 		if (getServer().getPluginManager().getPlugin("Vault") == null) {
             return;
         }
-		
+
 		RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
 		
 		if (rsp != null)
 		{
+			log("Using permission provider provided by Vault.");
 			permission = rsp.getProvider();
+		}
+		else 
+		{
+			log("Not using setup permission provider provided by Vault.");
 		}
 	}
 	
@@ -95,6 +99,9 @@ public class Plugin extends JavaPlugin
 	@Override
 	public void onEnable() 
 	{
+		// Setup permissions
+		setupPermissions();
+		
 		// Add the commands
 		commands.add(new CommandHelp());
 		commands.add(new CommandCreate());
