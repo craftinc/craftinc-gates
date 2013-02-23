@@ -68,21 +68,23 @@ public class PluginPortalListener implements Listener
 				Location eventLocation = event.getLocation();
 				Gate closestGate = GateUtil.closestGate(eventLocation);
 				
-				// Make sure gate and event locations are on the same height (y-value).
-				// Otherwise the distance will be messed up when players are flying.
-				// FIX ME: this could potentially let a nearby nether portal fail!
-				eventLocation.setY(closestGate.getLocation().getY());
-				
-				double distToClosestGate = closestGate.getLocation().distance(eventLocation);
-				
-				Plugin.log("closest gate: " + closestGate.getId());
-				Plugin.log("distance: " + distToClosestGate);
-				
-				if (distToClosestGate < 2.0) {
-					this.currentGateAtEvent.put(player, closestGate);
-					return;
+				if (closestGate != null) 
+				{
+					// Make sure gate and event locations are on the same height (y-value).
+					// Otherwise the distance will be messed up when players are flying.
+					// FIX ME: this could potentially let a nearby nether portal fail!
+					eventLocation.setY(closestGate.getLocation().getY());
+					
+					double distToClosestGate = closestGate.getLocation().distance(eventLocation);
+					
+					Plugin.log("closest gate: " + closestGate.getId());
+					Plugin.log("distance: " + distToClosestGate);
+					
+					if (distToClosestGate < 2.0) {
+						this.currentGateAtEvent.put(player, closestGate);
+						return;
+					}
 				}
-				
 			}
 			
 			this.currentGateAtEvent.put(player, null);
