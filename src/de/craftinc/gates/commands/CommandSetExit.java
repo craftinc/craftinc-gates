@@ -17,7 +17,7 @@ public class CommandSetExit extends BaseCommand
 		
 		requiredParameters.add("id");		
 		
-		helpDescription = "Changes the location where the gate will teleport players to your current location.";
+		helpDescription = "Change exit of location.";
 		
 		requiredPermission = Plugin.permissionManage;
 		
