@@ -2,6 +2,7 @@ package de.craftinc.gates.commands;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -77,50 +78,53 @@ public abstract class BaseCommand
 	{
 		boolean allParamtertersThere = parameters.size() >= requiredParameters.size();
 		boolean senderIsPlayer = this.sender instanceof Player;
-		boolean parameterIsGate = this.parameters.size() > 0 ? this.getGateForParamater(this.parameters.get(0)) : false;
-		boolean senderHasPermission;
+		boolean hasGateParameter = false;
 		
-		try {
-			senderHasPermission = this.hasPermission();
-		} 
-		catch (Exception e) { // the gate paramter is missing or incorrect!
-			senderHasPermission = this.hasGateParam ? false : true; // only display the lack of permission message if there is a gate
-																    // this should prevent giving permission to the user if there is
-																    // a bug inside the permission validation code.
+		if (this.hasGateParam == true && this.parameters.size() > 0 && this.setGateUsingParameter(this.parameters.get(0))) {
+			hasGateParameter = true;
 		}
+		
+		boolean senderHasPermission = this.hasPermission();
 		
 
-		if(!senderHasPermission) 
-		{
-			sendMessage(ChatColor.RED + "You lack the permissions to " + this.helpDescription.toLowerCase() + ".");
-			return false;
-		}
+		boolean valid = false;
 		
-			
 		if (this.senderMustBePlayer && !senderIsPlayer) 
 		{
 			sendMessage(ChatColor.RED + "This command can only be used by ingame players.");
-			return false;
+			valid = false;
 		}
-		
-		if (!allParamtertersThere) 
+		else if (!allParamtertersThere) 
 		{
-			sendMessage("Usage: " + this.getUseageTemplate(true));
-			return false;
+			sendMessage(ChatColor.RED + "Some parameters are missing! " + ChatColor.AQUA + "Usage: " + this.getUseageTemplate(true));
+			valid = false;
+		}
+		else if (!senderHasPermission && this.hasGateParam)
+		{
+			sendMessage(ChatColor.RED + "You either provided a invalid gate or do not have permission to "  + this.helpDescription.toLowerCase());
+			valid = false;
+		}
+		else if (!senderHasPermission) 
+		{
+			sendMessage(ChatColor.RED + "You lack the permissions to " + this.helpDescription.toLowerCase());
+			valid = false;
 		}
 		
-		
-		if (this.hasGateParam && !parameterIsGate) 
+		else if (this.hasGateParam && !hasGateParameter) 
 		{
 			sendMessage(ChatColor.RED + "There exists no gate with id " + this.parameters.get(0));
-			return false;
+			valid = false;
+		}
+		else 
+		{
+			valid = true;
 		}
 		
-		return true;
+		return valid;
 	}
 	
 	
-	protected boolean getGateForParamater(String param)
+	protected boolean setGateUsingParameter(String param)
 	{
 		if (!Gate.exists(param))
 		{
@@ -134,8 +138,10 @@ public abstract class BaseCommand
 	}
 	
 	
-	
-	protected boolean hasPermission() throws Exception
+	/**
+	 * This will return false if a gate is required for this command but this.gate == null.
+	 */
+	protected boolean hasPermission()
 	{		
 		if (Plugin.permission == null) // fallback Ð use the standard bukkit permission system
 		{
@@ -143,51 +149,72 @@ public abstract class BaseCommand
 		}
 		
 		
+		Player p = null;
+		
+		if (this.sender instanceof Player) 
+		{
+			p = (Player) this.sender;
+		}
+		else
+		{
+			Plugin.log(Level.FINE, "Command sender is no player! Switching to bukki for checking permissions!");
+			return this.sender.hasPermission(this.requiredPermission);
+		}
+		
+		
+		boolean hasPermission = false;
+		
 		if (this.requiredPermission.equals(Plugin.permissionInfo))
 		{
-			return Plugin.permission.has(this.player.getWorld(), this.player.getName(), this.requiredPermission);
+			hasPermission = Plugin.permission.has(p.getWorld(), p.getName(), this.requiredPermission);
 		}
-		
-		
-		if (this.requiredPermission.equals(Plugin.permissionUse) )
+		else if (this.requiredPermission.equals(Plugin.permissionUse) )
 		{
-			return this.hasPermissionAtGateLocationAndExit();
+			hasPermission = this.hasPermissionAtGateLocationAndExit(p);
 		}
-			
-		
-		if (this.requiredPermission.equals(Plugin.permissionManage))
+		else if (this.requiredPermission.equals(Plugin.permissionManage))
 		{
+
 			if (this.needsPermissionAtCurrentLocation && this.hasGateParam)
 			{
-				boolean hasPersmissionAtCurrentLocation = Plugin.permission.has(this.player.getWorld(), this.player.getName(), this.requiredPermission);
-				return hasPersmissionAtCurrentLocation && this.hasPermissionAtGateLocationAndExit();
+				boolean hasPersmissionAtCurrentLocation = Plugin.permission.has(p.getWorld(), p.getName(), this.requiredPermission);
+				hasPermission = hasPersmissionAtCurrentLocation && this.hasPermissionAtGateLocationAndExit(p);
 			}
 			else if (this.needsPermissionAtCurrentLocation)
 			{
-				return Plugin.permission.has(this.player.getWorld(), this.player.getName(), this.requiredPermission);
+				hasPermission = Plugin.permission.has(p.getWorld(), p.getName(), this.requiredPermission);
 			}
 			else
 			{
-				return this.hasPermissionAtGateLocationAndExit();
+				hasPermission = this.hasPermissionAtGateLocationAndExit(p);
 			}
 		}
-			
 		
-		return false;
+		return hasPermission;
 	}
 	
 	
-	protected boolean hasPermissionAtGateLocationAndExit() throws Exception
+	protected boolean hasPermissionAtGateLocationAndExit(Player p)
 	{
-		if (this.gate == null) // make sure we don't run into a nullpointer exception
+		if (this.gate == null || p == null) // make sure we don't run into a nullpointer exception
 		{
-			throw new Exception("Cannot check permissons with no gate provided!");
+			return false;
 		}
+
+		boolean permAtLocation = Plugin.permission.has(this.gate.getLocation().getWorld(), p.getName(), this.requiredPermission);
 		
-		boolean permAtLocation = Plugin.permission.has(this.gate.getLocation().getWorld(), player.getName(), this.requiredPermission);
-		boolean permAtExit = Plugin.permission.has(this.gate.getExit().getWorld(), player.getName(), this.requiredPermission);
+		boolean permAtExit;
 		
-		return permAtLocation && permAtExit;
+		if (this.gate.getExit() == null) 
+		{
+			permAtExit = true;
+		}
+		else
+		{
+			permAtExit = Plugin.permission.has(this.gate.getExit().getWorld(), p.getName(), this.requiredPermission);
+		}
+
+		return permAtLocation & permAtExit;
 	}
 	
 	
