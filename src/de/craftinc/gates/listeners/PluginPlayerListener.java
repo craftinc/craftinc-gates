@@ -2,6 +2,7 @@ package de.craftinc.gates.listeners;
 
 import java.util.logging.Level;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -37,6 +38,7 @@ public class PluginPlayerListener implements Listener
 		
 		// Check for permission
 		if (!hasPermission(event.getPlayer(), gateAtLocation)) {
+			event.getPlayer().sendMessage(ChatColor.RED + "Sorry, you are not allowed to use this gate!");
 			return;
 		}
 		
@@ -58,6 +60,8 @@ public class PluginPlayerListener implements Listener
                     
 		event.getPlayer().teleport(teleportToLocation);
 		event.setTo(teleportToLocation);
+		
+		event.getPlayer().sendMessage(ChatColor.DARK_AQUA + "Thank you for traveling with Craft Inc. Gates.");
 	}
 	
 	
@@ -66,7 +70,7 @@ public class PluginPlayerListener implements Listener
 		World w = b.getWorld();
 		Chunk c = b.getChunk();
 		
-		if ( ! w.isChunkLoaded(c) )
+		if (!w.isChunkLoaded(c))
 		{
 		    Plugin.log(Level.FINE, "Loading chunk: " + c.toString() + " on: " + w.toString());
 			w.loadChunk(c);
