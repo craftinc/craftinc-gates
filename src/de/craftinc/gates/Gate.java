@@ -56,6 +56,12 @@ public class Gate extends BaseGate implements ConfigurationSerializable
 
 		this.id = id;
 	}
+	
+	
+	public String toString()
+	{
+		return super.toString() + " " + this.getId();
+	}
 
 
 	/*
