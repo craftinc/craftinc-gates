@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 
 import de.craftinc.gates.Gate;
 import de.craftinc.gates.Plugin;
@@ -45,12 +46,42 @@ public class CommandList extends BaseCommand
 	}
 	
 	
+	/**
+	 * Method for returning a collection of gates the player is allowed to see.
+	 */
+	protected Collection<Gate> getAllGates()
+	{
+		Collection<Gate> gates = Gate.getAll();
+		
+		
+		if (this.sender instanceof Player && Plugin.permission != null)
+		{
+			Player p = (Player)this.sender;
+			Collection<Gate> gatesCopy = new ArrayList<Gate>(gates); // create a copy since we cannot iterate over a collection while modifying it!
+			
+			for (Gate gate : gatesCopy) {
+				
+				if (!Plugin.permission.has(gate.getLocation().getWorld(), p.getName(), this.requiredPermission)) 
+				{
+					gates.remove(gate);
+				}
+				else if (gate.getExit() != null && !Plugin.permission.has(gate.getExit().getWorld(), p.getName(), this.requiredPermission)) 
+				{
+					gates.remove(gate);
+				}
+			}
+		}
+		
+		return gates;
+	}
+	
+	
 	
 	// pages start at 1
 	// will return null if requested page not availible
 	protected List<String> message(int page)
 	{
-		Collection<Gate> gates = Gate.getAll();
+		Collection<Gate> gates = this.getAllGates();
 		
 		if (gates.size() == 0) {
 			return null;
@@ -163,12 +194,13 @@ public class CommandList extends BaseCommand
 			currentPage++;
 		}
 		
-		if (pageMessages.isEmpty()) {
+		if (pageMessages.isEmpty()) 
+		{
 			return null;
 		} 
 		else {
 			ArrayList<String> retVal = new ArrayList<String>();
-			retVal.add(TextUtil.titleize("List of all gates (" + page + "/" + + --currentPage + ")"));
+			retVal.add(TextUtil.titleize("List of all gates (" + page + "/" + --currentPage + ")"));
 			retVal.addAll(pageMessages);
 			
 			return retVal;
@@ -176,30 +208,41 @@ public class CommandList extends BaseCommand
 	}
 	
 	
+	protected int getPageParameter()
+	{
+		int page = 1;
+		
+		try {
+			page = new Integer(parameters.get(0));
+		} 
+		catch (Exception e) { }
+		
+		return page;
+	}
+	
+	
 	public void perform() 
 	{
-		Collection<Gate> gates = Gate.getAll();
+		int page = this.getPageParameter();
 		
-		if (gates.size() == 0) {
-			sendMessage(ChatColor.RED + "There are no gates yet.");
-		}
-		else {
-			int page = 1;
-			
-			try {
-				page = new Integer(parameters.get(0));
-			} 
-			catch (Exception e) {
+		List<String> messages = message(page);
+		
+		if (messages == null) 
+		{	
+			if (page == 1) // no gates exist
+			{
+				sendMessage(ChatColor.RED + "There are no gates yet. " + ChatColor.RESET + 
+						    "(Note that you might not be allowed to get information about certain gates)");
 			}
-			
-			List<String> messages = message(page);
-			
-			if (messages == null) {
+			else // the requested page does not exist
+			{
 				sendMessage(ChatColor.RED + "The requested page is not availible");
 			}
-			else {
-				sendMessage(messages);
-			}
+
+		}
+		else 
+		{
+			sendMessage(messages);
 		}
 	}
 }

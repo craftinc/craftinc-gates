@@ -2,7 +2,6 @@ package de.craftinc.gates.commands;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -157,8 +156,8 @@ public abstract class BaseCommand
 		}
 		else
 		{
-			Plugin.log(Level.FINE, "Command sender is no player! Switching to bukki for checking permissions!");
-			return this.sender.hasPermission(this.requiredPermission);
+			// sender is no player Ð there is no information about the senders locations
+			return Plugin.permission.has(this.sender, this.requiredPermission);
 		}
 		
 		
@@ -166,7 +165,14 @@ public abstract class BaseCommand
 		
 		if (this.requiredPermission.equals(Plugin.permissionInfo))
 		{
-			hasPermission = Plugin.permission.has(p.getWorld(), p.getName(), this.requiredPermission);
+			if (this.hasGateParam)
+			{
+				hasPermission = this.hasPermissionAtGateLocationAndExit(p);
+			}
+			else
+			{
+				hasPermission = Plugin.permission.has(p.getWorld(), p.getName(), this.requiredPermission);
+			}
 		}
 		else if (this.requiredPermission.equals(Plugin.permissionUse) )
 		{
@@ -174,7 +180,6 @@ public abstract class BaseCommand
 		}
 		else if (this.requiredPermission.equals(Plugin.permissionManage))
 		{
-
 			if (this.needsPermissionAtCurrentLocation && this.hasGateParam)
 			{
 				boolean hasPersmissionAtCurrentLocation = Plugin.permission.has(p.getWorld(), p.getName(), this.requiredPermission);
