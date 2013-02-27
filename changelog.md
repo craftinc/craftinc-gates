@@ -4,6 +4,7 @@
 * Made various commands available via the server console.
 * Simplified command names.
 * Improved permissions handling. (Added soft dependency for Vault.)
+* A message will be displayed after a player has been teleported. There is also a message displayed if a player is not allowed to use a gate.
 
 ## 2.0.1a
 * Fixed broken import for gates created with version 2.0.0
