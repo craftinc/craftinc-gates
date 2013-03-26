@@ -12,7 +12,6 @@ import org.bukkit.event.entity.EntityPortalEnterEvent;
 import org.bukkit.event.player.PlayerPortalEvent;
 
 import de.craftinc.gates.Gate;
-import de.craftinc.gates.Plugin;
 import de.craftinc.gates.util.GateUtil;
 
 
