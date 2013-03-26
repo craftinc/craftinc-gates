@@ -1,4 +1,4 @@
-## 2.1.0 (not yet released)
+## 2.1.0
 * Command outputs are now colored.
 * Fixed a bug where players in creative mode would not be teleported correctly.
 * Made various commands available via the server console.
