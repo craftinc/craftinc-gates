@@ -76,10 +76,7 @@ public class PluginPortalListener implements Listener
 					eventLocation.setY(closestGate.getLocation().getY());
 					
 					double distToClosestGate = closestGate.getLocation().distance(eventLocation);
-					
-					Plugin.log("closest gate: " + closestGate.getId());
-					Plugin.log("distance: " + distToClosestGate);
-					
+
 					if (distToClosestGate < 2.0) {
 						this.currentGateAtEvent.put(player, closestGate);
 						return;

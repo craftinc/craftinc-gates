@@ -31,12 +31,8 @@ public class CommandSetExit extends BaseCommand
 	{
 		try 
 		{
-			System.out.println(gate.getExit());
-			
 			gate.setExit(player.getLocation());
 			sendMessage(ChatColor.GREEN + "The exit of gate '" + gate.getId() + "' is now where you stand.");
-			
-			System.out.println(gate.getExit());
 		} 
 		catch (Exception e) {
 			sendMessage(ChatColor.RED + "Setting the exit for the gate failed! See server log for more information");
