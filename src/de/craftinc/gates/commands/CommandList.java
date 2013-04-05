@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.event.world.WorldEvent;
 
 import de.craftinc.gates.Gate;
 import de.craftinc.gates.Plugin;
@@ -61,11 +62,17 @@ public class CommandList extends BaseCommand
 			
 			for (Gate gate : gatesCopy) {
 				
-				if (!Plugin.permission.has(gate.getLocation().getWorld(), p.getName(), this.requiredPermission)) 
+				String gateLocationWorld = gate.getLocation().getWorld();
+				boolean permissionAtGateLocation = Plugin.permission.has(gateLocationWorld, p.getName(), this.requiredPermission);
+				
+				if (!permissionAtGateLocation) 
 				{
 					gates.remove(gate);
+					continue;
 				}
-				else if (gate.getExit() != null && !Plugin.permission.has(gate.getExit().getWorld(), p.getName(), this.requiredPermission)) 
+				
+				boolean permissionAtGateExit = gate.getExit() != null && !Plugin.permission.has(gate.getExit().getWorld(), p.getName(), this.requiredPermission);
+				if (!permissionAtGateExit) 
 				{
 					gates.remove(gate);
 				}
