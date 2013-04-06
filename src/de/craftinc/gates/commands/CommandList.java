@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.bukkit.event.world.WorldEvent;
 
 import de.craftinc.gates.Gate;
 import de.craftinc.gates.Plugin;
@@ -33,7 +32,7 @@ public class CommandList extends BaseCommand
 	}
 	
 	
-	protected String intToTitleString(int i)
+	protected static String intToTitleString(int i)
 	{
 		if ( i < 26 ) {
 			return ChatColor.DARK_AQUA + "" + (char)(i+65) + ":";
@@ -54,7 +53,6 @@ public class CommandList extends BaseCommand
 	{
 		Collection<Gate> gates = Gate.getAll();
 		
-		
 		if (this.sender instanceof Player && Plugin.permission != null)
 		{
 			Player p = (Player)this.sender;
@@ -62,8 +60,7 @@ public class CommandList extends BaseCommand
 			
 			for (Gate gate : gatesCopy) {
 				
-				String gateLocationWorld = gate.getLocation().getWorld();
-				boolean permissionAtGateLocation = Plugin.permission.has(gateLocationWorld, p.getName(), this.requiredPermission);
+				boolean permissionAtGateLocation = Plugin.permission.has(gate.getLocation().getWorld(), p.getName(), this.requiredPermission);
 				
 				if (!permissionAtGateLocation) 
 				{
@@ -71,8 +68,8 @@ public class CommandList extends BaseCommand
 					continue;
 				}
 				
-				boolean permissionAtGateExit = gate.getExit() != null && !Plugin.permission.has(gate.getExit().getWorld(), p.getName(), this.requiredPermission);
-				if (!permissionAtGateExit) 
+				boolean permissionAtGateExit = Plugin.permission.has(gate.getExit().getWorld(), p.getName(), this.requiredPermission);
+				if (gate.getExit() != null && !permissionAtGateExit) 
 				{
 					gates.remove(gate);
 				}
@@ -83,30 +80,22 @@ public class CommandList extends BaseCommand
 	}
 	
 	
-	
-	// pages start at 1
-	// will return null if requested page not availible
-	protected List<String> message(int page)
+	/* sort all gates by there first character
+	 * put gates in corresponding Lists
+	 * all returned lists will be sorted alphabetically
+	 * list 0-25: a,b,c, ... ,z
+	 * list 26: 0-9
+	 * list 27: other
+	 */
+	protected List<List<String>> gatesSortedByName(Collection<Gate> allGates)
 	{
-		Collection<Gate> gates = this.getAllGates();
-		
-		if (gates.size() == 0) {
-			return null;
-		}
-		
-		/* sort all gates by there first character
-		 * put gates in corresponding Lists
-		 * list 0-25: a,b,c, ... ,z
-		 * list 26: 0-9
-		 * list 27: other
-		 */
 		List<List<String>> ids = new ArrayList<List<String>>();
 		
 		for (int i=0; i<28; i++) {
 			ids.add(new ArrayList<String>());
 		}
 		
-		for (Gate gate : gates) {
+		for (Gate gate : allGates) {
 			String id = gate.getId();
 			int first = id.charAt(0);
 			
@@ -126,12 +115,30 @@ public class CommandList extends BaseCommand
 			ids.get(first).add(id);
 		}
 		
+		for (int i=0; i<28; i++) {
+			Collections.sort(ids.get(i));
+		}
+		
+		return ids;
+	}
+	
+	
+	// pages start at 1
+	// will return null if requested page not availible
+	protected List<String> message(int page)
+	{
+		Collection<Gate> gates = this.getAllGates();
+		
+		if (gates.size() == 0) {
+			return null;
+		}
+		
+		List<List<String>> ids = gatesSortedByName(gates);
 		
 		/* calculating which gates will be displayed on which page.
 		 * this is a little bit fuzzy. but hopefully it will look
 		 * great. (tell me if there is a better way!)
 		 */
-		
 		int currentPage = 1;
 		int currentStartingCharList = 0;
 		boolean finishedCurrentIds = true;
@@ -149,9 +156,6 @@ public class CommandList extends BaseCommand
 					if (currentPage == page) {
 						pageMessages.add(intToTitleString(currentStartingCharList));
 					}
-					
-					//sort
-					Collections.sort(currentIds);
 				
 					// add ids
 					int numLinesForCurrentChar = TextUtil.implode(currentIds, ", ").length() / 52 + 2;
@@ -201,8 +205,7 @@ public class CommandList extends BaseCommand
 			currentPage++;
 		}
 		
-		if (pageMessages.isEmpty()) 
-		{
+		if (pageMessages.isEmpty()) {
 			return null;
 		} 
 		else {
@@ -234,21 +237,16 @@ public class CommandList extends BaseCommand
 		
 		List<String> messages = message(page);
 		
-		if (messages == null) 
-		{	
-			if (page == 1) // no gates exist
-			{
+		if (messages == null) {	
+			if (page == 1) { // no gates exist
 				sendMessage(ChatColor.RED + "There are no gates yet. " + ChatColor.RESET + 
 						    "(Note that you might not be allowed to get information about certain gates)");
 			}
-			else // the requested page does not exist
-			{
+			else { // the requested page does not exist
 				sendMessage(ChatColor.RED + "The requested page is not availible");
 			}
-
 		}
-		else 
-		{
+		else {
 			sendMessage(messages);
 		}
 	}
