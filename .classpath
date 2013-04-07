@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="/Users/tobi/Code/craftbukkit-1.4.5-R1.0.jar" sourcepath="/Users/tobi/Code/Bukkit">
-		<attributes>
-			<attribute name="source_encoding" value="UTF-8"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="lib" path="/Users/tobi/Code/Vault.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="/Users/tobi/Code/craftbukkit-1.5.1-R0.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
