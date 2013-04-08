@@ -1,5 +1,10 @@
 package de.craftinc.gates.listeners;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.TimerTask;
 import java.util.logging.Level;
 
 import org.bukkit.ChatColor;
@@ -20,6 +25,8 @@ import de.craftinc.gates.util.GateUtil;
 
 public class PluginPlayerListener implements Listener 
 {
+	protected HashMap<String, Long> lastBorderMessage = new HashMap<String, Long>();
+	
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerMove(PlayerMoveEvent event) 
 	{
@@ -38,7 +45,22 @@ public class PluginPlayerListener implements Listener
 		
 		// Check for permission
 		if (!hasPermission(event.getPlayer(), gateAtLocation)) {
-			event.getPlayer().sendMessage(ChatColor.RED + "Sorry, you are not allowed to use this gate!");
+			
+			String playerName = event.getPlayer().getName();
+			
+			if (playerName == null) {
+				return;
+			}
+	        
+	        // get the current time
+	        Long now = Calendar.getInstance().getTimeInMillis();
+			
+			// do not display messages more often than once per second
+			if (!this.lastBorderMessage.containsKey(playerName) || this.lastBorderMessage.get(playerName) < now - 10000L) {
+				event.getPlayer().sendMessage(ChatColor.RED + "You are not allowed to use this gate!");
+				this.lastBorderMessage.put(playerName, now);
+			}
+			
 			return;
 		}
 		
@@ -80,7 +102,7 @@ public class PluginPlayerListener implements Listener
 	
 	protected boolean hasPermission(Player player, Gate gate) 
 	{
-		if (Plugin.permission == null) // fallback Ð use the standard bukkit permission system
+		if (Plugin.permission == null) // fallback: use the standard bukkit permission system
 		{
 			return player.hasPermission(Plugin.permissionUse);
 		}
