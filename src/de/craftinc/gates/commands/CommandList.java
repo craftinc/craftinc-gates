@@ -15,6 +15,15 @@ import de.craftinc.gates.util.TextUtil;
 
 public class CommandList extends BaseCommand
 {
+	protected static final int linesPerPage = 10; 
+	protected static final int charactersPerLine = 52; /* this is actually no true. the 
+														  font used by minecraft is not
+														  monospace. but I don't think 
+														  there is a (easy) way for a 
+														  bukkit plugin to calculate 
+														  the drawing-size of a string. 
+														*/
+	
 	public CommandList() 
 	{
 		aliases.add("list");
@@ -32,46 +41,126 @@ public class CommandList extends BaseCommand
 	}
 	
 	
-	protected static String intToTitleString(int i)
+	protected static List<String> linesOfGateIds(List<String> gates)
 	{
+		List<String> lines = new ArrayList<String>();
+		
+		int index = 0;
+		List<String> gateIdsForCurrentLine = new ArrayList<String>();
+		int numCharactersInCurrentLine = 0;
+		
+		
+		while (index < gates.size()) {
+			String gateId = gates.get(index);
+			int gateIdLength = gateId.length() + 2; // actual length + comma + whitespace
+			
+			// special case: very long gate id
+			if (gateIdLength > charactersPerLine && numCharactersInCurrentLine == 0) {
+				gateIdsForCurrentLine = new ArrayList<String>();
+				numCharactersInCurrentLine = 0;
+				
+				while ((gateId.length() + 2) > charactersPerLine) {
+					
+					int cutPos = charactersPerLine;
+					
+					// is the id too long to add comma and whitespace but not longer than the line?
+					if (gateId.length() <= charactersPerLine) {
+						cutPos -= 2;
+					}
+					
+					lines.add(gateId.substring(0, cutPos));
+					gateId = gateId.substring(cutPos, gateId.length());
+					
+				}
+				
+//				if (index == (gates.size() - 1)) {
+					gateIdsForCurrentLine.add(gateId);
+//				}
+//				else {
+//					gateIdsForCurrentLine.add(gateId + ", ");
+//				}
+				
+				numCharactersInCurrentLine += gateId.length();
+				index++;
+			}
+			
+			// gate fits into current line
+			else if ((numCharactersInCurrentLine + gateIdLength) <= charactersPerLine) {
+				gateIdsForCurrentLine.add(gateId);
+				numCharactersInCurrentLine += gateIdLength;
+				
+				index++;
+			}
+			
+			// the current gate does not fit on the
+			else {  
+				lines.add(TextUtil.implode(gateIdsForCurrentLine, ", ") + ", ");
+				
+				gateIdsForCurrentLine = new ArrayList<String>();
+				numCharactersInCurrentLine = 0;
+			}	
+		}
+		
+		lines.add(TextUtil.implode(gateIdsForCurrentLine, ", "));
+		return lines;
+	}
+	
+	
+	protected static String intToTitleString(int i, boolean addPreviousPageNote, boolean addNextPageNote)
+	{
+		String retVal = ChatColor.DARK_AQUA + "";
+		
 		if ( i < 26 ) {
-			return ChatColor.DARK_AQUA + "" + (char)(i+65) + ":";
+			retVal += (char)(i+65);
 		}
 		else if ( i == 26 ) {
-			return ChatColor.DARK_AQUA + "0 - 9:";
+			retVal += "0-9";
 		} 
 		else {
-			return ChatColor.DARK_AQUA + "!@#$:";
+			retVal += "!@#$";
 		}
+		
+		if (addPreviousPageNote && addNextPageNote) {
+			retVal += " (more on previous and next page)";
+		}
+		else if (addPreviousPageNote) {
+			retVal += " (more on previous page)";
+		}
+		else if (addNextPageNote) {
+			retVal += " (more on next page)";
+		}
+		
+		return retVal + "\n";
 	}
 	
 	
 	/**
-	 * Method for returning a collection of gates the player is allowed to see.
+	 * Method for getting a collection of gates the player is allowed to see.
 	 */
 	protected Collection<Gate> getAllGates()
 	{
 		Collection<Gate> gates = Gate.getAll();
 		
-		if (this.sender instanceof Player && Plugin.permission != null)
-		{
+		if (this.sender instanceof Player && Plugin.permission != null) {
 			Player p = (Player)this.sender;
-			Collection<Gate> gatesCopy = new ArrayList<Gate>(gates); // create a copy since we cannot iterate over a collection while modifying it!
+			
+			// create a copy since we cannot iterate over a collection while modifying it!
+			Collection<Gate> gatesCopy = new ArrayList<Gate>(gates); 
 			
 			for (Gate gate : gatesCopy) {
 				
 				boolean permissionAtGateLocation = Plugin.permission.has(gate.getLocation().getWorld(), p.getName(), this.requiredPermission);
-				
-				if (!permissionAtGateLocation) 
-				{
+				if (!permissionAtGateLocation) {
 					gates.remove(gate);
 					continue;
 				}
 				
-				boolean permissionAtGateExit = Plugin.permission.has(gate.getExit().getWorld(), p.getName(), this.requiredPermission);
-				if (gate.getExit() != null && !permissionAtGateExit) 
-				{
-					gates.remove(gate);
+				if (gate.getExit() != null) {
+					
+					boolean permissionAtGateExit = Plugin.permission.has(gate.getExit().getWorld(), p.getName(), this.requiredPermission);
+					if (!permissionAtGateExit) {
+						gates.remove(gate);
+					}
 				}
 			}
 		}
@@ -80,21 +169,23 @@ public class CommandList extends BaseCommand
 	}
 	
 	
-	/* sort all gates by there first character
-	 * put gates in corresponding Lists
-	 * all returned lists will be sorted alphabetically
-	 * list 0-25: a,b,c, ... ,z
-	 * list 26: 0-9
-	 * list 27: other
+	/**
+	 * Sorts all gates by there first character.
+	 * Puts gates in corresponding Lists: (all returned lists will be sorted alphabetically)
+	 * 	list 0-25: a,b,c,..,z
+	 * 	list 26: 0-9
+	 * 	list 27: other
 	 */
-	protected List<List<String>> gatesSortedByName(Collection<Gate> allGates)
+	protected static List<List<String>> gatesSortedByName(Collection<Gate> allGates)
 	{
+		// create the lists
 		List<List<String>> ids = new ArrayList<List<String>>();
 		
 		for (int i=0; i<28; i++) {
 			ids.add(new ArrayList<String>());
 		}
 		
+		// put all gates into correct lists
 		for (Gate gate : allGates) {
 			String id = gate.getId();
 			int first = id.charAt(0);
@@ -115,6 +206,7 @@ public class CommandList extends BaseCommand
 			ids.get(first).add(id);
 		}
 		
+		// sort everything
 		for (int i=0; i<28; i++) {
 			Collections.sort(ids.get(i));
 		}
@@ -123,9 +215,13 @@ public class CommandList extends BaseCommand
 	}
 	
 	
-	// pages start at 1
-	// will return null if requested page not availible
-	protected List<String> message(int page)
+	/**
+	 * Returns a list of strings.
+	 * Each string is the text for a page.
+	 * The maximum number of lines per page is 'linesPerPage' minus 1.
+	 * Will return an empty list if no gates are availible.
+	 */
+	protected List<String> pagedGateIds()
 	{
 		Collection<Gate> gates = this.getAllGates();
 		
@@ -133,88 +229,80 @@ public class CommandList extends BaseCommand
 			return null;
 		}
 		
-		List<List<String>> ids = gatesSortedByName(gates);
+		List<List<String>> gatesSortedByName = gatesSortedByName(gates);
+		List<String> allPages = new ArrayList<String>();
+		int linesLeftOnPage = linesPerPage - 1;
+		String currentPageString = "";
 		
-		/* calculating which gates will be displayed on which page.
-		 * this is a little bit fuzzy. but hopefully it will look
-		 * great. (tell me if there is a better way!)
-		 */
-		int currentPage = 1;
-		int currentStartingCharList = 0;
-		boolean finishedCurrentIds = true;
-		
-		List<String> pageMessages = new ArrayList<String>();
-		
-		while (currentStartingCharList < ids.size()) {
-			int linesLeftOnCurrentPage = 9;
+		for (int i=0; i<gatesSortedByName.size(); i++) {
 			
-			while (linesLeftOnCurrentPage > 1 && currentStartingCharList < ids.size()) {
-				List<String> currentIds = ids.get(currentStartingCharList);
-				
-				if (currentIds.size() > 0) {
-					// add header line
-					if (currentPage == page) {
-						pageMessages.add(intToTitleString(currentStartingCharList));
-					}
-				
-					// add ids
-					int numLinesForCurrentChar = TextUtil.implode(currentIds, ", ").length() / 52 + 2;
-					
-					if (numLinesForCurrentChar <= linesLeftOnCurrentPage) { // all ids fit on current page
-						linesLeftOnCurrentPage -= numLinesForCurrentChar;
-						
-						if (currentPage == page) {
-							pageMessages.add(ChatColor.AQUA + TextUtil.implode(currentIds, ", "));
-							if (finishedCurrentIds == false) {
-								pageMessages.set(pageMessages.size() -2, pageMessages.get(pageMessages.size() -2) + " (more on previous page)");
-							}
-						}
-						
-						finishedCurrentIds = true;
-					}
-					else { // NOT all ids fit on current page
-						int charsAvailible = (linesLeftOnCurrentPage - 1) * 52;
-						int idsPos = 0;
-						
-						do {
-							charsAvailible -= currentIds.get(idsPos).length() + 2;				
-							idsPos++;
-						} while (charsAvailible > 0);
-						
-						List<String> idsToPutOnCurrentPage = currentIds.subList(0, idsPos);
-						currentIds.remove(idsToPutOnCurrentPage);
-						
-						String stringToPutOnCurrentPage = TextUtil.implode(idsToPutOnCurrentPage, ", ");
-						
-						if (currentPage == page) {
-							pageMessages.add(ChatColor.AQUA + stringToPutOnCurrentPage);
-							pageMessages.set(pageMessages.size() -2, pageMessages.get(pageMessages.size() -2) + " (more on next page)");
-						}
-						
-						linesLeftOnCurrentPage -= stringToPutOnCurrentPage.length() / 52 + 2;
-						
-						finishedCurrentIds = false;
-					}
-				}
-				
-				if (finishedCurrentIds) {
-					currentStartingCharList++;
-				}
+			List<String> currentGates = gatesSortedByName.get(i);
+			
+			if(currentGates.isEmpty()) {
+				continue;
 			}
 			
-			currentPage++;
+			List<String> currentGatesAsLines = linesOfGateIds(currentGates);
+			boolean moreGatesOnLastPage = false;
+			
+			while (!currentGatesAsLines.isEmpty()) {
+				
+				if (linesLeftOnPage < 2) {
+					currentPageString = currentPageString.substring(0, currentPageString.length()-2); // remove newlines add the end of the page
+					allPages.add(currentPageString);
+					currentPageString = "";
+					
+					linesLeftOnPage = linesPerPage - 1;
+				}
+				
+				// calculate number of lines to add to current page
+				int linesNecessaryForCurrentGates = currentGatesAsLines.size();
+				int linesToFill;
+				boolean moreGatesOnNextPage;
+					
+				if (linesNecessaryForCurrentGates < linesLeftOnPage) {
+					linesToFill = linesNecessaryForCurrentGates;
+					moreGatesOnNextPage = false;
+				}
+				else {
+					linesToFill = linesLeftOnPage -1;
+					moreGatesOnNextPage = true;
+				}
+				
+				// add title
+				currentPageString += intToTitleString(i, moreGatesOnLastPage, moreGatesOnNextPage);
+				currentPageString +=  ChatColor.AQUA;
+				linesLeftOnPage--;
+				
+				// add gate lines
+				for (int j=0; j<linesToFill; j++) {
+					currentPageString += currentGatesAsLines.get(j) + "\n";
+				}
+				
+				// remove lines added
+				for (int j=0; j<linesToFill; j++) {
+					currentGatesAsLines.remove(0);
+				}
+				
+				// cleanup
+				if (linesNecessaryForCurrentGates < linesLeftOnPage) {
+					moreGatesOnLastPage = false;
+				}
+				else {
+					moreGatesOnLastPage = true;
+				}
+				
+				linesLeftOnPage -= linesToFill;
+			}
 		}
 		
-		if (pageMessages.isEmpty()) {
-			return null;
-		} 
-		else {
-			ArrayList<String> retVal = new ArrayList<String>();
-			retVal.add(TextUtil.titleize("List of all gates (" + page + "/" + --currentPage + ")"));
-			retVal.addAll(pageMessages);
-			
-			return retVal;
+		// add the last page
+		if (!currentPageString.isEmpty()) {
+			currentPageString = currentPageString.substring(0, currentPageString.length()-2); // remove newlines add the end of the page
+			allPages.add(currentPageString);
 		}
+		
+		return allPages;
 	}
 	
 	
@@ -234,21 +322,23 @@ public class CommandList extends BaseCommand
 	public void perform() 
 	{
 		int page = this.getPageParameter();
-		
-		List<String> messages = message(page);
-		
-		if (messages == null) {	
-			if (page == 1) { // no gates exist
-				sendMessage(ChatColor.RED + "There are no gates yet. " + ChatColor.RESET + 
-						    "(Note that you might not be allowed to get information about certain gates)");
-			}
-			else { // the requested page does not exist
-				sendMessage(ChatColor.RED + "The requested page is not availible");
-			}
+		List<String> allPages = this.pagedGateIds();
+
+		if (allPages == null) {	// no gates exist
+			sendMessage(ChatColor.RED + "There are no gates yet. " + ChatColor.RESET + 
+					    "(Note that you might not be allowed to get information about certain gates)");
+			return;
 		}
-		else {
-			sendMessage(messages);
+			
+		if (page > allPages.size() || page < 1) {
+			sendMessage(ChatColor.RED + "The requested page is not availible");
+			return;
 		}
+		
+		String message = TextUtil.titleize("List of all gates (" + page + "/" + allPages.size() + ")") + "\n";
+		message += allPages.get(page-1);
+
+		sendMessage(message);
 	}
 }
 
