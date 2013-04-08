@@ -72,13 +72,8 @@ public class CommandList extends BaseCommand
 					gateId = gateId.substring(cutPos, gateId.length());
 					
 				}
-				
-//				if (index == (gates.size() - 1)) {
-					gateIdsForCurrentLine.add(gateId);
-//				}
-//				else {
-//					gateIdsForCurrentLine.add(gateId + ", ");
-//				}
+
+				gateIdsForCurrentLine.add(gateId);
 				
 				numCharactersInCurrentLine += gateId.length();
 				index++;
