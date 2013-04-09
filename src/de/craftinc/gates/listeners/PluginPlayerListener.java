@@ -1,10 +1,7 @@
 package de.craftinc.gates.listeners;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.TimerTask;
 import java.util.logging.Level;
 
 import org.bukkit.ChatColor;
