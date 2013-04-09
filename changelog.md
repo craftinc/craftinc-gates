@@ -1,3 +1,6 @@
+## 2.1.1
+* Made the list command more reliable.
+* Error messages will be displayed less frequent.
 ## 2.1.0
 * Command outputs are now colored.
 * Fixed a bug where players in creative mode would not be teleported correctly.
