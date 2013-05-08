@@ -99,13 +99,13 @@ public class PluginPlayerListener implements Listener
 	
 	protected boolean hasPermission(Player player, Gate gate) 
 	{
-		if (Plugin.permission == null) // fallback: use the standard bukkit permission system
+		if (Plugin.getPermission() == null) // fallback: use the standard bukkit permission system
 		{
 			return player.hasPermission(Plugin.permissionUse);
 		}
 		else {
-			boolean permAtLocation = Plugin.permission.has(gate.getLocation().getWorld(), player.getName(), Plugin.permissionUse);
-			boolean permAtExit = Plugin.permission.has(gate.getExit().getWorld(), player.getName(), Plugin.permissionUse);
+			boolean permAtLocation = Plugin.getPermission().has(gate.getLocation().getWorld(), player.getName(), Plugin.permissionUse);
+			boolean permAtExit = Plugin.getPermission().has(gate.getExit().getWorld(), player.getName(), Plugin.permissionUse);
 			
 			return permAtLocation && permAtExit;
 		}

@@ -1,57 +1,36 @@
 package de.craftinc.gates;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 
 import net.milkbowl.vault.permission.Permission;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import de.craftinc.gates.commands.*;
-import de.craftinc.gates.listeners.PluginBlockListener;
 import de.craftinc.gates.listeners.PluginPlayerListener;
-import de.craftinc.gates.listeners.PluginPortalListener;
 
 
 public class Plugin extends JavaPlugin 
 {
-	public static Plugin instance;
-	
 	public static final String permissionInfo = "craftincgates.info";
 	public static final String permissionManage = "craftincgates.manage";
-//	public static final String permissionAll = "craftincgates.*";
 	public static final String permissionUse = "craftincgates.use";
 	
-	public static Permission permission = null;
-	
-	public PluginPlayerListener playerListener = new PluginPlayerListener();
-	public PluginBlockListener blockListener = new PluginBlockListener();
-	public PluginPortalListener portalListener = new PluginPortalListener();
-	
-	private File gatesConfigFile;
-	private FileConfiguration gatesConfig;
+	private static Plugin instance;
+	private static Permission permission;
 	
 	private String baseCommand;
-	
-	private String gatesPath = "gates";
-	
-	
-	// Commands
-	public List<BaseCommand> commands = new ArrayList<BaseCommand>();
+	private PluginPlayerListener playerListener = new PluginPlayerListener();
+	private List<BaseCommand> commands = new ArrayList<BaseCommand>();
+	private GatesManager gatesManager = new GatesManager();
 	
 	
 	public Plugin()
@@ -60,6 +39,18 @@ public class Plugin extends JavaPlugin
 	}
 	
 	
+	public static Plugin getPlugin()
+	{
+		return instance;
+	}
+	
+	
+	public GatesManager getGatesManager() 
+	{
+		return gatesManager;
+	}
+
+
 	@Override
 	public void onLoad() 
 	{
@@ -91,7 +82,8 @@ public class Plugin extends JavaPlugin
 	public void onDisable() 
 	{
 		// Save gates
-		saveGates();
+		gatesManager.saveGatesToDisk();
+		
 		log("Disabled");
 	}
 
@@ -120,24 +112,9 @@ public class Plugin extends JavaPlugin
 		// Register events
 		PluginManager pm = this.getServer().getPluginManager();
 		pm.registerEvents(this.playerListener, this);
-		pm.registerEvents(this.blockListener, this);
-		pm.registerEvents(this.portalListener, this);
 		
 		// Load gates
-		this.gatesConfigFile  = new File(getDataFolder(), "gates.yml");
-		
-		if(!this.gatesConfigFile.exists()) 
-		{
-			try {
-				this.gatesConfigFile.createNewFile();
-			} catch (IOException e) {
-				log(Level.SEVERE, "Cannot create gate config file! No gates will be persisted.");
-			}
-		}
-		
-		this.gatesConfig = YamlConfiguration.loadConfiguration(gatesConfigFile);
-		
-		loadGates();
+		gatesManager.loadGatesFromDisk();
 		
 		log("Enabled");
 	}
@@ -202,89 +179,13 @@ public class Plugin extends JavaPlugin
 	}
 	
 	
-	public static void log(Level level, String msg) {
+	public static void log(Level level, String msg) 
+	{
 		Logger.getLogger("Minecraft").log(level, "["+instance.getDescription().getFullName()+"] "+msg);
 	}
-	
-	/*
-	 * Saving and Loading Gates
-	 */
-	public void loadGates() 
-	{
-		File gatesFile = new File(getDataFolder(), "gates.yml");
-		FileConfiguration gatesConfig = YamlConfiguration.loadConfiguration(gatesFile);
-		
-		gatesConfig.getList(gatesPath); // this will create all the gates
-	}
-	
-	
-	public void saveGates()
-	{
-		gatesConfig.set(gatesPath, new ArrayList<Object>(Gate.getAll()));
-		
-		try {
-			gatesConfig.save(gatesConfigFile);
-			log("Saved gates to disk.");
-		} 
-		catch (IOException e) {
-			log("ERROR: Could not save gates to disk.");
-			e.printStackTrace();
-		}
-	}
-	
-	
-	public void storeInvalidGate(Map<String, Object> map)
-	{
-		File invalidGatesFile = new File(getDataFolder(), "invalid_gates.yml");
-		Boolean invalidGatesFileExists = invalidGatesFile.exists();
-		
-		try {
-			FileWriter fileWriter = new FileWriter(invalidGatesFile, true);
-			
-			if (!invalidGatesFileExists) {
-				fileWriter.write("gates:\n");
-			}
-			
-			fileWriter.write("- ==: ");
-			fileWriter.write(map.get("==").toString() + "\n");
-			map.remove("==");
-			
-			fileWriter.write("\topen: false\n");
-			map.remove("open");
-			
-			fileWriter.write("\tgateBlocks: []\n");
-			map.remove("gateBlocks");
-			
-			
-			for (String key : map.keySet()) {
-				Object value = map.get(key);
-				
-				fileWriter.write("\t" + key + ": ");
-				
-				if (value instanceof Map) {
-					fileWriter.write("\n");
-					
-					@SuppressWarnings("unchecked")
-					Map<String, Object> valueMap = (Map<String, Object>)value;
-					
-					for (String k : valueMap.keySet()) {
-						Object v = valueMap.get(k);
-					
-						fileWriter.write("\t\t" + k + ": " + v.toString() + "\n");
-					}
 
-				}
-				else {
-					fileWriter.write(value.toString() + "\n");
-				}
-				
-			}
-			
-			fileWriter.close();
-		}
-		catch (IOException e) {
-			log("ERROR: Could not save invalid gates to disk.");
-			e.printStackTrace();
-		}
+
+	public static Permission getPermission() {
+		return permission;
 	}
 }

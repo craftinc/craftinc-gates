@@ -9,6 +9,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPhysicsEvent;
 
 
+// TODO: remove this class!!!
 
 
 public class PluginBlockListener implements Listener 

@@ -19,6 +19,8 @@ public class PluginPortalListener implements Listener
 {
 	private HashMap<Player, Gate> currentGateAtEvent = new HashMap<Player, Gate>();
 	
+	// TODO: check if this class can be deleted!
+	
 	
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerPortal(PlayerPortalEvent event)
@@ -30,7 +32,6 @@ public class PluginPortalListener implements Listener
 
 		Location playerLocation = event.getPlayer().getLocation();
 		Gate gateAtLocation = GateUtil.getGateAtPlayerLocation(playerLocation);
-		
 		
 		// If the player's gamemode is creative no gate might be found!
 		// It seems like players get teleported on a move event when the 'to' location is

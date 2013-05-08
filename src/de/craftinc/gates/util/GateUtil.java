@@ -5,6 +5,7 @@ import org.bukkit.World;
 import org.bukkit.block.BlockFace;
 
 import de.craftinc.gates.Gate;
+import de.craftinc.gates.Plugin;
 
 public class GateUtil 
 {
@@ -13,7 +14,7 @@ public class GateUtil
 		Gate gate = null;
 		double minmalDist = Double.MAX_VALUE;
 		
-		for (Gate g : Gate.getAll()) {
+		for (Gate g : Plugin.getPlugin().getGatesManager().allGates()) {
 			
 			if (!g.getLocation().getWorld().equals(location.getWorld()))
 			{
@@ -43,7 +44,7 @@ public class GateUtil
 		// players are sometime stuck into the ground
 		Location locationUp = location.getBlock().getRelative(BlockFace.UP).getLocation();
 		
-		for (Gate g : Gate.getAll()) 
+		for (Gate g : Plugin.getPlugin().getGatesManager().allGates()) 
 		{
 			if (gate != null)
 			{

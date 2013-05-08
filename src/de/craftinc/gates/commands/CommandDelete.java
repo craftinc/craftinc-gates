@@ -2,7 +2,6 @@ package de.craftinc.gates.commands;
 
 import org.bukkit.ChatColor;
 
-import de.craftinc.gates.Gate;
 import de.craftinc.gates.Plugin;
 
 
@@ -31,7 +30,7 @@ public class CommandDelete extends BaseCommand
 	
 	public void perform() 
 	{
-		Gate.delete(gate.getId());
+		Plugin.getPlugin().getGatesManager().handleDeletion(gate);
 		sendMessage(ChatColor.GREEN + "Gate with id '" + gate.getId() + "' was deleted.");
 	}
 }

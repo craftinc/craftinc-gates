@@ -134,9 +134,9 @@ public class CommandList extends BaseCommand
 	 */
 	protected Collection<Gate> getAllGates()
 	{
-		Collection<Gate> gates = Gate.getAll();
+		Collection<Gate> gates = Plugin.getPlugin().getGatesManager().allGates();
 		
-		if (this.sender instanceof Player && Plugin.permission != null) {
+		if (this.sender instanceof Player && Plugin.getPermission() != null) {
 			Player p = (Player)this.sender;
 			
 			// create a copy since we cannot iterate over a collection while modifying it!
@@ -144,7 +144,7 @@ public class CommandList extends BaseCommand
 			
 			for (Gate gate : gatesCopy) {
 				
-				boolean permissionAtGateLocation = Plugin.permission.has(gate.getLocation().getWorld(), p.getName(), this.requiredPermission);
+				boolean permissionAtGateLocation = Plugin.getPermission().has(gate.getLocation().getWorld(), p.getName(), this.requiredPermission);
 				if (!permissionAtGateLocation) {
 					gates.remove(gate);
 					continue;
@@ -152,7 +152,7 @@ public class CommandList extends BaseCommand
 				
 				if (gate.getExit() != null) {
 					
-					boolean permissionAtGateExit = Plugin.permission.has(gate.getExit().getWorld(), p.getName(), this.requiredPermission);
+					boolean permissionAtGateExit = Plugin.getPermission().has(gate.getExit().getWorld(), p.getName(), this.requiredPermission);
 					if (!permissionAtGateExit) {
 						gates.remove(gate);
 					}

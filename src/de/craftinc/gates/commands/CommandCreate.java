@@ -1,10 +1,10 @@
 package de.craftinc.gates.commands;
 
-
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 
 import de.craftinc.gates.Gate;
+import de.craftinc.gates.GatesManager;
 import de.craftinc.gates.Plugin;
 
 
@@ -34,39 +34,33 @@ public class CommandCreate extends BaseLocationCommand
 	public void perform() 
 	{
 		String id = parameters.get(0);
+		GatesManager gatesManager = Plugin.getPlugin().getGatesManager();
 		
-		try 
-		{
-			gate = Gate.create(id);
-			sendMessage(ChatColor.GREEN + "Gate with id '" + id + "' was created.");
-		} 
-		catch (Exception e) 
-		{
-			sendMessage(ChatColor.RED + "Creating the gate failed!" + e.getMessage() + "See server log for more information");
+		if (gatesManager.gateExists(id)) {
+			sendMessage(ChatColor.RED + "Creating the gate failed!" + "A gate with the supplied id already exists!");
 			return;
 		}
 		
+		gate = new Gate(id);
+		gatesManager.handleNewGate(gate);
+		sendMessage(ChatColor.GREEN + "Gate with id '" + id + "' was created.");
+
+		
 		Location playerLocation = getValidPlayerLocation();
 		
-		if (playerLocation != null) 
-		{
-			try 
-			{
+		if (playerLocation != null) {
+			
+			try {
 				gate.setLocation(playerLocation);
 				sendMessage(ChatColor.AQUA + "The gates location has been set to your current location.");
 			} 
-			catch (Exception e) 
-			{
-			}
-			
+			catch (Exception e) {}
 		}
-		else 
-		{
+		else {
 			sendMessage(ChatColor.GREEN + "Gate with id \"" + id + "\" was created.");
 			sendMessage("Now you should build a frame and:");
 			sendMessage(new CommandSetLocation().getUsageTemplate(true, true));
 		}
 	}
-
 }
 

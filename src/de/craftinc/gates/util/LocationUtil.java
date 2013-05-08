@@ -22,7 +22,7 @@ public class LocationUtil
 	
 	protected static World getWorld(String name) throws Exception 
 	{
-		World world = Plugin.instance.getServer().getWorld(name);
+		World world = Plugin.getPlugin().getServer().getWorld(name);
 
 		if (world == null) {
 			throw new Exception("World '" + name + "' does not exists anymore! Cannot get instance!");

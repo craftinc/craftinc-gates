@@ -8,6 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import de.craftinc.gates.Gate;
+import de.craftinc.gates.GatesManager;
 import de.craftinc.gates.Plugin;
 import de.craftinc.gates.util.TextUtil;
 
@@ -53,7 +54,7 @@ public abstract class BaseCommand
 		this.perform();
 		
 		if (this.shouldPersistToDisk) {
-			Plugin.instance.saveGates();
+			Plugin.getPlugin().getGatesManager().saveGatesToDisk();
 		}
 	}
 	
@@ -125,13 +126,13 @@ public abstract class BaseCommand
 	
 	protected boolean setGateUsingParameter(String param)
 	{
-		if (!Gate.exists(param))
-		{
+		GatesManager gateManager = Plugin.getPlugin().getGatesManager();
+		
+		if (!gateManager.gateExists(param)) {
 			return false;
 		}
-		else
-		{
-			gate = Gate.get(param);
+		else {
+			gate = gateManager.getGateWithId(param);
 			return true;
 		}
 	}
@@ -142,7 +143,7 @@ public abstract class BaseCommand
 	 */
 	protected boolean hasPermission()
 	{		
-		if (Plugin.permission == null) // fallback Ð use the standard bukkit permission system
+		if (Plugin.getPermission() == null) // fallback ï¿½ use the standard bukkit permission system
 		{
 			return this.sender.hasPermission(this.requiredPermission);
 		}
@@ -156,8 +157,8 @@ public abstract class BaseCommand
 		}
 		else
 		{
-			// sender is no player Ð there is no information about the senders locations
-			return Plugin.permission.has(this.sender, this.requiredPermission);
+			// sender is no player ï¿½ there is no information about the senders locations
+			return Plugin.getPermission().has(this.sender, this.requiredPermission);
 		}
 		
 		
@@ -171,7 +172,7 @@ public abstract class BaseCommand
 			}
 			else
 			{
-				hasPermission = Plugin.permission.has(p.getWorld(), p.getName(), this.requiredPermission);
+				hasPermission = Plugin.getPermission().has(p.getWorld(), p.getName(), this.requiredPermission);
 			}
 		}
 		else if (this.requiredPermission.equals(Plugin.permissionUse) )
@@ -182,12 +183,12 @@ public abstract class BaseCommand
 		{
 			if (this.needsPermissionAtCurrentLocation && this.hasGateParam)
 			{
-				boolean hasPersmissionAtCurrentLocation = Plugin.permission.has(p.getWorld(), p.getName(), this.requiredPermission);
+				boolean hasPersmissionAtCurrentLocation = Plugin.getPermission().has(p.getWorld(), p.getName(), this.requiredPermission);
 				hasPermission = hasPersmissionAtCurrentLocation && this.hasPermissionAtGateLocationAndExit(p);
 			}
 			else if (this.needsPermissionAtCurrentLocation)
 			{
-				hasPermission = Plugin.permission.has(p.getWorld(), p.getName(), this.requiredPermission);
+				hasPermission = Plugin.getPermission().has(p.getWorld(), p.getName(), this.requiredPermission);
 			}
 			else
 			{
@@ -206,7 +207,7 @@ public abstract class BaseCommand
 			return false;
 		}
 
-		boolean permAtLocation = Plugin.permission.has(this.gate.getLocation().getWorld(), p.getName(), this.requiredPermission);
+		boolean permAtLocation = Plugin.getPermission().has(this.gate.getLocation().getWorld(), p.getName(), this.requiredPermission);
 		
 		boolean permAtExit;
 		
@@ -216,7 +217,7 @@ public abstract class BaseCommand
 		}
 		else
 		{
-			permAtExit = Plugin.permission.has(this.gate.getExit().getWorld(), p.getName(), this.requiredPermission);
+			permAtExit = Plugin.getPermission().has(this.gate.getExit().getWorld(), p.getName(), this.requiredPermission);
 		}
 
 		return permAtLocation & permAtExit;
@@ -233,7 +234,7 @@ public abstract class BaseCommand
 			ret += ChatColor.AQUA;
 		}
 		
-		ret += "/" + Plugin.instance.getBaseCommand() + " " + TextUtil.implode(this.getAliases(), ",")+" ";
+		ret += "/" + Plugin.getPlugin().getBaseCommand() + " " + TextUtil.implode(this.getAliases(), ",")+" ";
 		
 		List<String> parts = new ArrayList<String>();
 		
