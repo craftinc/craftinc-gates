@@ -2,7 +2,6 @@ package de.craftinc.gates.util;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import org.bukkit.Location;
 import org.bukkit.World;
 
@@ -90,13 +89,13 @@ public class LocationUtil
 		if (l1.getWorld() != l2.getWorld() && (l1.getWorld() == null || !l1.getWorld().equals(l2.getWorld()))) {
 			return false;
         }
-		if (new Double(l1.getX()).longValue() !=  new Double(l2.getX()).longValue()) {
+		if (l1.getBlockX() != l2.getBlockX()) {
 			return false;
 		}
-		if (new Double(l1.getY()).longValue() != new Double(l2.getY()).longValue()) {
+		if (l1.getBlockY() != l2.getBlockY()) {
 			return false;
 		}
-		if (new Double(l1.getZ()).longValue() != new Double(l2.getZ()).longValue()) {
+		if (l1.getBlockZ() != l2.getBlockZ()) {
 			return false;
 		}
 		
