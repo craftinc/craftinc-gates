@@ -16,8 +16,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 
 import de.craftinc.gates.Gate;
+import de.craftinc.gates.GatesManager;
 import de.craftinc.gates.Plugin;
-import de.craftinc.gates.util.GateUtil;
 
 
 public class PluginPlayerListener implements Listener 
@@ -31,11 +31,9 @@ public class PluginPlayerListener implements Listener
 			return;
 		}
 		
-		
-		// Find the gate at the current location.
-		Gate gateAtLocation = GateUtil.getGateAtPlayerLocation(event.getTo());
-		
-		
+		GatesManager gateManager = Plugin.getPlugin().getGatesManager();
+		Gate gateAtLocation = gateManager.getGateAtLocation(event.getTo());
+
 		if (gateAtLocation == null) {
 			return;
 		}

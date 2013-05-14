@@ -12,6 +12,9 @@ import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
+import de.craftinc.gates.util.SimpleChunk;
+import de.craftinc.gates.util.SimpleLocation;
+
 
 public class GatesManager 
 {
@@ -20,8 +23,8 @@ public class GatesManager
 	private String gatesPath = "gates"; // path to gates inside the yaml file
 	
 	private Map<String, Gate> gatesById;
-	private Map<Chunk, Set<Gate>> gatesByChunk;
-	private Map<Location, Gate> gatesByLocation;
+	private Map<SimpleChunk, Set<Gate>> gatesByChunk;
+	private Map<SimpleLocation, Gate> gatesByLocation;
 	
 	private List<Gate> gates;
 	
@@ -32,15 +35,17 @@ public class GatesManager
 	}
 	
 	
-	public Set<Gate> getGatesInsideChunk(Chunk c)
+	public Set<Gate> getGatesInsideChunk(Chunk chunk)
 	{
-		return gatesByChunk.get(c);
+		SimpleChunk simpleChunk = new SimpleChunk(chunk);
+		return gatesByChunk.get(simpleChunk);
 	}
 	
 	
-	public Gate getGateAtLocation(Location l)
+	public Gate getGateAtLocation(Location location)
 	{
-		return gatesByLocation.get(l);
+		SimpleLocation simpleLocation = new SimpleLocation(location);
+		return gatesByLocation.get(simpleLocation);
 	}
 	
 	
@@ -96,30 +101,23 @@ public class GatesManager
 		gatesById = new HashMap<String, Gate>((int)(gates.size() * 1.25));
 		
 		for (Gate g : gates) {
-			gatesById.put(g.getId(), g);
+			this.addGateWithId(g);
 		}
 	}
 	
 	
 	private void fillGatesByChunk()
 	{
-		HashSet<Chunk> chunksUsedByGates = new HashSet<Chunk>(gates.size());
+		HashSet<Chunk> chunksUsedByGates = new HashSet<Chunk>();
 		
 		for (Gate g : gates) {
 			chunksUsedByGates.add(g.getLocation().getChunk());
 		}
 		
-		gatesByChunk = new HashMap<Chunk, Set<Gate>>((int)(chunksUsedByGates.size() * 1.25));
+		gatesByChunk = new HashMap<SimpleChunk, Set<Gate>>((int)(chunksUsedByGates.size() * 1.25));
 		
 		for (Gate g : gates) {
-			Chunk c = g.getLocation().getChunk();
-			Set<Gate> gatesForC = gatesByChunk.get(c);
-			
-			if (gatesForC == null) {
-				gatesForC = new HashSet<Gate>(); // NOTE: not optimizing size here
-			}
-			
-			gatesForC.add(g);
+			this.addGateByChunk(g);
 		}
 	}
 	
@@ -132,11 +130,63 @@ public class GatesManager
 			numGateBlocks += g.gateBlockLocations.size();
 		}
 		
-		gatesByLocation = new HashMap<Location, Gate>((int)(numGateBlocks*1.25));
+		gatesByLocation = new HashMap<SimpleLocation, Gate>((int)(numGateBlocks*1.25));
 		
 		for (Gate g : gates) {
-			gatesByLocation.put(g.getLocation(), g);
+			this.addGateByLocations(g);
 		}
+	}
+	
+	
+	private void removeGateById(String id)
+	{
+		gatesById.remove(id);
+	}
+	
+	
+	private void addGateWithId(Gate g)
+	{
+		gatesById.put(g.getId(), g);
+	}
+	
+	
+	private void removeGateFromLocations(Set<Location> gateBlocks)
+	{
+		for (Location l : gateBlocks) {
+			SimpleLocation sl = new SimpleLocation(l);
+			gatesByLocation.remove(sl);
+		}
+	}
+	
+	
+	private void addGateByLocations(Gate g)
+	{
+		for (Location c : g.getGateBlockLocations()) {
+			SimpleLocation sl = new SimpleLocation(c);
+			gatesByLocation.put(sl, g);
+		}
+	}
+	
+	
+	private void removeGateFromChunk(Gate g, Location l)
+	{
+		SimpleChunk sc = new SimpleChunk(l.getChunk());
+		Set<Gate> gatesInChunk = gatesByChunk.get(sc);
+		gatesInChunk.remove(g);
+	}
+	
+	
+	private void addGateByChunk(Gate g)
+	{
+		SimpleChunk c = new SimpleChunk(g.getLocation().getChunk());
+		Set<Gate> gatesForC = gatesByChunk.get(c);
+		
+		if (gatesForC == null) {
+			gatesForC = new HashSet<Gate>(); // NOTE: not optimizing size here
+			gatesByChunk.put(c, gatesForC);
+		}
+		
+		gatesForC.add(g);
 	}
 	
 	
@@ -197,39 +247,34 @@ public class GatesManager
 	
 	public void handleGateIdChange(Gate g, String oldId)
 	{
-		gatesById.remove(oldId);
-		gatesById.put(g.getId(), g);
+		this.removeGateById(oldId);
+		this.addGateWithId(g);
 	}
 	
 	
-	public void handleGateLocationChange(Gate g, Location oldLocation)
+	public void handleGateLocationChange(Gate g, Location oldLocation, Set<Location> oldGateBlockLocations)
 	{
-		gatesByLocation.remove(oldLocation);
-		gatesByLocation.put(g.getLocation(), g);
+		this.removeGateFromChunk(g, oldLocation);
+		this.addGateByChunk(g);
 		
-		
-		gatesByChunk.get(oldLocation.getChunk()).remove(g);
-		
-		Set<Gate> newChunkGates = gatesByChunk.get(g.getLocation().getChunk());
-		
-		if (newChunkGates == null) {
-			newChunkGates = new HashSet<Gate>(); // NOTE: not optimizing size here
-		}
-		
-		newChunkGates.add(g);
-		gatesByChunk.put(g.getLocation().getChunk(), newChunkGates);		
+		this.removeGateFromLocations(oldGateBlockLocations);
+		this.addGateByLocations(g);
 	}
 	
 	
 	public void handleNewGate(Gate g)
 	{
-		// TODO: implement!
+		this.addGateByChunk(g);
+		this.addGateByLocations(g);
+		this.addGateWithId(g);
 	}
 	
 	
 	public void handleDeletion(Gate g)
 	{
-		// TODO: implement!
+		this.removeGateById(g.getId());
+		this.removeGateFromChunk(g, g.getLocation());
+		this.removeGateFromLocations(g.getGateBlockLocations());
 	}
 	
 	
