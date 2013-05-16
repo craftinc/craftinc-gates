@@ -28,3 +28,6 @@ profile
 
 # bukkit
 bukkit/
+
+# bukkit test-server
+bukkit-testserver/
