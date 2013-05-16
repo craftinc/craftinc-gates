@@ -7,8 +7,6 @@ The hightlights are: __It is so darn easy to use!__ and __The gates can look any
 
 Try the ingame command: __/gate__
 
-Also have a look at the full __[userguide](http://www.craftinc.de/blog/?p=255)__.
-
 Check out our **[Craft Inc. Minecraft Server](http://www.craftinc.de)**! Everyone is welcome!
 
 Thought first you should take a look at the demonstration oloflarsson and karibu6 created:
