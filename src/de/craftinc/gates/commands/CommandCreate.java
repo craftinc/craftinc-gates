@@ -48,8 +48,6 @@ public class CommandCreate extends BaseLocationCommand
 		
 		Location playerLocation = getValidPlayerLocation();
 		
-		Plugin.log("player location:" + playerLocation);
-		
 		if (playerLocation != null) 
 		{
 			try 
