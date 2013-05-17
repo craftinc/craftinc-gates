@@ -177,7 +177,7 @@ public abstract class BaseGate
 			throw new Exception("Gate got closed. It has no exit.");
 		}
 		
-		if (gateBlockLocations.size() == 0) {
+		if (gateBlockLocations == null || gateBlockLocations.size() == 0) {
 			setOpen(false);
 			throw new Exception("Gate got closed. The frame is missing or broken.");
 		}

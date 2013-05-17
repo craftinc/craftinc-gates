@@ -48,6 +48,8 @@ public class CommandCreate extends BaseLocationCommand
 		
 		Location playerLocation = getValidPlayerLocation();
 		
+		Plugin.log("player location:" + playerLocation);
+		
 		if (playerLocation != null) 
 		{
 			try 
@@ -63,7 +65,7 @@ public class CommandCreate extends BaseLocationCommand
 		else 
 		{
 			sendMessage(ChatColor.GREEN + "Gate with id \"" + id + "\" was created.");
-			sendMessage("Now you should build a frame and:");
+			sendMessage("Now you should build a frame and execute:");
 			sendMessage(new CommandSetLocation().getUsageTemplate(true, true));
 		}
 	}

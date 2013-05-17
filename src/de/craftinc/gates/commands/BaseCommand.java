@@ -142,7 +142,7 @@ public abstract class BaseCommand
 	 */
 	protected boolean hasPermission()
 	{		
-		if (Plugin.permission == null) // fallback Ð use the standard bukkit permission system
+		if (Plugin.permission == null) // fallback ï¿½ use the standard bukkit permission system
 		{
 			return this.sender.hasPermission(this.requiredPermission);
 		}
@@ -156,7 +156,7 @@ public abstract class BaseCommand
 		}
 		else
 		{
-			// sender is no player Ð there is no information about the senders locations
+			// sender is no player ï¿½ there is no information about the senders locations
 			return Plugin.permission.has(this.sender, this.requiredPermission);
 		}
 		
@@ -205,17 +205,23 @@ public abstract class BaseCommand
 		{
 			return false;
 		}
-
-		boolean permAtLocation = Plugin.permission.has(this.gate.getLocation().getWorld(), p.getName(), this.requiredPermission);
+		
+		boolean permAtLocation;
+		
+		if (this.gate.getLocation() == null) {
+			permAtLocation = true;
+		}
+		else {
+			permAtLocation = Plugin.permission.has(this.gate.getLocation().getWorld(), p.getName(), this.requiredPermission);
+		}
+		
 		
 		boolean permAtExit;
 		
-		if (this.gate.getExit() == null) 
-		{
+		if (this.gate.getExit() == null) {
 			permAtExit = true;
 		}
-		else
-		{
+		else {
 			permAtExit = Plugin.permission.has(this.gate.getExit().getWorld(), p.getName(), this.requiredPermission);
 		}
 

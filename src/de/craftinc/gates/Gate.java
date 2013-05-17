@@ -142,8 +142,10 @@ public class Gate extends BaseGate implements ConfigurationSerializable
 			retVal.put(exitYawKey, exit.getYaw());
 		}
 		
-		retVal.put(locationPitchKey, location.getPitch());
-		retVal.put(locationYawKey, location.getYaw());
+		if (location != null) {
+			retVal.put(locationPitchKey, location.getPitch());
+			retVal.put(locationYawKey, location.getYaw());
+		}
 		
 		List<Map<String, Object>> serializedGateBlocks = new ArrayList<Map<String, Object>>();
 		
