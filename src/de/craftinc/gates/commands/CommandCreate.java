@@ -64,7 +64,6 @@ public class CommandCreate extends BaseLocationCommand
 		}
 		else 
 		{
-			sendMessage(ChatColor.GREEN + "Gate with id \"" + id + "\" was created.");
 			sendMessage("Now you should build a frame and execute:");
 			sendMessage(new CommandSetLocation().getUsageTemplate(true, true));
 		}
