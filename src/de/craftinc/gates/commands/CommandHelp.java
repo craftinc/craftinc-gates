@@ -52,7 +52,6 @@ public class CommandHelp extends BaseCommand
 	public CommandHelp() 
 	{
 		aliases.add("help");
-		aliases.add("h");
 		aliases.add("?");
 		
 		optionalParameters.add("page");
