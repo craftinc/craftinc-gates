@@ -18,7 +18,7 @@ public class CommandInfo extends BaseCommand
 		
 		requiredParameters.add("id");		
 		
-		helpDescription = "Prints detailed informations about a certain gate.";
+		helpDescription = "Print detailed informations about a certain gate.";
 		
 		requiredPermission = Plugin.permissionInfo;
 		
@@ -49,12 +49,12 @@ public class CommandInfo extends BaseCommand
 		if (gate.getLocation() != null)
 			sendMessage(ChatColor.DARK_AQUA + "from:  " + ChatColor.AQUA + "( " + gate.getLocation().getBlockX() + " | " + gate.getLocation().getBlockY() + " | " + gate.getLocation().getBlockZ() + " ) in " + gate.getLocation().getWorld().getName());
 		else
-			sendMessage(ChatColor.DARK_AQUA + "NOTE: this gate has no 'from' location");
+			sendMessage(ChatColor.DARK_AQUA + "NOTE: this gate has no location");
 		
 		if (gate.getExit() != null)
 			sendMessage(ChatColor.DARK_AQUA + "to:     " + ChatColor.AQUA + "( " + gate.getExit().getBlockX() + " | " + gate.getExit().getBlockY() + " | " + gate.getExit().getBlockZ() + " ) in " + gate.getExit().getWorld().getName());
 		else
-			sendMessage(ChatColor.DARK_AQUA + "NOTE: this gate has no 'to' location");
+			sendMessage(ChatColor.DARK_AQUA + "NOTE: this gate has no exit");
 	}
 
 }

@@ -42,7 +42,7 @@ public class CommandCreate extends BaseLocationCommand
 		} 
 		catch (Exception e) 
 		{
-			sendMessage(ChatColor.RED + "Creating the gate failed!" + e.getMessage() + "See server log for more information");
+			sendMessage(ChatColor.RED + "Creating the gate failed!" + e.getMessage() + " See server log for more information");
 			return;
 		}
 		
