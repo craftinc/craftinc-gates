@@ -1,3 +1,6 @@
+## 2.1.2 
+* Fixed a bug where players got teleported one block beside the real portal.
+* Fixed a bug where gates with no location caused multiple exceptions.
 ## 2.1.1
 * Made the list command more reliable.
 * Error messages will be displayed less frequent.

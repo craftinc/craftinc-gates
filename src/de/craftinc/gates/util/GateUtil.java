@@ -52,10 +52,13 @@ public class GateUtil
 			}
 			
 			// Check if the gate is open and useable
+			if (g.getLocation() == null) {
+				continue;
+			}
+			
 			World gateWorld = g.getLocation().getWorld();
 			
-			if (!g.isOpen() || !gateWorld.equals(playerWorld)) 
-			{
+			if (!g.isOpen() || !gateWorld.equals(playerWorld)) {
 				continue;
 			}
 			

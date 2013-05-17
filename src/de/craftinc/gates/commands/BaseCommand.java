@@ -206,17 +206,23 @@ public abstract class BaseCommand
 		{
 			return false;
 		}
-
+		
+		boolean permAtLocation;
+		
+		if (this.gate.getLocation() == null) {
+			permAtLocation = true;
+		}
+		else {
 		boolean permAtLocation = Plugin.getPermission().has(this.gate.getLocation().getWorld(), p.getName(), this.requiredPermission);
+		}
+		
 		
 		boolean permAtExit;
 		
-		if (this.gate.getExit() == null) 
-		{
+		if (this.gate.getExit() == null) {
 			permAtExit = true;
 		}
-		else
-		{
+		else {
 			permAtExit = Plugin.getPermission().has(this.gate.getExit().getWorld(), p.getName(), this.requiredPermission);
 		}
 

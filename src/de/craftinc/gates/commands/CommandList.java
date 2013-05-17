@@ -144,10 +144,12 @@ public class CommandList extends BaseCommand
 			
 			for (Gate gate : gatesCopy) {
 				
+				if (gate.getLocation() != null) {
 				boolean permissionAtGateLocation = Plugin.getPermission().has(gate.getLocation().getWorld(), p.getName(), this.requiredPermission);
 				if (!permissionAtGateLocation) {
 					gates.remove(gate);
 					continue;
+					}
 				}
 				
 				if (gate.getExit() != null) {
