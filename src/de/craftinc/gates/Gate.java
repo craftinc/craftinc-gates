@@ -30,11 +30,14 @@ public class Gate implements ConfigurationSerializable
 	protected boolean isOpen = false;
 	
 	protected String id;
-	
-	
+
+    /**
+     * You should never create two gates with the same 'id'. Also see 'setId(String id)'.
+     * @param id This parameter must not be 'null'. An exception will be thrown otherwise!
+     */
 	public Gate(String id)
 	{
-		setId(id);
+        setId(id);
 	}
 	
 	
@@ -46,14 +49,25 @@ public class Gate implements ConfigurationSerializable
 	
 	/*
 	 * SETTER & GETTER
-	 */	
-	
+	 */
+
+    /**
+     *
+     * @return This method might return a 'null' value.
+     */
 	public Location getLocation() 
 	{
 		return location;
 	}
-	
-	
+
+
+    /**
+     *
+     * @param location Supplying 'null' is permitted.
+     * @throws Exception Will throw an exception if the gate is open and an invalid (no gate frame) location is
+     *         supplied. Note that the supplied 'location' will be set even if an exception is thrown. Note that this
+     *         gate will be closed if an exception is thrown.
+     */
 	public void setLocation(Location location)  throws Exception
 	{
 		this.location = location;
@@ -63,27 +77,53 @@ public class Gate implements ConfigurationSerializable
 			validate();
 		}
 	}
-	
-	
+
+
+    /**
+     *
+     * @return This method might return a 'null' value.
+     */
 	public Location getExit() 
 	{
 		return exit;
 	}
-	
-	
+
+
+    /**
+     *
+     * @param exit Supplying 'null' is permitted.
+     * @throws Exception An exception will be thrown if 'null' value is supplied and this gate is open. Note that the
+     *         supplied 'exit' will be set even if an exception is thrown. Note that this gate will be closed if an
+     *         exception is thrown.
+     */
 	public void setExit(Location exit)  throws Exception
 	{
 		this.exit = exit;
 		validate();
 	}
-	
-	
-	public String getId() {
+
+
+    /**
+     *
+     * @return This method will never return 'null'.
+     */
+	public String getId()
+    {
 		return id;
 	}
 
 
-	public void setId(String id) {
+    /**
+     * Every gate should have an unique 'id'. You should therefore check if another gate with the same 'id' exists.
+     * Note that this method will not check if another gate with the same 'id' exists!
+     * @param id This parameter must not be 'null'. An exception will be thrown otherwise!
+     */
+	public void setId(String id)
+    {
+        if (id == null) {
+            throw new IllegalArgumentException("gate 'id' cannot be 'null'");
+        }
+
 		this.id = id;
 	}
 
@@ -132,8 +172,11 @@ public class Gate implements ConfigurationSerializable
 		
 		validate();
 	}
-	
-	
+
+    /**
+     *
+     * @return Will never return 'null' but might return an empty Set.
+     */
 	public Set<Location> getGateBlockLocations() 
 	{
 		return gateBlockLocations;
@@ -189,7 +232,7 @@ public class Gate implements ConfigurationSerializable
 	 */
 	
 	/**
-	 * Checks if valus attributes do add up; will close gate on wrong values.
+	 * Checks if values attributes do add up; will close gate on wrong values.
 	 */
 	public void validate() throws Exception
 	{
@@ -240,10 +283,15 @@ public class Gate implements ConfigurationSerializable
 	
 	
 	@SuppressWarnings("unchecked")
-    private Gate(Map<String, Object> map)
+    public Gate(Map<String, Object> map)
 	{
 		try {
 			id = map.get(idKey).toString();
+
+            if (id == null) {
+                throw new Exception("gates need to have an id");
+            }
+
 			isHidden = (Boolean)map.get(isHiddenKey);
 			isOpen = (Boolean)map.get(isOpenKey);
 			
