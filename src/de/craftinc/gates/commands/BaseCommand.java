@@ -80,45 +80,34 @@ public abstract class BaseCommand
 		boolean senderIsPlayer = this.sender instanceof Player;
 		boolean hasGateParameter = false;
 		
-		if (this.hasGateParam == true && this.parameters.size() > 0 && this.setGateUsingParameter(this.parameters.get(0))) {
+		if (this.hasGateParam && this.parameters.size() > 0 && this.setGateUsingParameter(this.parameters.get(0))) {
 			hasGateParameter = true;
 		}
 		
 		boolean senderHasPermission = this.hasPermission();
-		
-
 		boolean valid = false;
 		
-		if (this.senderMustBePlayer && !senderIsPlayer) 
-		{
+		if (this.senderMustBePlayer && !senderIsPlayer) {
 			sendMessage(ChatColor.RED + "This command can only be used by ingame players.");
 			valid = false;
 		}
-		else if (!allParamtertersThere) 
-		{
-			sendMessage(ChatColor.RED + "Some parameters are missing! " + ChatColor.AQUA + "Usage: " + this.getUseageTemplate(true));
-			valid = false;
-		}
-		else if (!senderHasPermission && this.hasGateParam)
-		{
-			sendMessage(ChatColor.RED + "You either provided a invalid gate or do not have permission to "  + this.helpDescription.toLowerCase());
-			valid = false;
-		}
-		else if (!senderHasPermission) 
-		{
-			sendMessage(ChatColor.RED + "You lack the permissions to " + this.helpDescription.toLowerCase());
-			valid = false;
-		}
-		
-		else if (this.hasGateParam && !hasGateParameter) 
-		{
-			sendMessage(ChatColor.RED + "There exists no gate with id " + this.parameters.get(0));
-			valid = false;
-		}
-		else 
-		{
-			valid = true;
-		}
+		else {
+            if (!allParamtertersThere) {
+                sendMessage(ChatColor.RED + "Some parameters are missing! " + ChatColor.AQUA + "Usage: " + this.getUsageTemplate(true));
+                valid = false;
+            } else if (!senderHasPermission && this.hasGateParam) {
+                sendMessage(ChatColor.RED + "You either provided a invalid gate or do not have permission to " + this.helpDescription.toLowerCase());
+                valid = false;
+            } else if (!senderHasPermission) {
+                sendMessage(ChatColor.RED + "You lack the permissions to " + this.helpDescription.toLowerCase());
+                valid = false;
+            } else if (this.hasGateParam && !hasGateParameter) {
+                sendMessage(ChatColor.RED + "There exists no gate with id " + this.parameters.get(0));
+                valid = false;
+            } else {
+                valid = true;
+            }
+        }
 		
 		return valid;
 	}
@@ -143,55 +132,41 @@ public abstract class BaseCommand
 	 */
 	protected boolean hasPermission()
 	{		
-		if (Plugin.getPermission() == null) // fallback � use the standard bukkit permission system
-		{
+		if (Plugin.getPermission() == null) { // fallback - use the standard bukkit permission system
 			return this.sender.hasPermission(this.requiredPermission);
 		}
-		
-		
-		Player p = null;
-		
-		if (this.sender instanceof Player) 
-		{
-			p = (Player) this.sender;
+
+		if (!(this.sender instanceof Player)) {
+            // sender is no player - there is no information about the senders locations
+            return Plugin.getPermission().has(this.sender, this.requiredPermission);
 		}
-		else
-		{
-			// sender is no player � there is no information about the senders locations
-			return Plugin.getPermission().has(this.sender, this.requiredPermission);
-		}
+
 		
-		
+		Player p = (Player) this.sender;
 		boolean hasPermission = false;
 		
-		if (this.requiredPermission.equals(Plugin.permissionInfo))
-		{
-			if (this.hasGateParam)
-			{
+		if (this.requiredPermission.equals(Plugin.permissionInfo)) {
+
+			if (this.hasGateParam) {
 				hasPermission = this.hasPermissionAtGateLocationAndExit(p);
 			}
-			else
-			{
+			else {
 				hasPermission = Plugin.getPermission().has(p.getWorld(), p.getName(), this.requiredPermission);
 			}
 		}
-		else if (this.requiredPermission.equals(Plugin.permissionUse) )
-		{
+		else if (this.requiredPermission.equals(Plugin.permissionUse) ) {
 			hasPermission = this.hasPermissionAtGateLocationAndExit(p);
 		}
-		else if (this.requiredPermission.equals(Plugin.permissionManage))
-		{
-			if (this.needsPermissionAtCurrentLocation && this.hasGateParam)
-			{
+		else if (this.requiredPermission.equals(Plugin.permissionManage)) {
+
+			if (this.needsPermissionAtCurrentLocation && this.hasGateParam) {
 				boolean hasPersmissionAtCurrentLocation = Plugin.getPermission().has(p.getWorld(), p.getName(), this.requiredPermission);
 				hasPermission = hasPersmissionAtCurrentLocation && this.hasPermissionAtGateLocationAndExit(p);
 			}
-			else if (this.needsPermissionAtCurrentLocation)
-			{
+			else if (this.needsPermissionAtCurrentLocation) {
 				hasPermission = Plugin.getPermission().has(p.getWorld(), p.getName(), this.requiredPermission);
 			}
-			else
-			{
+			else {
 				hasPermission = this.hasPermissionAtGateLocationAndExit(p);
 			}
 		}
@@ -202,29 +177,12 @@ public abstract class BaseCommand
 	
 	protected boolean hasPermissionAtGateLocationAndExit(Player p)
 	{
-		if (this.gate == null || p == null) // make sure we don't run into a nullpointer exception
-		{
+		if (this.gate == null || p == null) { // make sure we don't run into a nullpointer exception
 			return false;
 		}
 		
-		boolean permAtLocation;
-		
-		if (this.gate.getLocation() == null) {
-			permAtLocation = true;
-		}
-		else {
-		boolean permAtLocation = Plugin.getPermission().has(this.gate.getLocation().getWorld(), p.getName(), this.requiredPermission);
-		}
-		
-		
-		boolean permAtExit;
-		
-		if (this.gate.getExit() == null) {
-			permAtExit = true;
-		}
-		else {
-			permAtExit = Plugin.getPermission().has(this.gate.getExit().getWorld(), p.getName(), this.requiredPermission);
-		}
+		boolean permAtLocation = this.gate.getLocation() == null || Plugin.getPermission().has(this.gate.getLocation().getWorld(), p.getName(), this.requiredPermission);
+		boolean permAtExit = this.gate.getExit() == null || Plugin.getPermission().has(this.gate.getExit().getWorld(), p.getName(), this.requiredPermission);
 
 		return permAtLocation & permAtExit;
 	}
@@ -233,7 +191,8 @@ public abstract class BaseCommand
 	// -------------------------------------------- //
 	// Help and usage description
 	// -------------------------------------------- //
-	protected String getUsageTemplate(boolean withColor, boolean withDescription) {
+	protected String getUsageTemplate(boolean withColor, boolean withDescription)
+    {
 		String ret = "";
 		
 		if (withColor) {
@@ -270,11 +229,13 @@ public abstract class BaseCommand
 		return ret;
 	}
 	
-	protected String getUseageTemplate(boolean withColor) {
+	protected String getUsageTemplate(boolean withColor)
+    {
 		return getUsageTemplate(withColor, false);
 	}
 	
-	protected String getUseageTemplate() {
-		return getUseageTemplate(true);
+	protected String getUsageTemplate()
+    {
+		return getUsageTemplate(true);
 	}
 }
