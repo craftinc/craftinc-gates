@@ -5,6 +5,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
+import de.craftinc.gates.listeners.PlayerMoveListener;
 import net.milkbowl.vault.permission.Permission;
 
 import org.bukkit.command.Command;
@@ -15,7 +16,6 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import de.craftinc.gates.commands.*;
-import de.craftinc.gates.listeners.PluginPlayerListener;
 
 
 public class Plugin extends JavaPlugin 
@@ -28,7 +28,7 @@ public class Plugin extends JavaPlugin
 	private static Permission permission;
 	
 	private String baseCommand;
-	private PluginPlayerListener playerListener = new PluginPlayerListener();
+	private PlayerMoveListener playerListener = new PlayerMoveListener();
 	private List<BaseCommand> commands = new ArrayList<BaseCommand>();
 	private GatesManager gatesManager = new GatesManager();
 	
