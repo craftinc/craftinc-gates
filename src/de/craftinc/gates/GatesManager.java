@@ -35,7 +35,7 @@ public class GatesManager
 	}
 	
 	
-	public Set<Gate> getGatesInsideChunk(Chunk chunk)
+	public Set<Gate> getNearbyGates(Chunk chunk)
 	{
 		SimpleChunk simpleChunk = new SimpleChunk(chunk);
 		return gatesByChunk.get(simpleChunk);
@@ -71,8 +71,8 @@ public class GatesManager
 		
 		if(!this.gatesConfigFile.exists()) {
 			try {
-				this.gatesConfigFile.createNewFile();
-			} catch (IOException e) {
+                this.gatesConfigFile.createNewFile();
+            } catch (IOException e) {
 				Plugin.log(Level.SEVERE, "Cannot create gate config file! No gates will be persisted.");
 			}
 		}
@@ -111,7 +111,10 @@ public class GatesManager
 		HashSet<Chunk> chunksUsedByGates = new HashSet<Chunk>();
 		
 		for (Gate g : gates) {
-			chunksUsedByGates.add(g.getLocation().getChunk());
+
+            if (g.getLocation() != null) {
+			    chunksUsedByGates.add(g.getLocation().getChunk());
+            }
 		}
 		
 		gatesByChunk = new HashMap<SimpleChunk, Set<Gate>>((int)(chunksUsedByGates.size() * 1.25));
@@ -170,23 +173,29 @@ public class GatesManager
 	
 	private void removeGateFromChunk(Gate g, Location l)
 	{
-		SimpleChunk sc = new SimpleChunk(l.getChunk());
-		Set<Gate> gatesInChunk = gatesByChunk.get(sc);
-		gatesInChunk.remove(g);
+		if (l != null) {
+            SimpleChunk sc = new SimpleChunk(l.getChunk());
+		    Set<Gate> gatesInChunk = gatesByChunk.get(sc);
+		    gatesInChunk.remove(g);
+        }
 	}
 	
 	
 	private void addGateByChunk(Gate g)
 	{
-		SimpleChunk c = new SimpleChunk(g.getLocation().getChunk());
-		Set<Gate> gatesForC = gatesByChunk.get(c);
-		
-		if (gatesForC == null) {
-			gatesForC = new HashSet<Gate>(); // NOTE: not optimizing size here
-			gatesByChunk.put(c, gatesForC);
-		}
-		
-		gatesForC.add(g);
+        Location gateLocation = g.getLocation();
+
+		if (gateLocation != null) {
+            SimpleChunk c = new SimpleChunk(gateLocation.getChunk());
+            Set<Gate> gatesForC = gatesByChunk.get(c);
+
+            if (gatesForC == null) {
+                gatesForC = new HashSet<Gate>(); // NOTE: not optimizing size here
+                gatesByChunk.put(c, gatesForC);
+            }
+
+            gatesForC.add(g);
+        }
 	}
 	
 	
