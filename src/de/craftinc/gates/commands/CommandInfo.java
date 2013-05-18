@@ -18,7 +18,7 @@ public class CommandInfo extends BaseCommand
 		
 		requiredParameters.add("id");		
 		
-		helpDescription = "Print detailed informations about a certain gate.";
+		helpDescription = "Print detailed information about a certain gate.";
 		
 		requiredPermission = Plugin.permissionInfo;
 		
