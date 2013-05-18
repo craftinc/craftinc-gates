@@ -1,9 +1,8 @@
 package de.craftinc.gates.util;
 
-import java.util.List;
-
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
+
+import java.util.List;
 
 public class TextUtil 
 {
@@ -29,7 +28,7 @@ public class TextUtil
 	
 	
 	/**
-	 * Joins all emements of list into a single string, sperating the original strings with glue.
+	 * Joins all elements of list into a single string, separating the original strings with glue.
 	 */
 	public static String implode(List<String> list, String glue)
 	{
@@ -44,24 +43,6 @@ public class TextUtil
 	    }
 	    
 	    return ret;
-	}
-	
-	/**
-	 * Joins all emements of list into a single string.
-	 */
-	public static String implode(List<String> list) {
-		return implode(list, "");
-	}
-	
-	
-	
-	public static String getMaterialName(Material material) 
-	{
-		String ret = material.toString();
-		ret = ret.replace('_', ' ');
-		ret = ret.toLowerCase();
-		
-		return ret.substring(0, 1).toUpperCase() + ret.substring(1);
 	}
 }
 

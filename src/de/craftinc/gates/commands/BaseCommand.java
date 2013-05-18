@@ -85,7 +85,7 @@ public abstract class BaseCommand
 		}
 		
 		boolean senderHasPermission = this.hasPermission();
-		boolean valid = false;
+		boolean valid;
 		
 		if (this.senderMustBePlayer && !senderIsPlayer) {
 			sendMessage(ChatColor.RED + "This command can only be used by ingame players.");
@@ -232,10 +232,5 @@ public abstract class BaseCommand
 	protected String getUsageTemplate(boolean withColor)
     {
 		return getUsageTemplate(withColor, false);
-	}
-	
-	protected String getUsageTemplate()
-    {
-		return getUsageTemplate(true);
 	}
 }

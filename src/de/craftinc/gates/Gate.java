@@ -98,7 +98,7 @@ public class Gate implements ConfigurationSerializable
 	{
 		this.isHidden = isHidden;
 		
-		if (isHidden == true) {
+		if (isHidden) {
 			emptyGate();
 		}
 		else if (isOpen()) {
@@ -117,14 +117,14 @@ public class Gate implements ConfigurationSerializable
 	
 	public void setOpen(boolean isOpen) throws Exception
 	{
-		if (isOpen == true && this.isOpen == false) {
+		if (isOpen && !this.isOpen) {
 			findPortalBlocks();
 			
 			if (!isHidden) {
 				fillGate();
 			}
 		}
-		else if (isOpen == false && this.isOpen == true) {
+		else if (!isOpen && this.isOpen) {
 			emptyGate();
 		}
 		
@@ -213,7 +213,7 @@ public class Gate implements ConfigurationSerializable
 		}
 		
 		
-		if (isHidden == false) {			
+		if (!isHidden) {
 			for (Location l : gateBlockLocations) {
 				if (l.getBlock().getType() == Material.AIR) {
 					setOpen(false);
@@ -240,7 +240,7 @@ public class Gate implements ConfigurationSerializable
 	
 	
 	@SuppressWarnings("unchecked")
-	public Gate(Map<String, Object> map) 
+    private Gate(Map<String, Object> map)
 	{
 		try {
 			id = map.get(idKey).toString();
@@ -272,8 +272,6 @@ public class Gate implements ConfigurationSerializable
 			Plugin.log("NOTE:  This gate will be removed from 'gates.yml' and added to 'invalid_gates.yml'!");
 			
 			Plugin.getPlugin().getGatesManager().storeInvalidGate(map);
-
-			return;
 		}
 	}
 	

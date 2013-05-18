@@ -240,7 +240,7 @@ public class GatesManager
 			fileWriter.close();
 		}
 		catch (IOException e) {
-			Plugin.log("ERROR: Could not save invalid gates to disk. Reason: \n" + e.getStackTrace());
+			Plugin.log("ERROR: Could not save invalid gates to disk. Reason: \n" + Arrays.toString(e.getStackTrace()));
 		}
 	}
 	

@@ -54,7 +54,7 @@ public class CommandCreate extends BaseLocationCommand
 				gate.setLocation(playerLocation);
 				sendMessage(ChatColor.AQUA + "The gates location has been set to your current location.");
 			} 
-			catch (Exception e) {}
+			catch (Exception ignored) {}
 		}
 		else 
 		{

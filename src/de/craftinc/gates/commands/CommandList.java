@@ -282,13 +282,7 @@ public class CommandList extends BaseCommand
 				}
 				
 				// cleanup
-				if (linesNecessaryForCurrentGates < linesLeftOnPage) {
-					moreGatesOnLastPage = false;
-				}
-				else {
-					moreGatesOnLastPage = true;
-				}
-				
+                moreGatesOnLastPage = linesNecessaryForCurrentGates >= linesLeftOnPage;
 				linesLeftOnPage -= linesToFill;
 			}
 		}
@@ -310,7 +304,7 @@ public class CommandList extends BaseCommand
 		try {
 			page = new Integer(parameters.get(0));
 		} 
-		catch (Exception e) { }
+		catch (Exception ignored) { }
 		
 		return page;
 	}
