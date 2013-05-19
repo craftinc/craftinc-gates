@@ -58,7 +58,7 @@ public class GatesManager
 			Plugin.log("Saved gates to disk.");
 		} 
 		catch (IOException e) {
-			Plugin.log("ERROR: Could not save gates to disk.");
+			Plugin.log(Level.SEVERE, "ERROR: Could not save gates to disk.");
 			e.printStackTrace();
 		}
 	}
@@ -92,7 +92,9 @@ public class GatesManager
 		
 		fillGatesById();
 		fillGatesByChunk();
-		fillGatesByLocation();		
+		fillGatesByLocation();
+
+        Plugin.log("Loaded " + this.gates.size() + " gates.");
 	}
 	
 	
