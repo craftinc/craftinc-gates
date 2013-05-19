@@ -10,7 +10,7 @@ public abstract class BaseLocationCommand extends BaseCommand
 	protected Location getValidPlayerLocation()
 	{
 		// The player might stand in a half block or a sign or whatever
-		// Therefore we load som extra locations and blocks
+		// Therefore we load some extra locations and blocks
 		Block playerBlock = player.getLocation().getBlock();
 		Block upBlock = playerBlock.getRelative(BlockFace.UP);
                 
