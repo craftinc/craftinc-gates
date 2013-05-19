@@ -47,12 +47,12 @@ public class CommandInfo extends BaseCommand
 		sendMessage(openHiddenMessage);
 		
 		if (gate.getLocation() != null)
-			sendMessage(ChatColor.DARK_AQUA + "from:  " + ChatColor.AQUA + "( " + (long)gate.getLocation().getX() + " | " + (long)gate.getLocation().getY() + " | " + (long)gate.getLocation().getZ() + " ) in " + gate.getLocation().getWorld().getName());
+			sendMessage(ChatColor.DARK_AQUA + "from:  " + ChatColor.AQUA + "( " + (int)gate.getLocation().getX() + " | " + (int)gate.getLocation().getY() + " | " + (int)gate.getLocation().getZ() + " ) in " + gate.getLocation().getWorld().getName());
 		else
 			sendMessage(ChatColor.DARK_AQUA + "NOTE: this gate has no location");
 		
 		if (gate.getExit() != null)
-			sendMessage(ChatColor.DARK_AQUA + "to:     " + ChatColor.AQUA + "( " + (long)gate.getExit().getX() + " | " + (long)gate.getExit().getY() + " | " + (long)gate.getExit().getZ() + " ) in " + gate.getExit().getWorld().getName());
+			sendMessage(ChatColor.DARK_AQUA + "to:     " + ChatColor.AQUA + "( " + (int)gate.getExit().getX() + " | " + (int)gate.getExit().getY() + " | " + (int)gate.getExit().getZ() + " ) in " + gate.getExit().getWorld().getName());
 		else
 			sendMessage(ChatColor.DARK_AQUA + "NOTE: this gate has no exit");
 	}
