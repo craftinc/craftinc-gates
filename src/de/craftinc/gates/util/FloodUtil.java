@@ -38,23 +38,19 @@ public class FloodUtil
 		Set<Block> blocks1 = getAirFloodBlocks(block, new HashSet<Block>(), exp1, frameBlockSearchLimit);
 		Set<Block> blocks2 = getAirFloodBlocks(block, new HashSet<Block>(), exp2, frameBlockSearchLimit);
 		
-		if (blocks1 == null && blocks2 == null) 
-		{
+		if (blocks1 == null && blocks2 == null) {
 			return null;
 		}
 		
-		if (blocks1 == null)
-		{
+		if (blocks1 == null) {
 			return blocks2;
 		}
 		
-		if (blocks2 == null)
-		{
+		if (blocks2 == null) {
 			return blocks1;
 		}
 		
-		if (blocks1.size() > blocks2.size())
-		{
+		if (blocks1.size() > blocks2.size()) {
 			return blocks2;
 		}
 		
@@ -64,28 +60,25 @@ public class FloodUtil
 	
 	private static Set<Block> getAirFloodBlocks(Block startBlock, Set<Block> foundBlocks, Set<BlockFace> expandFaces, int limit) 
 	{
-		if (foundBlocks == null)
-		{
+		if (foundBlocks == null) {
 			return null;
 		}
 		
-		if  (foundBlocks.size() > limit) 
-		{
+		if  (foundBlocks.size() > limit) {
 			Plugin.log(Level.ALL, "exceeding gate size limit.");
 			return null;
 		}
 		
-		if (foundBlocks.contains(startBlock)) 
+		if (foundBlocks.contains(startBlock))  {
 			return foundBlocks;
+        }
 		
-		if (startBlock.getType() == Material.AIR || startBlock.getType() == Material.PORTAL) 
-		{
+		if (startBlock.getType() == Material.AIR || startBlock.getType() == Material.PORTAL) {
 			// ... We found a block :D ...
 			foundBlocks.add(startBlock);
 			
 			// ... And flood away !
-			for (BlockFace face : expandFaces) 
-			{
+			for (BlockFace face : expandFaces) {
 				Block potentialBlock = startBlock.getRelative(face);
 				foundBlocks = getAirFloodBlocks(potentialBlock, foundBlocks, expandFaces, limit);
 			}
@@ -93,5 +86,4 @@ public class FloodUtil
 		
 		return foundBlocks;
 	}
-	
 }
