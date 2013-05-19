@@ -166,8 +166,8 @@ public class GatesManager
 	
 	private void addGateByLocations(Gate g)
 	{
-		for (Location c : g.getGateBlockLocations()) {
-			SimpleLocation sl = new SimpleLocation(c);
+		for (Location l : g.getGateBlockLocations()) {
+			SimpleLocation sl = new SimpleLocation(l);
 			gatesByLocation.put(sl, g);
 		}
 	}

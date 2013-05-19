@@ -37,7 +37,7 @@ public class CommandCreate extends BaseLocationCommand
 		GatesManager gatesManager = Plugin.getPlugin().getGatesManager();
 		
 		if (gatesManager.gateExists(id)) {
-			sendMessage(ChatColor.RED + "Creating the gate failed!" + "A gate with the supplied id already exists!");
+			sendMessage(ChatColor.RED + "Creating the gate failed! " + "A gate with the supplied id already exists!");
 			return;
 		}
 		
