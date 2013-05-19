@@ -13,9 +13,12 @@ public class SimpleLocation
     public SimpleLocation(Location l)
     {
     	this.world = l.getWorld().getName();
-    	this.x = (int)l.getX();
-    	this.y = (int)l.getY();
-    	this.z = (int)l.getZ();
+
+        // Using Block coordinates makes it possible to compare block locations with player locations.
+        // There might be an offset of 1 otherwise.
+    	this.x = l.getBlockX();
+    	this.y = l.getBlockY();
+    	this.z = l.getBlockZ();
     }
     
     
