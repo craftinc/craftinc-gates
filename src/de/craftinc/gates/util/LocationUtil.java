@@ -82,23 +82,4 @@ public class LocationUtil
 		
 		return new Location(w, x, y, z);
 	}
-	
-	
-	public static boolean locationsAreAtSamePositions(final Location l1, final Location l2)
-    {
-		if (l1.getWorld() != l2.getWorld() && (l1.getWorld() == null || !l1.getWorld().equals(l2.getWorld()))) {
-			return false;
-        }
-		if (l1.getBlockX() != l2.getBlockX()) {
-			return false;
-		}
-		if (l1.getBlockY() != l2.getBlockY()) {
-			return false;
-		}
-		if (l1.getBlockZ() != l2.getBlockZ()) {
-			return false;
-		}
-		
-		return true;
-    }
 }
