@@ -37,6 +37,11 @@ public class PlayerMoveListener implements Listener
 		if (gateAtLocation == null) {
 			return;
 		}
+
+        if (!gateAtLocation.isOpen()) {
+            return;
+        }
+
 		
 		// Check for permission
 		if (!hasPermission(event.getPlayer(), gateAtLocation)) {
