@@ -102,6 +102,10 @@ public class GatesManager
         // migration
         int fileStorageVersion = gatesConfig.getInt(storageVersionPath);
 
+       if (fileStorageVersion > storageVersion) {
+           throw new RuntimeException("Unsupported storage version detected! Make sure you have the latest version of Craft Inc. Gates installed.");
+       }
+
         if (fileStorageVersion < storageVersion) {
             Plugin.log("Outdated storage version detected. Performing data migration...");
             MigrationUtil.performMigration(fileStorageVersion, storageVersion, this.gates);
