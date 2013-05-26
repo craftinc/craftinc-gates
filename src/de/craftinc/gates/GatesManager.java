@@ -20,7 +20,9 @@ public class GatesManager
 {
 	private File gatesConfigFile;
 	private FileConfiguration gatesConfig;
-	private String gatesPath = "gates"; // path to gates inside the yaml file
+	private static final String gatesPath = "gates"; // path to gates inside the yaml file
+    private static final String storageVersionPath = "version";
+    private static final int storageVersion = 1;
 	
 	private Map<String, Gate> gatesById;
 	private Map<SimpleChunk, Set<Gate>> gatesByChunk;
@@ -52,6 +54,7 @@ public class GatesManager
 	public void saveGatesToDisk()
 	{
 		gatesConfig.set(gatesPath, new ArrayList<Object>(gatesById.values()));
+        gatesConfig.set(storageVersionPath, storageVersion);
 		
 		try {
 			gatesConfig.save(gatesConfigFile);
@@ -95,6 +98,14 @@ public class GatesManager
 		fillGatesByLocation();
 
         Plugin.log("Loaded " + this.gates.size() + " gates.");
+
+        // migration
+        int fileStorageVersion = gatesConfig.getInt(storageVersionPath);
+
+        if (fileStorageVersion < storageVersion) {
+            Plugin.log("Outdated storage version detected. Performing data migration...");
+            MigrationUtil.performMigration(fileStorageVersion, storageVersion, this.gates);
+        }
 	}
 	
 	
