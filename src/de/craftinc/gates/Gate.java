@@ -1,26 +1,16 @@
 package de.craftinc.gates;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
+import de.craftinc.gates.util.FloodUtil;
+import de.craftinc.gates.util.LocationUtil;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
-import de.craftinc.gates.util.FloodUtil;
-import de.craftinc.gates.util.LocationUtil;
+import java.util.*;
 
 
 public class Gate implements ConfigurationSerializable
 {
-	/*
-	 * ATTRIBUTES
-	 */
 	protected Location location; /* saving both location and gateBlockLocations is redundant but makes it easy to allow players to reshape gates */
 	protected Set<Location> gateBlockLocations = new HashSet<Location>(); /* Locations of the blocks inside the gate */
 	
@@ -73,7 +63,7 @@ public class Gate implements ConfigurationSerializable
 		this.location = location;
 		
 		if (isOpen) {
-			fillGate();
+			findPortalBlocks();
 			validate();
 		}
 	}
@@ -96,7 +86,7 @@ public class Gate implements ConfigurationSerializable
      *         supplied 'exit' will be set even if an exception is thrown. Note that this gate will be closed if an
      *         exception is thrown.
      */
-	public void setExit(Location exit)  throws Exception
+	public void setExit(Location exit) throws Exception
 	{
 		this.exit = exit;
 		validate();
@@ -137,15 +127,7 @@ public class Gate implements ConfigurationSerializable
 	public void setHidden(boolean isHidden) throws Exception
 	{
 		this.isHidden = isHidden;
-		
-		if (isHidden) {
-			emptyGate();
-		}
-		else if (isOpen()) {
-			fillGate();
-		}
-		
-		validate();
+        this.validate();
 	}
 	
 	
@@ -158,20 +140,13 @@ public class Gate implements ConfigurationSerializable
 	public void setOpen(boolean isOpen) throws Exception
 	{
 		if (isOpen && !this.isOpen) {
-			findPortalBlocks();
-			
-			if (!isHidden) {
-				fillGate();
-			}
+            findPortalBlocks();
 		}
-		else if (!isOpen && this.isOpen) {
-			emptyGate();
-		}
-		
+
 		this.isOpen = isOpen;
-		
 		validate();
 	}
+
 
     /**
      *
@@ -181,56 +156,21 @@ public class Gate implements ConfigurationSerializable
 	{
 		return gateBlockLocations;
 	}
-	
-	
-	/*
-	 * GATE BLOCK HANDLING
-	 */
-	
-	protected void fillGate()
-	{	
-		emptyGate();
-		findPortalBlocks();
-		
-		// This is not to do an effect
-		// It is to stop portal blocks from destroying themself as they cant rely on non created blocks :P
-		for (Location l : gateBlockLocations) {
-			l.getBlock().setType(Material.GLOWSTONE);
-		}
-		
-		for (Location l : gateBlockLocations) {
-			l.getBlock().setType(Material.PORTAL);
-		}
-	}
-	
-	
-	protected void emptyGate()
-	{
-		for (Location l : gateBlockLocations) {
-			if (l.getBlock().getType() == Material.PORTAL) {
-				l.getBlock().setType(Material.AIR);
-			}
-		}
-	}
-	
-	
-	protected void findPortalBlocks() 
+
+
+	protected void findPortalBlocks()
 	{
 		gateBlockLocations = new HashSet<Location>();
 		Set<Block> gateBlocks = FloodUtil.getGateFrameBlocks(location.getBlock());
-		
+
 		if (gateBlocks != null) {
 			for (Block b : gateBlocks) {
 				gateBlockLocations.add(b.getLocation());
 			}
 		}
 	}
-	
-	
-	/*
-	 * VALIDATION
-	 */
-	
+
+
 	/**
 	 * Checks if values attributes do add up; will close gate on wrong values.
 	 */
@@ -249,21 +189,17 @@ public class Gate implements ConfigurationSerializable
 			setOpen(false);
 			throw new Exception("Gate got closed. It has no exit.");
 		}
+
+        if (!isHidden) {
+            findPortalBlocks();
+        }
 		
 		if (gateBlockLocations.size() == 0) {
 			setOpen(false);
 			throw new Exception("Gate got closed. The frame is missing or broken.");
 		}
-		
-		
-		if (!isHidden) {
-			for (Location l : gateBlockLocations) {
-				if (l.getBlock().getType() == Material.AIR) {
-					setOpen(false);
-					throw new Exception("Gate got closed. The frame is missing or broken.");
-				}
-			}
-		}
+
+
 	}
 
 
@@ -285,7 +221,7 @@ public class Gate implements ConfigurationSerializable
 	@SuppressWarnings("unchecked")
     public Gate(Map<String, Object> map)
 	{
-		try {
+        try {
 			id = map.get(idKey).toString();
 
             if (id == null) {
