@@ -2,13 +2,12 @@ package de.craftinc.gates.listeners;
 
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.logging.Level;
 
+import de.craftinc.gates.util.TeleportRequest;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -60,41 +59,45 @@ public class PlayerMoveListener implements Listener
 				event.getPlayer().sendMessage(ChatColor.RED + "You are not allowed to use this gate!");
 				this.lastBorderMessage.put(playerName, now);
 			}
-			
-			return;
 		}
-		
-		// Teleport the player
-		checkChunkLoad(gateAtLocation.getLocation().getBlock());
-		
-		Location gateExit = gateAtLocation.getExit();
-		Location gateLocation = gateAtLocation.getLocation();
-		Location playerLocation = event.getPlayer().getLocation();
-		
-        Float newYaw = gateExit.getYaw() - gateLocation.getYaw() + playerLocation.getYaw();
-        
-        Location teleportToLocation = new Location( gateExit.getWorld(),
-        											gateExit.getX(),
-        											gateExit.getY(),
-        											gateExit.getZ(),
-					                                newYaw, 
-					                                playerLocation.getPitch() );
-                    
-		event.getPlayer().teleport(teleportToLocation);
-		event.setTo(teleportToLocation);
-		
-		event.getPlayer().sendMessage(ChatColor.DARK_AQUA + "Thank you for traveling with Craft Inc. Gates.");
+        else {
+            this.teleportPlayer(event.getPlayer(), gateAtLocation);
+        }
 	}
-	
-	
-	private void checkChunkLoad(Block b) 
+
+
+    /**
+     * Teleports a player. This method will check if the destination chunk is loaded and will wait until the chunk
+     * is loaded before executing the teleportion event.
+     * @param p The player to teleport.
+     * @param g The gate to which exit the player will be teleported.
+     */
+	private void teleportPlayer(Player p, Gate g)
 	{
-		World w = b.getWorld();
-		Chunk c = b.getChunk();
-		
-		if (!w.isChunkLoaded(c))
-		{
-		    Plugin.log(Level.FINE, "Loading chunk: " + c.toString() + " on: " + w.toString());
+        Location playerLocation = p.getLocation();
+        Location exit = g.getExit();
+
+        Float newYaw = g.getExit().getYaw() - g.getLocation().getYaw() + playerLocation.getYaw();
+
+        Location teleportToLocation = new Location( g.getExit().getWorld(),
+                                                    g.getExit().getX(),
+                                                    g.getExit().getY(),
+                                                    g.getExit().getZ(),
+                                                    newYaw,
+                                                    playerLocation.getPitch()
+                                                  );
+
+        Chunk c = exit.getChunk();
+        World w = exit.getWorld();
+
+		if (w.isChunkLoaded(c)) {
+            p.teleport(teleportToLocation);
+            p.sendMessage(ChatColor.DARK_AQUA + "Thank you for traveling with Craft Inc. Gates.");
+        }
+        else {
+            TeleportRequest request = new TeleportRequest(p, exit);
+            Plugin.getPlugin().getChunkLoadListener().addTeleportRequest(request);
+
 			w.loadChunk(c);
 		}
 	}
