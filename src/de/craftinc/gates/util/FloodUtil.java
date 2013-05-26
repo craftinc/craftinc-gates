@@ -13,7 +13,7 @@ import de.craftinc.gates.Plugin;
 
 public class FloodUtil 
 {
-	private final static int frameBlockSearchLimit = 40;
+	private final static int frameBlockSearchLimit = 100;
 	
 	private static final Set<BlockFace> exp1 = new HashSet<BlockFace>();
 	private static final Set<BlockFace> exp2 = new HashSet<BlockFace>();
@@ -73,7 +73,7 @@ public class FloodUtil
 			return foundBlocks;
         }
 		
-		if (startBlock.getType() == Material.AIR || startBlock.getType() == Material.PORTAL) {
+		if (startBlock.getType() == Material.AIR) {
 			// ... We found a block :D ...
 			foundBlocks.add(startBlock);
 			
