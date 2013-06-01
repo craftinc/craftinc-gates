@@ -10,36 +10,54 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.ChunkLoadEvent;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 
 public class ChunkLoadListener implements Listener
 {
-    private HashMap<Chunk, TeleportRequest> pendingRequests = new HashMap<Chunk, TeleportRequest>();
+    private HashMap<Chunk, List<TeleportRequest>> pendingRequests = new HashMap<Chunk, List<TeleportRequest>>();
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onChunkLoad(ChunkLoadEvent event)
     {
         Chunk c = event.getChunk();
-        TeleportRequest request = pendingRequests.get(c);
+        List<TeleportRequest> requests = pendingRequests.get(c);
 
-        if (request != null) {
+        if (requests != null) {
 
             pendingRequests.remove(c);
 
-            Player p = request.getPlayer();
-            p.teleport(request.getDestination());
-            p.sendMessage(ChatColor.DARK_AQUA + "Thank you for traveling with Craft Inc. Gates.");
+            for (TeleportRequest r : requests) {
+
+                Player p = r.getPlayer();
+
+
+                p.sendMessage(ChatColor.DARK_AQUA + "Chunk got loaded.");
+
+
+                p.teleport(r.getDestination());
+                p.sendMessage(ChatColor.DARK_AQUA + "Thank you for traveling with Craft Inc. Gates.");
+            }
         }
     }
 
 
-    public void addTeleportRequest(TeleportRequest request)
+    public void addTeleportRequest(final TeleportRequest r)
     {
-        if (request == null) {
+        if (r == null) {
             throw new IllegalArgumentException("The request must not be null!");
         }
 
-        this.pendingRequests.put(request.getDestination().getChunk(), request);
+        Chunk c = r.getDestination().getChunk();
+        List<TeleportRequest> requests = pendingRequests.get(c);
+
+        if (requests == null) {
+            requests = new ArrayList<TeleportRequest>();
+            this.pendingRequests.put(c, requests);
+        }
+
+        requests.add(r);
     }
 }
