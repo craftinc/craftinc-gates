@@ -44,4 +44,11 @@ public class SimpleChunk
     	
     	return hash;
     }
+
+
+    @Override
+    public String toString()
+    {
+        return this.getClass().toString() + " (x=" + this.x + " z=" + this.z + " world='" + this.world + "')";
+    }
 }

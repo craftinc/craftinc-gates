@@ -1,6 +1,7 @@
 package de.craftinc.gates.listeners;
 
 import de.craftinc.gates.Plugin;
+import de.craftinc.gates.util.SimpleChunk;
 import de.craftinc.gates.util.TeleportRequest;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
@@ -17,12 +18,15 @@ import java.util.List;
 
 public class ChunkLoadListener implements Listener
 {
-    private HashMap<Chunk, List<TeleportRequest>> pendingRequests = new HashMap<Chunk, List<TeleportRequest>>();
+    private HashMap<SimpleChunk, List<TeleportRequest>> pendingRequests = new HashMap<SimpleChunk, List<TeleportRequest>>();
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onChunkLoad(ChunkLoadEvent event)
     {
-        Chunk c = event.getChunk();
+        System.out.println("loaded chunk: " + event.getChunk() + "world: " + event.getChunk().getWorld());
+        System.out.println("pending: " + pendingRequests.keySet());
+
+        SimpleChunk c = new SimpleChunk(event.getChunk());
         List<TeleportRequest> requests = pendingRequests.get(c);
 
         if (requests != null) {
@@ -50,7 +54,7 @@ public class ChunkLoadListener implements Listener
             throw new IllegalArgumentException("The request must not be null!");
         }
 
-        Chunk c = r.getDestination().getChunk();
+        SimpleChunk c = new SimpleChunk(r.getDestination().getChunk());
         List<TeleportRequest> requests = pendingRequests.get(c);
 
         if (requests == null) {

@@ -23,7 +23,7 @@ public class SimpleLocation
     
     
     @Override
-    public boolean equals(Object o)
+    public boolean equals(final Object o)
     {
     	if (o instanceof SimpleLocation) {
     		SimpleLocation otherLocation = (SimpleLocation)o;

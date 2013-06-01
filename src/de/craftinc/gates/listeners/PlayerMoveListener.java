@@ -87,19 +87,24 @@ public class PlayerMoveListener implements Listener
                                                     playerLocation.getPitch()
                                                   );
 
-        Chunk c = exit.getChunk();
-        World w = exit.getWorld();
+        Chunk teleportToChunk = teleportToLocation.getChunk();
 
-		if (w.isChunkLoaded(c)) {
-            p.teleport(teleportToLocation);
-            p.sendMessage(ChatColor.DARK_AQUA + "Thank you for traveling with Craft Inc. Gates.");
-        }
-        else {
-            TeleportRequest request = new TeleportRequest(p, exit);
+//        System.out.println(teleportToChunk.getWorld() + "\n" +
+//                           teleportToChunk.getX() + "," + teleportToChunk.getZ() + "\n" +
+//                           teleportToChunk + "\n" +
+//                           teleportToChunk.getChunkSnapshot() + "\n" +
+//                           teleportToChunk.getTileEntities());
+//
+//		if (teleportToChunk.isLoaded()) {
+//            p.teleport(teleportToLocation);
+//            p.sendMessage(ChatColor.DARK_AQUA + "Thank you for traveling with Craft Inc. Gates.");
+//        }
+//        else {
+            TeleportRequest request = new TeleportRequest(p, teleportToLocation);
             Plugin.getPlugin().getChunkLoadListener().addTeleportRequest(request);
 
-			w.loadChunk(c);
-		}
+			teleportToChunk.load();
+//		}
 	}
 	
 	
