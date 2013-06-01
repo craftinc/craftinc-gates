@@ -1,6 +1,7 @@
 package de.craftinc.gates.commands;
 
 
+import java.util.Set;
 import java.util.logging.Level;
 
 import org.bukkit.ChatColor;
@@ -41,7 +42,12 @@ public class CommandSetLocation extends BaseLocationCommand
 		
 		try 
 		{
-			gate.setLocation(playerLocation);
+			Location oldLocation = gate.getLocation();
+            Set<Location> oldGateBlockLocations = gate.getGateBlockLocations();
+
+            gate.setLocation(playerLocation);
+            Plugin.getPlugin().getGatesManager().handleGateLocationChange(gate, oldLocation, oldGateBlockLocations);
+
 			sendMessage(ChatColor.GREEN + "The location of '" + gate.getId() + "' is now at your current location.");
 		} 
 		catch (Exception e) 
