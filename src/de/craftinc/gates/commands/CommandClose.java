@@ -41,8 +41,6 @@ public class CommandClose extends BaseCommand
 			Plugin.log(Level.WARNING, e.getMessage());
 			e.printStackTrace();
 		}
-		
-		
 	}
 }
 

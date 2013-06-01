@@ -18,7 +18,7 @@ import de.craftinc.gates.Plugin;
 
 public class PlayerMoveListener implements Listener
 {
-	protected HashMap<String, Long> lastBorderMessage = new HashMap<String, Long>();
+	protected HashMap<String, Long> lastNoPermissionMessages = new HashMap<String, Long>();
 	
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerMove(PlayerMoveEvent event) 
@@ -52,9 +52,9 @@ public class PlayerMoveListener implements Listener
 	        Long now = Calendar.getInstance().getTimeInMillis();
 			
 			// do not display messages more often than once per second
-			if (!this.lastBorderMessage.containsKey(playerName) || this.lastBorderMessage.get(playerName) < now - 10000L) {
+			if (!this.lastNoPermissionMessages.containsKey(playerName) || this.lastNoPermissionMessages.get(playerName) < now - 10000L) {
 				event.getPlayer().sendMessage(ChatColor.RED + "You are not allowed to use this gate!");
-				this.lastBorderMessage.put(playerName, now);
+				this.lastNoPermissionMessages.put(playerName, now);
 			}
 		}
         else {
