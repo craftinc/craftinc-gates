@@ -13,12 +13,14 @@ import org.bukkit.event.world.ChunkLoadEvent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 
 public class ChunkLoadListener implements Listener
 {
     private HashMap<SimpleChunk, List<TeleportRequest>> pendingRequests = new HashMap<SimpleChunk, List<TeleportRequest>>();
+    private HashSet<Player> playersWithTeleportRequest = new HashSet<Player>();
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onChunkLoad(ChunkLoadEvent event)
@@ -36,12 +38,10 @@ public class ChunkLoadListener implements Listener
             for (TeleportRequest r : requests) {
 
                 Player p = r.getPlayer();
-
-
-                p.sendMessage(ChatColor.DARK_AQUA + "Chunk got loaded.");
-
+                this.playersWithTeleportRequest.remove(p);
 
                 p.teleport(r.getDestination());
+                p.sendMessage(ChatColor.DARK_AQUA + "Chunk got loaded.");
                 p.sendMessage(ChatColor.DARK_AQUA + "Thank you for traveling with Craft Inc. Gates.");
             }
         }
@@ -50,8 +50,14 @@ public class ChunkLoadListener implements Listener
 
     public void addTeleportRequest(final TeleportRequest r)
     {
+        System.out.println("Got teleport request: " + r.getDestination().getChunk());
+
         if (r == null) {
             throw new IllegalArgumentException("The request must not be null!");
+        }
+
+        if (this.playersWithTeleportRequest.contains(r.getPlayer())) {
+            return;
         }
 
         SimpleChunk c = new SimpleChunk(r.getDestination().getChunk());
@@ -63,5 +69,6 @@ public class ChunkLoadListener implements Listener
         }
 
         requests.add(r);
+        this.playersWithTeleportRequest.add(r.getPlayer());
     }
 }
