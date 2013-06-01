@@ -5,7 +5,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-import de.craftinc.gates.listeners.ChunkLoadListener;
 import de.craftinc.gates.listeners.PlayerMoveListener;
 import net.milkbowl.vault.permission.Permission;
 
@@ -30,7 +29,6 @@ public class Plugin extends JavaPlugin
 	
 	private String baseCommand;
 	private PlayerMoveListener playerListener = new PlayerMoveListener();
-    private ChunkLoadListener chunkLoadListener = new ChunkLoadListener();
 	private List<BaseCommand> commands = new ArrayList<BaseCommand>();
 	private GatesManager gatesManager = new GatesManager();
 	
@@ -114,19 +112,12 @@ public class Plugin extends JavaPlugin
 		// Register events
 		PluginManager pm = this.getServer().getPluginManager();
 		pm.registerEvents(this.playerListener, this);
-        pm.registerEvents(this.chunkLoadListener, this);
 		
 		// Load gates
 		gatesManager.loadGatesFromDisk();
 		
 		log("Enabled");
 	}
-
-
-    public ChunkLoadListener getChunkLoadListener()
-    {
-        return chunkLoadListener;
-    }
 
 	
 	// -------------------------------------------- //

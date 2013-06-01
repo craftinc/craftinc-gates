@@ -67,8 +67,7 @@ public class PlayerMoveListener implements Listener
 
 
     /**
-     * Teleports a player. This method will check if the destination chunk is loaded and will wait until the chunk
-     * is loaded before executing the teleportion event.
+     * Teleports a player.
      * @param p The player to teleport.
      * @param g The gate to which exit the player will be teleported.
      */
@@ -79,33 +78,22 @@ public class PlayerMoveListener implements Listener
 
         Float newYaw = g.getExit().getYaw() - g.getLocation().getYaw() + playerLocation.getYaw();
 
-        Location teleportToLocation = new Location( g.getExit().getWorld(),
-                                                    g.getExit().getX(),
-                                                    g.getExit().getY(),
-                                                    g.getExit().getZ(),
-                                                    newYaw,
-                                                    playerLocation.getPitch()
-                                                  );
+        Location destLocation = new Location( g.getExit().getWorld(),
+                                              g.getExit().getX(),
+                                              g.getExit().getY(),
+                                              g.getExit().getZ(),
+                                              newYaw,
+                                              playerLocation.getPitch()
+                                            );
 
-        Chunk teleportToChunk = teleportToLocation.getChunk();
-
-		if (teleportToChunk.isLoaded()) {
-            p.teleport(teleportToLocation);
-            p.sendMessage(ChatColor.DARK_AQUA + "Thank you for traveling with Craft Inc. Gates.");
-        }
-        else {
-            TeleportRequest request = new TeleportRequest(p, teleportToLocation);
-            Plugin.getPlugin().getChunkLoadListener().addTeleportRequest(request);
-
-			teleportToChunk.load();
-		}
+        p.teleport(destLocation);
+        p.sendMessage(ChatColor.DARK_AQUA + "Thank you for traveling with Craft Inc. Gates.");
 	}
 	
 	
 	protected boolean hasPermission(Player player, Gate gate) 
 	{
-		if (Plugin.getPermission() == null) // fallback: use the standard bukkit permission system
-		{
+		if (Plugin.getPermission() == null) { // fallback: use the standard bukkit permission system
 			return player.hasPermission(Plugin.permissionUse);
 		}
 		else {
