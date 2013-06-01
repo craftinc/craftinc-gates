@@ -3,11 +3,8 @@ package de.craftinc.gates.listeners;
 import java.util.Calendar;
 import java.util.HashMap;
 
-import de.craftinc.gates.util.TeleportRequest;
 import org.bukkit.ChatColor;
-import org.bukkit.Chunk;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -73,17 +70,14 @@ public class PlayerMoveListener implements Listener
      */
 	private void teleportPlayer(Player p, Gate g)
 	{
-        Location playerLocation = p.getLocation();
-        Location exit = g.getExit();
-
-        Float newYaw = g.getExit().getYaw() - g.getLocation().getYaw() + playerLocation.getYaw();
+        Float newYaw = g.getExit().getYaw() - g.getLocation().getYaw() + p.getLocation().getYaw();
 
         Location destLocation = new Location( g.getExit().getWorld(),
                                               g.getExit().getX(),
                                               g.getExit().getY(),
                                               g.getExit().getZ(),
                                               newYaw,
-                                              playerLocation.getPitch()
+                                              p.getLocation().getPitch()
                                             );
 
         p.teleport(destLocation);
