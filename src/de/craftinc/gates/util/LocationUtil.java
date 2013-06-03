@@ -13,15 +13,19 @@ import de.craftinc.gates.Plugin;
  */
 public class LocationUtil 
 {
-	protected static String worldKey = "world";
-	protected static String xKey = "x";
-	protected static String yKey = "y";
-	protected static String zKey = "z";
+	protected final static String worldKey = "world";
+	protected final static String xKey = "x";
+	protected final static String yKey = "y";
+	protected final static String zKey = "z";
 
 	
-	protected static World getWorld(String name) throws Exception 
+	protected static World getWorld(final String name) throws Exception
 	{
-		World world = Plugin.getPlugin().getServer().getWorld(name);
+		if (name == null) {
+            throw new IllegalArgumentException("The name of the world must not be 'null");
+        }
+
+        World world = Plugin.getPlugin().getServer().getWorld(name);
 
 		if (world == null) {
 			throw new Exception("World '" + name + "' does not exists anymore! Cannot get instance!");
@@ -29,9 +33,15 @@ public class LocationUtil
 		
 		return world;
 	}
-	
-	
-	public static Map<String, Object> serializeLocation(Location l)
+
+
+    /**
+     * Serializes a location. Helps storing locations inside yaml files.
+     *
+     * @param l The location to serialize. Supplying 'null' is ok..
+     * @return A Map object ready for storing inside a yaml file. Will return 'null' if 'l' is null.
+     */
+	public static Map<String, Object> serializeLocation(final Location l)
 	{
 		if (l == null) {
 			return null;
@@ -46,40 +56,31 @@ public class LocationUtil
 		
 		return serializedLocation;
 	}
-	
 
-	public static Location deserializeLocation(Map<String, Object> map) throws Exception
+
+    /**
+     *
+     * @param map A map generated with the 'serializeLocation' method. Supplying 'null' is ok.
+     * @return A deserialized location. This method will return 'null' if 'map' is null!
+     * @throws Exception This method will throw an exception if the world of the supplied serialized location
+     *         does not exist or if 'map' does not contain all necessary keys!
+     */
+	public static Location deserializeLocation(final Map<String, Object> map) throws Exception
 	{
 		if (map == null) {
 			return null;
 		}
 		
 		World w = getWorld((String)map.get(worldKey));
+
+		Number x =  (Number)map.get(xKey);
+        Number y =  (Number)map.get(yKey);
+        Number z =  (Number)map.get(zKey);
+
+        if (x == null || y == null || z == null) {
+            throw new IllegalArgumentException("Supplied map is invalid x, y or z coordinate was not supplied");
+        }
 		
-		
-		// verbose loading of coordinates (they might be Double or Integer)
-		Object objX =  map.get(xKey);
-		Object objY =  map.get(yKey);
-		Object objZ =  map.get(zKey);
-		
-		double x,y,z;
-		
-		if (objX instanceof Integer)
-			x = (double)(Integer)objX;
-		else
-			x = (Double)objX;
-		
-		if (objY instanceof Integer)
-			y = (double)(Integer)objY;
-		else
-			y = (Double)objY;
-		
-		if (objZ instanceof Integer)
-			z = (double)(Integer)objZ;
-		else
-			z = (Double)objZ;
-		
-		
-		return new Location(w, x, y, z);
+		return new Location(w, x.doubleValue(), y.doubleValue(), z.doubleValue());
 	}
 }
