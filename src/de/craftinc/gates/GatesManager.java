@@ -1,4 +1,4 @@
-package de.craftinc.gates.gates;
+package de.craftinc.gates;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -7,8 +7,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.logging.Level;
 
-import de.craftinc.gates.Plugin;
-import de.craftinc.gates.gates.persistence.MigrationUtil;
+import de.craftinc.gates.persistence.MigrationUtil;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;

@@ -3,6 +3,7 @@ package de.craftinc.gates.listeners;
 import java.util.Calendar;
 import java.util.HashMap;
 
+import de.craftinc.gates.util.GateBlockChangeSender;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -11,8 +12,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 
-import de.craftinc.gates.gates.Gate;
-import de.craftinc.gates.gates.GatesManager;
+import de.craftinc.gates.Gate;
+import de.craftinc.gates.GatesManager;
 import de.craftinc.gates.Plugin;
 
 
@@ -26,6 +27,11 @@ public class PlayerMoveListener implements Listener
 		if (event.isCancelled()) {
 			return;
 		}
+
+        if (event.getFrom().getChunk() != event.getTo().getChunk()) {
+            GateBlockChangeSender.updateGateBlocks(event.getPlayer(), event.getTo());
+        }
+
 		
 		GatesManager gateManager = Plugin.getPlugin().getGatesManager();
 		Gate gateAtLocation = gateManager.getGateAtLocation(event.getTo());

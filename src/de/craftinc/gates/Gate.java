@@ -1,8 +1,7 @@
-package de.craftinc.gates.gates;
+package de.craftinc.gates;
 
-import de.craftinc.gates.Plugin;
 import de.craftinc.gates.util.FloodUtil;
-import de.craftinc.gates.gates.persistence.LocationUtil;
+import de.craftinc.gates.persistence.LocationUtil;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;

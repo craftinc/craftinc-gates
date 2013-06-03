@@ -13,7 +13,7 @@ import de.craftinc.gates.Plugin;
 
 public class FloodUtil 
 {
-	private final static int frameBlockSearchLimit = 100;
+	private final static int frameBlockSearchLimit = 100; // TODO: move search radius into a config file / get value from config class
 	
 	private static final Set<BlockFace> exp1 = new HashSet<BlockFace>();
 	private static final Set<BlockFace> exp2 = new HashSet<BlockFace>();

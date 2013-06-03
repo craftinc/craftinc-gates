@@ -5,14 +5,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-import de.craftinc.gates.gates.Gate;
-import de.craftinc.gates.listeners.PlayerMoveListener;
-import de.craftinc.gates.gates.GatesManager;
+import de.craftinc.gates.listeners.*;
 import net.milkbowl.vault.permission.Permission;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
+import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -29,10 +28,15 @@ public class Plugin extends JavaPlugin
 	private static Plugin instance;
 	private static Permission permission;
 	
-	private String baseCommand;
-	private PlayerMoveListener playerListener = new PlayerMoveListener();
-	private List<BaseCommand> commands = new ArrayList<BaseCommand>();
-	private GatesManager gatesManager = new GatesManager();
+	protected String baseCommand;
+    protected List<BaseCommand> commands = new ArrayList<BaseCommand>();
+    protected GatesManager gatesManager = new GatesManager();
+
+    protected PlayerMoveListener moveListener = new PlayerMoveListener();
+    protected PlayerTeleportListener teleportListener = new PlayerTeleportListener();
+    protected PlayerRespawnListener respawnListener = new PlayerRespawnListener();
+    protected PlayerChangedWorldListener worldChangeListener = new PlayerChangedWorldListener();
+    protected PlayerJoinListener joinListener = new PlayerJoinListener();
 	
 	
 	public Plugin()
@@ -58,9 +62,9 @@ public class Plugin extends JavaPlugin
 	{
 		ConfigurationSerialization.registerClass(Gate.class);
 	}
-	
-	
-	private void setupPermissions()
+
+
+    protected void setupPermissions()
 	{
 		if (getServer().getPluginManager().getPlugin("Vault") == null) {
             return;
@@ -112,14 +116,26 @@ public class Plugin extends JavaPlugin
 
 		
 		// Register events
-		PluginManager pm = this.getServer().getPluginManager();
-		pm.registerEvents(this.playerListener, this);
+		this.registerEventListeners();
 		
 		// Load gates
 		gatesManager.loadGatesFromDisk();
 		
 		log("Enabled");
 	}
+
+
+    protected void registerEventListeners()
+    {
+        PluginManager pm = this.getServer().getPluginManager();
+
+        pm.registerEvents(this.moveListener, this);
+        pm.registerEvents(this.teleportListener, this);
+        pm.registerEvents(this.respawnListener, this);
+        pm.registerEvents(this.worldChangeListener, this);
+        pm.registerEvents(this.joinListener, this);
+    }
+
 
 	
 	// -------------------------------------------- //
