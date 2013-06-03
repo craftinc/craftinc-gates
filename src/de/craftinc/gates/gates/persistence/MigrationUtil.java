@@ -1,6 +1,6 @@
-package de.craftinc.gates;
+package de.craftinc.gates.gates.persistence;
 
-import de.craftinc.gates.Gate;
+import de.craftinc.gates.gates.Gate;
 
 import org.bukkit.Location;
 import org.bukkit.Material;

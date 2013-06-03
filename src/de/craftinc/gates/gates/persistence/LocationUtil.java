@@ -1,4 +1,4 @@
-package de.craftinc.gates.util;
+package de.craftinc.gates.gates.persistence;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -8,7 +8,7 @@ import java.util.List;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-import de.craftinc.gates.Gate;
+import de.craftinc.gates.gates.Gate;
 import de.craftinc.gates.Plugin;
 import de.craftinc.gates.util.TextUtil;
 

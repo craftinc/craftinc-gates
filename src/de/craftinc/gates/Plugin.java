@@ -5,7 +5,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
+import de.craftinc.gates.gates.Gate;
 import de.craftinc.gates.listeners.PlayerMoveListener;
+import de.craftinc.gates.gates.GatesManager;
 import net.milkbowl.vault.permission.Permission;
 
 import org.bukkit.command.Command;

@@ -11,8 +11,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 
-import de.craftinc.gates.Gate;
-import de.craftinc.gates.GatesManager;
+import de.craftinc.gates.gates.Gate;
+import de.craftinc.gates.gates.GatesManager;
 import de.craftinc.gates.Plugin;
 
 
