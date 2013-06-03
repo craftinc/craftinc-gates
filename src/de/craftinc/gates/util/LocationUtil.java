@@ -8,9 +8,6 @@ import org.bukkit.World;
 import de.craftinc.gates.Plugin;
 
 
-/**
- * NOTE: We do not care about yaw and pitch for gate locations. So we won't serialize them.
- */
 public class LocationUtil 
 {
 	protected final static String worldKey = "world";
@@ -36,7 +33,8 @@ public class LocationUtil
 
 
     /**
-     * Serializes a location. Helps storing locations inside yaml files.
+     * Serializes a location. Helps storing locations inside yaml files. NOTE: We do not care about yaw
+     * and pitch for gate locations. So we won't serialize them.
      *
      * @param l The location to serialize. Supplying 'null' is ok..
      * @return A Map object ready for storing inside a yaml file. Will return 'null' if 'l' is null.

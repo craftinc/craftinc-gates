@@ -260,7 +260,6 @@ public class GatesManager
 				else {
 					fileWriter.write(value.toString() + "\n");
 				}
-				
 			}
 			
 			fileWriter.close();
