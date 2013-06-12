@@ -24,13 +24,12 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 
 public class GateBlockChangeSender
 {
-    protected static final int searchRadius = 16; // TODO: move search radius into a config file / get value from config class
+    protected static final int searchRadius = 64; // TODO: move search radius into a config file / get value from config class
 
 
     public static void updateGateBlocks(final Player player)

@@ -40,6 +40,8 @@ public class GatesManager
 	private static final String gatesPath = "gates"; // path to gates inside the yaml file
     private static final String storageVersionPath = "version";
     private static final int storageVersion = 1;
+
+    private static final int chunkRadius = 4; // TODO: move search radius into a config file / get value from config class
 	
 	private Map<String, Gate> gatesById;
 	private Map<SimpleChunk, Set<Gate>> gatesByChunk;
@@ -119,9 +121,9 @@ public class GatesManager
         // migration
         int fileStorageVersion = gatesConfig.getInt(storageVersionPath);
 
-       if (fileStorageVersion > storageVersion) {
-           throw new RuntimeException("Unsupported storage version detected! Make sure you have the latest version of Craft Inc. Gates installed.");
-       }
+        if (fileStorageVersion > storageVersion) {
+            throw new RuntimeException("Unsupported storage version detected! Make sure you have the latest version of Craft Inc. Gates installed.");
+        }
 
         if (fileStorageVersion < storageVersion) {
             Plugin.log("Outdated storage version detected. Performing data migration...");
@@ -142,12 +144,24 @@ public class GatesManager
 	
 	private void fillGatesByChunk()
 	{
-		HashSet<Chunk> chunksUsedByGates = new HashSet<Chunk>();
+		HashSet<SimpleChunk> chunksUsedByGates = new HashSet<SimpleChunk>();
 		
 		for (Gate g : gates) {
 
             if (g.getLocation() != null) {
-			    chunksUsedByGates.add(g.getLocation().getChunk());
+
+                Chunk c = g.getLocation().getChunk();
+
+                int x = c.getX();
+                int z = c.getZ();
+
+                for (int i = x-chunkRadius; i < x+chunkRadius; i++) {
+
+                    for (int j = z-chunkRadius; j < z+chunkRadius; j++) {
+
+                        chunksUsedByGates.add(new SimpleChunk(i, j, c.getWorld()));
+                    }
+                }
             }
 		}
 		
@@ -208,9 +222,24 @@ public class GatesManager
 	private void removeGateFromChunk(Gate g, Location l)
 	{
 		if (l != null) {
-            SimpleChunk sc = new SimpleChunk(l.getChunk());
-		    Set<Gate> gatesInChunk = gatesByChunk.get(sc);
-		    gatesInChunk.remove(g);
+
+            Chunk c = l.getChunk();
+            int x = c.getX();
+            int z = c.getZ();
+
+            for (int i = x-chunkRadius; i < x+chunkRadius; i++) {
+
+                for (int j = z-chunkRadius; j < z+chunkRadius; j++) {
+
+                    SimpleChunk sc = new SimpleChunk(i, j, c.getWorld());
+		            Set<Gate> gatesInChunk = gatesByChunk.get(sc);
+
+                    if (gatesInChunk != null) {
+                        gatesInChunk.remove(g);
+                    }
+
+                }
+            }
         }
 	}
 	
@@ -220,15 +249,27 @@ public class GatesManager
         Location gateLocation = g.getLocation();
 
 		if (gateLocation != null) {
-            SimpleChunk c = new SimpleChunk(gateLocation.getChunk());
-            Set<Gate> gatesForC = gatesByChunk.get(c);
 
-            if (gatesForC == null) {
-                gatesForC = new HashSet<Gate>(); // NOTE: not optimizing size here
-                gatesByChunk.put(c, gatesForC);
+            Chunk c = g.getLocation().getChunk();
+            int x = c.getX();
+            int z = c.getZ();
+
+            for (int i = x-chunkRadius; i < x+chunkRadius; i++) {
+
+                for (int j = z-chunkRadius; j < z+chunkRadius; j++) {
+
+                    SimpleChunk sc = new SimpleChunk(i, j, c.getWorld());
+
+                    Set<Gate> gatesForC = gatesByChunk.get(sc);
+
+                    if (gatesForC == null) {
+                        gatesForC = new HashSet<Gate>(); // NOTE: not optimizing size here
+                        gatesByChunk.put(sc, gatesForC);
+                    }
+
+                    gatesForC.add(g);
+                }
             }
-
-            gatesForC.add(g);
         }
 	}
 	

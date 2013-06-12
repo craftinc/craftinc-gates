@@ -17,6 +17,7 @@
 package de.craftinc.gates.util;
 
 import org.bukkit.Chunk;
+import org.bukkit.World;
 
 public class SimpleChunk 
 {
@@ -30,6 +31,14 @@ public class SimpleChunk
 		this.z = c.getZ();
 		this.world = c.getWorld().getName();
 	}
+
+
+    public SimpleChunk(int x, int z, World w)
+    {
+        this.x = x;
+        this.z = z;
+        this.world = w.getName();
+    }
 
 	
 	@Override
