@@ -101,8 +101,12 @@ public class GatesManager
 		
 		this.gatesConfig = YamlConfiguration.loadConfiguration(gatesConfigFile);
 		this.gates = (List<Gate>)gatesConfig.getList(gatesPath);
-		
-		for (Object o : this.gates) {
+
+        if (this.gates == null) {
+            this.gates = new ArrayList<Gate>();
+        }
+
+        for (Object o : this.gates) {
 			
 			if (!(o instanceof Gate)) {
 				Plugin.log(Level.SEVERE, "Gate file on disk is invalid. No gates loaded.");
