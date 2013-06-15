@@ -18,6 +18,7 @@ package de.craftinc.gates.commands;
 
 import java.util.logging.Level;
 
+import de.craftinc.gates.util.GateBlockChangeSender;
 import org.bukkit.ChatColor;
 
 import de.craftinc.gates.Plugin;
@@ -49,6 +50,7 @@ public class CommandClose extends BaseCommand
 		try 
 		{
 			gate.setOpen(false);
+            GateBlockChangeSender.updateGateBlocks(gate);
 			sendMessage(ChatColor.GREEN + "The gate was closed.");
 		}
 		catch(Exception e) 

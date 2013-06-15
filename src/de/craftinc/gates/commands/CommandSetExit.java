@@ -18,6 +18,7 @@ package de.craftinc.gates.commands;
 
 import java.util.logging.Level;
 
+import de.craftinc.gates.util.GateBlockChangeSender;
 import org.bukkit.ChatColor;
 
 import de.craftinc.gates.Plugin;
@@ -51,7 +52,8 @@ public class CommandSetExit extends BaseCommand
 			sendMessage(ChatColor.GREEN + "The exit of gate '" + gate.getId() + "' is now where you stand.");
 		} 
 		catch (Exception e) {
-			sendMessage(ChatColor.RED + "Setting the exit for the gate failed! See server log for more information");
+            GateBlockChangeSender.updateGateBlocks(gate);
+            sendMessage(ChatColor.RED + "Setting the exit for the gate failed! See server log for more information");
 			Plugin.log(Level.WARNING, e.getMessage());
 			e.printStackTrace();
 		}

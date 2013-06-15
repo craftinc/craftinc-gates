@@ -17,6 +17,7 @@
 package de.craftinc.gates.commands;
 
 
+import de.craftinc.gates.util.GateBlockChangeSender;
 import org.bukkit.ChatColor;
 
 import de.craftinc.gates.Plugin;
@@ -47,6 +48,7 @@ public class CommandOpen extends BaseCommand
 		try 
 		{
 			gate.setOpen(true);
+            GateBlockChangeSender.updateGateBlocks(gate);
 			sendMessage(ChatColor.GREEN + "The gate was opened.");
 		} 
 		catch (Exception e) 

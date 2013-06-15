@@ -20,6 +20,7 @@ package de.craftinc.gates.commands;
 import java.util.Set;
 import java.util.logging.Level;
 
+import de.craftinc.gates.util.GateBlockChangeSender;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 
@@ -72,6 +73,8 @@ public class CommandSetLocation extends BaseLocationCommand
 			Plugin.log(Level.WARNING, e.getMessage());
 			e.printStackTrace();
 		}
+
+        GateBlockChangeSender.updateGateBlocks(gate);
 	}
 	
 }
