@@ -1,0 +1,7 @@
+maxGateBlocks: 50
+playerGateBlockUpdateRadius: 64
+checkForBrokenGateFrames: true
+gateTeleportMessage: "Thank you for traveling with Craft Inc. Gates."
+showTeleportMessage: true
+gateTeleportNoPermissionMessage: "You are not allowed to use this gate!"
+showTeleportNoPermissionMessage: true

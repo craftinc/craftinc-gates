@@ -24,6 +24,7 @@ import java.util.logging.Logger;
 import de.craftinc.gates.listeners.*;
 import net.milkbowl.vault.permission.Permission;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
@@ -39,6 +40,14 @@ public class Plugin extends JavaPlugin
 	public static final String permissionInfo = "craftincgates.info";
 	public static final String permissionManage = "craftincgates.manage";
 	public static final String permissionUse = "craftincgates.use";
+
+    public static final String confMaxGateBlocksKey = "maxGateBlocks";
+    public static final String confPlayerGateBlockUpdateRadiusKey = "playerGateBlockUpdateRadius";
+    public static final String confCheckForBrokenGateFramesKey = "checkForBrokenGateFrames";
+    public static final String confGateTeleportMessageKey = "gateTeleportMessage";
+    public static final String confShowTeleportMessageKey = "showTeleportMessage";
+    public static final String confGateTeleportNoPermissionMessageKey = "gateTeleportNoPermissionMessage";
+    public static final String confShowTeleportNoPermissionMessageKey = "showTeleportNoPermissionMessage";
 	
 	private static Plugin instance;
 	private static Permission permission;
@@ -112,6 +121,9 @@ public class Plugin extends JavaPlugin
 	@Override
 	public void onEnable() 
 	{
+		// Setup configuration
+        this.saveDefaultConfig();
+
 		// Setup permissions
 		setupPermissions();
 		
@@ -149,6 +161,8 @@ public class Plugin extends JavaPlugin
         pm.registerEvents(this.respawnListener, this);
         pm.registerEvents(this.worldChangeListener, this);
         pm.registerEvents(this.joinListener, this);
+
+
     }
 
 
@@ -199,7 +213,8 @@ public class Plugin extends JavaPlugin
 			}
 		}
 		
-		sender.sendMessage("Unknown gate-command \"" + commandName + "\". Try " + "/" + getBaseCommand() + " help");
+		sender.sendMessage(ChatColor.RED + "Unknown gate-command \"" + commandName + "\"." +
+                           ChatColor.GREEN + " Try " + "/" + getBaseCommand() + " help");
 	}
 	
 	

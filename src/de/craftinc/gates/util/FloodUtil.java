@@ -29,10 +29,8 @@ import de.craftinc.gates.Plugin;
 
 public class FloodUtil 
 {
-	private final static int frameBlockSearchLimit = 100; // TODO: move search radius into a config file / get value from config class
-	
-	private static final Set<BlockFace> exp1 = new HashSet<BlockFace>();
-	private static final Set<BlockFace> exp2 = new HashSet<BlockFace>();
+	protected static final Set<BlockFace> exp1 = new HashSet<BlockFace>();
+    protected static final Set<BlockFace> exp2 = new HashSet<BlockFace>();
 	
 	static 
 	{
@@ -51,7 +49,9 @@ public class FloodUtil
 	// For the same frame and location this set of blocks is deterministic
 	public static Set<Block> getGateFrameBlocks(Block block) 
 	{
-		Set<Block> blocks1 = getAirFloodBlocks(block, new HashSet<Block>(), exp1, frameBlockSearchLimit);
+		int frameBlockSearchLimit = Plugin.getPlugin().getConfig().getInt(Plugin.confMaxGateBlocksKey);
+
+        Set<Block> blocks1 = getAirFloodBlocks(block, new HashSet<Block>(), exp1, frameBlockSearchLimit);
 		Set<Block> blocks2 = getAirFloodBlocks(block, new HashSet<Block>(), exp2, frameBlockSearchLimit);
 		
 		if (blocks1 == null && blocks2 == null) {
@@ -72,9 +72,9 @@ public class FloodUtil
 		
 		return blocks1;
 	}
-	
-	
-	private static Set<Block> getAirFloodBlocks(Block startBlock, Set<Block> foundBlocks, Set<BlockFace> expandFaces, int limit) 
+
+
+    protected static Set<Block> getAirFloodBlocks(Block startBlock, Set<Block> foundBlocks, Set<BlockFace> expandFaces, int limit)
 	{
 		if (foundBlocks == null) {
 			return null;

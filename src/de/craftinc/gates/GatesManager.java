@@ -35,21 +35,21 @@ import de.craftinc.gates.util.SimpleLocation;
 
 public class GatesManager 
 {
-	private File gatesConfigFile;
-	private FileConfiguration gatesConfig;
-	private static final String gatesPath = "gates"; // path to gates inside the yaml file
-    private static final String storageVersionPath = "version";
-    private static final int storageVersion = 1;
+    protected File gatesConfigFile;
+    protected FileConfiguration gatesConfig;
+    protected static final String gatesPath = "gates"; // path to gates inside the yaml file
+    protected static final String storageVersionPath = "version";
+    protected static final int storageVersion = 1;
 
-    private static final int chunkRadius = 4; // TODO: move search radius into a config file / get value from config class
-	
-	private Map<String, Gate> gatesById;
-	private Map<SimpleChunk, Set<Gate>> gatesByChunk;
-	private Map<SimpleLocation, Gate> gatesByLocation;
+    protected int chunkRadius;
+
+    protected Map<String, Gate> gatesById;
+    protected Map<SimpleChunk, Set<Gate>> gatesByChunk;
+    protected Map<SimpleLocation, Gate> gatesByLocation;
 	
 	private List<Gate> gates;
-	
-	
+
+
 	public Gate getGateWithId(String id)
 	{
 		return gatesById.get(id);
@@ -134,9 +134,20 @@ public class GatesManager
             MigrationUtil.performMigration(fileStorageVersion, storageVersion, this.gates);
         }
 	}
-	
-	
-	private void fillGatesById()
+
+
+    protected int getChunkRadius()
+    {
+        if (this.chunkRadius == 0) {
+            this.chunkRadius = Plugin.getPlugin().getConfig().getInt(Plugin.confPlayerGateBlockUpdateRadiusKey);
+            this.chunkRadius = this.chunkRadius >> 4;
+        }
+
+        return this.chunkRadius;
+    }
+
+
+    protected void fillGatesById()
 	{
 		gatesById = new HashMap<String, Gate>((int)(gates.size() * 1.25));
 		
@@ -144,9 +155,9 @@ public class GatesManager
 			this.addGateWithId(g);
 		}
 	}
-	
-	
-	private void fillGatesByChunk()
+
+
+    protected void fillGatesByChunk()
 	{
 		HashSet<SimpleChunk> chunksUsedByGates = new HashSet<SimpleChunk>();
 		
@@ -159,9 +170,9 @@ public class GatesManager
                 int x = c.getX();
                 int z = c.getZ();
 
-                for (int i = x-chunkRadius; i < x+chunkRadius; i++) {
+                for (int i = x-getChunkRadius(); i < x+getChunkRadius(); i++) {
 
-                    for (int j = z-chunkRadius; j < z+chunkRadius; j++) {
+                    for (int j = z-getChunkRadius(); j < z+getChunkRadius(); j++) {
 
                         chunksUsedByGates.add(new SimpleChunk(i, j, c.getWorld()));
                     }
@@ -175,9 +186,9 @@ public class GatesManager
 			this.addGateByChunk(g);
 		}
 	}
-	
-	
-	private void fillGatesByLocation()
+
+
+    protected void fillGatesByLocation()
 	{
 		int numGateBlocks = 0;
 		
@@ -191,39 +202,39 @@ public class GatesManager
 			this.addGateByLocations(g);
 		}
 	}
-	
-	
-	private void removeGateById(String id)
+
+
+    protected void removeGateById(String id)
 	{
 		gatesById.remove(id);
 	}
-	
-	
-	private void addGateWithId(Gate g)
+
+
+    protected void addGateWithId(Gate g)
 	{
 		gatesById.put(g.getId(), g);
 	}
-	
-	
-	private void removeGateFromLocations(Set<Location> gateBlocks)
+
+
+    protected void removeGateFromLocations(Set<Location> gateBlocks)
 	{
 		for (Location l : gateBlocks) {
 			SimpleLocation sl = new SimpleLocation(l);
 			gatesByLocation.remove(sl);
 		}
 	}
-	
-	
-	private void addGateByLocations(Gate g)
+
+
+    protected void addGateByLocations(Gate g)
 	{
 		for (Location l : g.getGateBlockLocations()) {
 			SimpleLocation sl = new SimpleLocation(l);
 			gatesByLocation.put(sl, g);
 		}
 	}
-	
-	
-	private void removeGateFromChunk(Gate g, Location l)
+
+
+    protected void removeGateFromChunk(Gate g, Location l)
 	{
 		if (l != null) {
 
@@ -231,9 +242,9 @@ public class GatesManager
             int x = c.getX();
             int z = c.getZ();
 
-            for (int i = x-chunkRadius; i < x+chunkRadius; i++) {
+            for (int i = x-getChunkRadius(); i < x+getChunkRadius(); i++) {
 
-                for (int j = z-chunkRadius; j < z+chunkRadius; j++) {
+                for (int j = z-getChunkRadius(); j < z+getChunkRadius(); j++) {
 
                     SimpleChunk sc = new SimpleChunk(i, j, c.getWorld());
 		            Set<Gate> gatesInChunk = gatesByChunk.get(sc);
@@ -246,9 +257,9 @@ public class GatesManager
             }
         }
 	}
-	
-	
-	private void addGateByChunk(Gate g)
+
+
+    protected void addGateByChunk(Gate g)
 	{
         Location gateLocation = g.getLocation();
 
@@ -258,9 +269,9 @@ public class GatesManager
             int x = c.getX();
             int z = c.getZ();
 
-            for (int i = x-chunkRadius; i < x+chunkRadius; i++) {
+            for (int i = x-getChunkRadius(); i < x+getChunkRadius(); i++) {
 
-                for (int j = z-chunkRadius; j < z+chunkRadius; j++) {
+                for (int j = z-getChunkRadius(); j < z+getChunkRadius(); j++) {
 
                     SimpleChunk sc = new SimpleChunk(i, j, c.getWorld());
 

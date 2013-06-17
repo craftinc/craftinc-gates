@@ -29,9 +29,6 @@ import java.util.Set;
 
 public class GateBlockChangeSender
 {
-    protected static final int searchRadius = 64; // TODO: move search radius into a config file / get value from config class
-
-
     public static void updateGateBlocks(final Player player)
     {
         if (player == null) {
@@ -83,6 +80,8 @@ public class GateBlockChangeSender
 
         Location gateLocation = gate.getLocation();
         ArrayList<Player> playersNearby = new ArrayList<Player>();
+
+        int searchRadius = Plugin.getPlugin().getConfig().getInt(Plugin.confPlayerGateBlockUpdateRadiusKey);
 
         for (Player p : Plugin.getPlugin().getServer().getOnlinePlayers()) {
 

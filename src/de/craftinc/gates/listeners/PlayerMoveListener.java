@@ -62,7 +62,8 @@ public class PlayerMoveListener implements Listener
 
 		
 		// Check for permission
-		if (!hasPermission(event.getPlayer(), gateAtLocation)) {
+		if (!hasPermission(event.getPlayer(), gateAtLocation)
+            && Plugin.getPlugin().getConfig().getBoolean(Plugin.confShowTeleportNoPermissionMessageKey)) {
 			
 			String playerName = event.getPlayer().getName();
 			
@@ -75,7 +76,9 @@ public class PlayerMoveListener implements Listener
 			
 			// do not display messages more often than once per second
 			if (!this.lastNoPermissionMessages.containsKey(playerName) || this.lastNoPermissionMessages.get(playerName) < now - 10000L) {
-				event.getPlayer().sendMessage(ChatColor.RED + "You are not allowed to use this gate!");
+
+                String noPermissionString = Plugin.getPlugin().getConfig().getString(Plugin.confGateTeleportNoPermissionMessageKey);
+                event.getPlayer().sendMessage(ChatColor.RED + noPermissionString);
 				this.lastNoPermissionMessages.put(playerName, now);
 			}
 		}
@@ -103,7 +106,11 @@ public class PlayerMoveListener implements Listener
                                             );
 
         p.teleport(destLocation);
-        p.sendMessage(ChatColor.DARK_AQUA + "Thank you for traveling with Craft Inc. Gates.");
+
+        if (Plugin.getPlugin().getConfig().getBoolean(Plugin.confShowTeleportMessageKey)) {
+            String teleporMessage = Plugin.getPlugin().getConfig().getString(Plugin.confGateTeleportMessageKey);
+            p.sendMessage(ChatColor.DARK_AQUA + teleporMessage);
+        }
 	}
 	
 	
