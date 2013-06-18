@@ -26,6 +26,7 @@ import java.util.logging.Level;
 import de.craftinc.gates.persistence.MigrationUtil;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -46,8 +47,9 @@ public class GatesManager
     protected Map<String, Gate> gatesById;
     protected Map<SimpleChunk, Set<Gate>> gatesByChunk;
     protected Map<SimpleLocation, Gate> gatesByLocation;
-	
-	private List<Gate> gates;
+    protected Map<SimpleLocation, Gate> gatesByFrameLocation;
+
+    protected List<Gate> gates;
 
 
 	public Gate getGateWithId(String id)
@@ -68,7 +70,14 @@ public class GatesManager
 		SimpleLocation simpleLocation = new SimpleLocation(location);
 		return gatesByLocation.get(simpleLocation);
 	}
-	
+
+
+    public Gate getGateAtFrameLocation(Location location)
+    {
+        SimpleLocation simpleLocation = new SimpleLocation(location);
+        return gatesByFrameLocation.get(simpleLocation);
+    }
+
 	
 	public void saveGatesToDisk()
 	{
@@ -115,10 +124,25 @@ public class GatesManager
 				break;
 			}
 		}
-		
+
+        for (Gate g : this.gates) {
+            try {
+                g.validate();
+            }
+            catch (Exception e) {
+                try {
+                    g.setOpen(false);
+                }
+                catch (Exception ignored) { }
+
+                Plugin.log(Level.FINER, "closed gate '" + g.getId() + "' reason: " + e.getMessage());
+            }
+        }
+
 		fillGatesById();
 		fillGatesByChunk();
 		fillGatesByLocation();
+        fillGatesByFrameLocation();
 
         Plugin.log("Loaded " + this.gates.size() + " gates.");
 
@@ -204,6 +228,22 @@ public class GatesManager
 	}
 
 
+    protected void fillGatesByFrameLocation()
+    {
+        int numFrameBlocks = 0;
+
+        for (Gate g : gates) {
+            numFrameBlocks += g.gateFrameBlocks.size();
+        }
+
+        gatesByFrameLocation = new HashMap<SimpleLocation, Gate>((int)(numFrameBlocks*1.25));
+
+        for (Gate g : gates) {
+            this.addGateByFrameLocations(g);
+        }
+    }
+
+
     protected void removeGateById(String id)
 	{
 		gatesById.remove(id);
@@ -216,13 +256,22 @@ public class GatesManager
 	}
 
 
-    protected void removeGateFromLocations(Set<Location> gateBlocks)
+    protected void removeGateByLocation(Set<Location> gateBlocks)
 	{
 		for (Location l : gateBlocks) {
 			SimpleLocation sl = new SimpleLocation(l);
 			gatesByLocation.remove(sl);
 		}
 	}
+
+
+    protected void removeGateByFrameLocation(Set<Block> gateFrameBlocks)
+    {
+        for (Block block : gateFrameBlocks) {
+            SimpleLocation sl = new SimpleLocation(block.getLocation());
+            gatesByFrameLocation.remove(sl);
+        }
+    }
 
 
     protected void addGateByLocations(Gate g)
@@ -232,6 +281,15 @@ public class GatesManager
 			gatesByLocation.put(sl, g);
 		}
 	}
+
+
+    protected void addGateByFrameLocations(Gate g)
+    {
+        for (Block block : g.getGateFrameBlocks()) {
+            SimpleLocation sl = new SimpleLocation(block.getLocation());
+            gatesByFrameLocation.put(sl, g);
+        }
+    }
 
 
     protected void removeGateFromChunk(Gate g, Location l)
@@ -350,13 +408,16 @@ public class GatesManager
 	}
 	
 	
-	public void handleGateLocationChange(Gate g, Location oldLocation, Set<Location> oldGateBlockLocations)
+	public void handleGateLocationChange(Gate g, Location oldLocation, Set<Location> oldGateBlockLocations, Set<Block> oldGateFrameBlocks)
 	{
 		this.removeGateFromChunk(g, oldLocation);
 		this.addGateByChunk(g);
 		
-		this.removeGateFromLocations(oldGateBlockLocations);
+		this.removeGateByLocation(oldGateBlockLocations);
 		this.addGateByLocations(g);
+
+        this.removeGateByFrameLocation(oldGateFrameBlocks);
+        this.addGateByFrameLocations(g);
 	}
 	
 	
@@ -365,6 +426,7 @@ public class GatesManager
 		this.addGateByChunk(g);
 		this.addGateByLocations(g);
 		this.addGateWithId(g);
+        this.addGateByFrameLocations(g);
 	}
 	
 	
@@ -372,7 +434,8 @@ public class GatesManager
 	{
 		this.removeGateById(g.getId());
 		this.removeGateFromChunk(g, g.getLocation());
-		this.removeGateFromLocations(g.getGateBlockLocations());
+		this.removeGateByLocation(g.getGateBlockLocations());
+        this.removeGateByFrameLocation(g.getGateFrameBlocks());
 	}
 	
 	

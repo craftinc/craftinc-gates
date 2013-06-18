@@ -19,6 +19,7 @@ package de.craftinc.gates;
 import de.craftinc.gates.util.FloodUtil;
 import de.craftinc.gates.persistence.LocationUtil;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
@@ -29,6 +30,7 @@ public class Gate implements ConfigurationSerializable
 {
 	protected Location location; /* saving both location and gateBlockLocations is redundant but makes it easy to allow players to reshape gates */
 	protected Set<Location> gateBlockLocations = new HashSet<Location>(); /* Locations of the blocks inside the gate */
+    protected Set<Block> gateFrameBlocks = new HashSet<Block>();
 	
 	protected Location exit;
 	
@@ -79,7 +81,10 @@ public class Gate implements ConfigurationSerializable
 		this.location = location;
 		
 		if (isOpen) {
-			findPortalBlocks();
+            if (this.gateBlockLocations == null || this.gateBlockLocations.size() == 0 ) {
+                findPortalBlocks();
+            }
+
 			validate();
 		}
 	}
@@ -174,16 +179,29 @@ public class Gate implements ConfigurationSerializable
 	}
 
 
+    /**
+     *
+     * @return Will never return 'null' but might return an empty Set.
+     */
+    public Set<Block> getGateFrameBlocks()
+    {
+        return gateFrameBlocks;
+    }
+
+
+
 	protected void findPortalBlocks()
 	{
 		gateBlockLocations = new HashSet<Location>();
-		Set<Block> gateBlocks = FloodUtil.getGateFrameBlocks(location.getBlock());
+		Set<Block> gateBlocks = FloodUtil.getGatePortalBlocks(location.getBlock());
 
 		if (gateBlocks != null) {
 			for (Block b : gateBlocks) {
 				gateBlockLocations.add(b.getLocation());
 			}
 		}
+
+        gateFrameBlocks = FloodUtil.getFrame(gateBlocks);
 	}
 
 
@@ -205,17 +223,22 @@ public class Gate implements ConfigurationSerializable
 			setOpen(false);
 			throw new Exception("Gate got closed. It has no exit.");
 		}
-
-        if (!isHidden) {
-            findPortalBlocks();
-        }
 		
 		if (gateBlockLocations.size() == 0) {
 			setOpen(false);
-			throw new Exception("Gate got closed. The frame is missing or broken.");
+			throw new Exception("Gate got closed. The frame is missing or broken. (no gate blocks)");
 		}
 
+        if (!isHidden() && Plugin.getPlugin().getConfig().getBoolean(Plugin.confCheckForBrokenGateFramesKey)) {
 
+            for (Block b : gateFrameBlocks) {
+
+                if (b.getType() == Material.AIR) {
+                    setOpen(false);
+                    throw new Exception("Gate got closed. The frame is missing or broken. (missing frame block(s))");
+                }
+            }
+        }
 	}
 
 
@@ -266,6 +289,8 @@ public class Gate implements ConfigurationSerializable
 			for (Map<String, Object> sgb : serializedGateBlocks) {
 				gateBlockLocations.add(LocationUtil.deserializeLocation(sgb));
 			}
+
+            gateFrameBlocks = FloodUtil.getFrameWithLocations(gateBlockLocations);
 		}
 		catch (Exception e) {
 			Plugin.log("ERROR: Failed to load gate '" + id + "'! (" + e.getMessage() + ")");

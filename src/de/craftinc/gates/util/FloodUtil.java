@@ -20,6 +20,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -44,10 +45,100 @@ public class FloodUtil
 		exp2.add(BlockFace.NORTH);
 		exp2.add(BlockFace.SOUTH);
 	}
-	
+
+
+    /**
+     * Returns the all frame blocks of an gate.
+     * @param blocks All blocks inside the gate.
+     * @return A Set containing all frame block. Will never return 'null'.
+     */
+    public static Set<Block> getFrame(Set<Block> blocks)
+    {
+        if (blocks == null || blocks.isEmpty()) {
+            return new HashSet<Block>();
+        }
+
+        // try to find gate's direction (north-south or east-west)
+        Set<BlockFace> gateFrameSearchFaces = null;
+
+        for (Block b : blocks) {
+
+            if (blocks.contains(b.getRelative(BlockFace.EAST)) ||
+                blocks.contains(b.getRelative(BlockFace.WEST))) {
+
+                gateFrameSearchFaces = exp1;
+                break;
+            }
+
+            if (blocks.contains(b.getRelative(BlockFace.NORTH)) ||
+                    blocks.contains(b.getRelative(BlockFace.SOUTH))) {
+
+                gateFrameSearchFaces = exp2;
+                break;
+            }
+
+        }
+
+        if (gateFrameSearchFaces != null) {
+            return _getFrame(blocks, gateFrameSearchFaces);
+        }
+        else { // no direction found (the gate might only consist of blocks one over another)
+
+            // Try one direction and check if the found blocks are not air.
+            // If air is found (frame broken or wrong direction) return the other direction
+            Set<Block> frameBlocks = _getFrame(blocks, exp1);
+
+            for (Block b : frameBlocks) {
+
+                if (b.getType() == Material.AIR) {
+                    return _getFrame(blocks, exp2);
+                }
+            }
+
+            return frameBlocks;
+        }
+    }
+
+
+
+    protected static Set<Block> _getFrame(Set<Block> blocks, Set<BlockFace> searchDirections)
+    {
+        Set<Block> frameBlocks = new HashSet<Block>();
+
+        for (Block b : blocks) {
+
+            for (BlockFace bf : searchDirections) {
+                Block bb = b.getRelative(bf);
+
+                if (!blocks.contains(bb)) {
+                    frameBlocks.add(bb);
+                }
+            }
+        }
+
+        return frameBlocks;
+    }
+
+
+    /**
+     * Returns the all frame blocks of an gate.
+     * @param locations All locations inside the gate.
+     * @return A Set containing all frame block. Will never return 'null'.
+     */
+    public static Set<Block> getFrameWithLocations(Set<Location> locations)
+    {
+        Set<Block> blocks = new HashSet<Block>();
+
+        for (Location l : locations) {
+            blocks.add(l.getBlock());
+        }
+
+        return getFrame(blocks);
+    }
+
 	
 	// For the same frame and location this set of blocks is deterministic
-	public static Set<Block> getGateFrameBlocks(Block block) 
+	public static Set<Block> getGatePortalBlocks(Block block)
 	{
 		int frameBlockSearchLimit = Plugin.getPlugin().getConfig().getInt(Plugin.confMaxGateBlocksKey);
 

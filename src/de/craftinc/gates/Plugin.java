@@ -61,6 +61,7 @@ public class Plugin extends JavaPlugin
     protected PlayerRespawnListener respawnListener = new PlayerRespawnListener();
     protected PlayerChangedWorldListener worldChangeListener = new PlayerChangedWorldListener();
     protected PlayerJoinListener joinListener = new PlayerJoinListener();
+    protected BlockBreakListener blockBreakListener = new BlockBreakListener();
 	
 	
 	public Plugin()
@@ -162,7 +163,9 @@ public class Plugin extends JavaPlugin
         pm.registerEvents(this.worldChangeListener, this);
         pm.registerEvents(this.joinListener, this);
 
-
+        if (getConfig().getBoolean(confCheckForBrokenGateFramesKey)) {
+            pm.registerEvents(this.blockBreakListener, this);
+        }
     }
 
 
