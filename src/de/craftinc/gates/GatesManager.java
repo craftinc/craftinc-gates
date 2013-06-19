@@ -51,6 +51,8 @@ public class GatesManager
 
     protected List<Gate> gates;
 
+    protected boolean storageFileIsInvalid = false;
+
 
 	public Gate getGateWithId(final String id)
 	{
@@ -81,7 +83,12 @@ public class GatesManager
 	
 	public void saveGatesToDisk()
 	{
-		gatesConfig.set(gatesPath, new ArrayList<Object>(gatesById.values()));
+		if (storageFileIsInvalid) {
+            Plugin.log(Level.SEVERE, "ERROR: Not saving gates to disk. Storage file is invalid or corrupted!");
+            return;
+        }
+
+        gatesConfig.set(gatesPath, new ArrayList<Object>(gatesById.values()));
         gatesConfig.set(storageVersionPath, storageVersion);
 		
 		try {
@@ -118,9 +125,9 @@ public class GatesManager
         for (Object o : this.gates) {
 			
 			if (!(o instanceof Gate)) {
-				Plugin.log(Level.SEVERE, "Gate file on disk is invalid. No gates loaded.");
-				// TODO: gates.yml will be empty after save/reload/server stop! All gates will be lost! No user will expect this!
-				this.gates = new ArrayList<Gate>();
+                this.storageFileIsInvalid = true;
+				Plugin.log(Level.SEVERE, "Gate file on disk is invalid. No gates loaded. Plugin will be disabled!");
+                Plugin.getPlugin().getServer().getPluginManager().disablePlugin(Plugin.getPlugin());
 				break;
 			}
 		}
