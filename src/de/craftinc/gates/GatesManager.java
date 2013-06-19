@@ -52,27 +52,27 @@ public class GatesManager
     protected List<Gate> gates;
 
 
-	public Gate getGateWithId(String id)
+	public Gate getGateWithId(final String id)
 	{
 		return gatesById.get(id);
 	}
 	
 	
-	public Set<Gate> getNearbyGates(Chunk chunk)
+	public Set<Gate> getNearbyGates(final Chunk chunk)
 	{
 		SimpleChunk simpleChunk = new SimpleChunk(chunk);
 		return gatesByChunk.get(simpleChunk);
 	}
 	
 	
-	public Gate getGateAtLocation(Location location)
+	public Gate getGateAtLocation(final Location location)
 	{
 		SimpleLocation simpleLocation = new SimpleLocation(location);
 		return gatesByLocation.get(simpleLocation);
 	}
 
 
-    public Gate getGateAtFrameLocation(Location location)
+    public Gate getGateAtFrameLocation(final Location location)
     {
         SimpleLocation simpleLocation = new SimpleLocation(location);
         return gatesByFrameLocation.get(simpleLocation);
@@ -244,19 +244,19 @@ public class GatesManager
     }
 
 
-    protected void removeGateById(String id)
+    protected void removeGateById(final String id)
 	{
 		gatesById.remove(id);
 	}
 
 
-    protected void addGateWithId(Gate g)
+    protected void addGateWithId(final Gate g)
 	{
 		gatesById.put(g.getId(), g);
 	}
 
 
-    protected void removeGateByLocation(Set<Location> gateBlocks)
+    protected void removeGateByLocation(final Set<Location> gateBlocks)
 	{
 		for (Location l : gateBlocks) {
 			SimpleLocation sl = new SimpleLocation(l);
@@ -265,7 +265,7 @@ public class GatesManager
 	}
 
 
-    protected void removeGateByFrameLocation(Set<Block> gateFrameBlocks)
+    protected void removeGateByFrameLocation(final Set<Block> gateFrameBlocks)
     {
         for (Block block : gateFrameBlocks) {
             SimpleLocation sl = new SimpleLocation(block.getLocation());
@@ -274,7 +274,7 @@ public class GatesManager
     }
 
 
-    protected void addGateByLocations(Gate g)
+    protected void addGateByLocations(final Gate g)
 	{
 		for (Location l : g.getGateBlockLocations()) {
 			SimpleLocation sl = new SimpleLocation(l);
@@ -283,7 +283,7 @@ public class GatesManager
 	}
 
 
-    protected void addGateByFrameLocations(Gate g)
+    protected void addGateByFrameLocations(final Gate g)
     {
         for (Block block : g.getGateFrameBlocks()) {
             SimpleLocation sl = new SimpleLocation(block.getLocation());
@@ -292,7 +292,7 @@ public class GatesManager
     }
 
 
-    protected void removeGateFromChunk(Gate g, Location l)
+    protected void removeGateFromChunk(final Gate g, final Location l)
 	{
 		if (l != null) {
 
@@ -317,7 +317,7 @@ public class GatesManager
 	}
 
 
-    protected void addGateByChunk(Gate g)
+    protected void addGateByChunk(final Gate g)
 	{
         Location gateLocation = g.getLocation();
 
@@ -401,14 +401,17 @@ public class GatesManager
 	}
 	
 	
-	public void handleGateIdChange(Gate g, String oldId)
+	public void handleGateIdChange(final Gate g, final String oldId)
 	{
 		this.removeGateById(oldId);
 		this.addGateWithId(g);
 	}
 	
 	
-	public void handleGateLocationChange(Gate g, Location oldLocation, Set<Location> oldGateBlockLocations, Set<Block> oldGateFrameBlocks)
+	public void handleGateLocationChange(final Gate g,
+                                         final Location oldLocation,
+                                         final Set<Location> oldGateBlockLocations,
+                                         final Set<Block> oldGateFrameBlocks)
 	{
 		this.removeGateFromChunk(g, oldLocation);
 		this.addGateByChunk(g);
@@ -421,7 +424,7 @@ public class GatesManager
 	}
 	
 	
-	public void handleNewGate(Gate g)
+	public void handleNewGate(final Gate g)
 	{
 		this.addGateByChunk(g);
 		this.addGateByLocations(g);
@@ -430,7 +433,7 @@ public class GatesManager
 	}
 	
 	
-	public void handleDeletion(Gate g)
+	public void handleDeletion(final Gate g)
 	{
 		this.removeGateById(g.getId());
 		this.removeGateFromChunk(g, g.getLocation());
@@ -439,7 +442,7 @@ public class GatesManager
 	}
 	
 	
-	public boolean gateExists(String id)
+	public boolean gateExists(final String id)
 	{
 		return gatesById.containsKey(id);
 	}
