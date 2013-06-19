@@ -52,7 +52,7 @@ public class FloodUtil
      * @param blocks All blocks inside the gate.
      * @return A Set containing all frame block. Will never return 'null'.
      */
-    public static Set<Block> getFrame(Set<Block> blocks)
+    public static Set<Block> getFrame(final Set<Block> blocks)
     {
         if (blocks == null || blocks.isEmpty()) {
             return new HashSet<Block>();
@@ -101,7 +101,7 @@ public class FloodUtil
 
 
 
-    protected static Set<Block> _getFrame(Set<Block> blocks, Set<BlockFace> searchDirections)
+    protected static Set<Block> _getFrame(final Set<Block> blocks, final Set<BlockFace> searchDirections)
     {
         Set<Block> frameBlocks = new HashSet<Block>();
 
@@ -125,8 +125,12 @@ public class FloodUtil
      * @param locations All locations inside the gate.
      * @return A Set containing all frame block. Will never return 'null'.
      */
-    public static Set<Block> getFrameWithLocations(Set<Location> locations)
+    public static Set<Block> getFrameWithLocations(final Set<Location> locations)
     {
+        if (locations == null) {
+            throw new IllegalArgumentException("'locations' must not be 'null'");
+        }
+
         Set<Block> blocks = new HashSet<Block>();
 
         for (Location l : locations) {
@@ -138,9 +142,13 @@ public class FloodUtil
 
 	
 	// For the same frame and location this set of blocks is deterministic
-	public static Set<Block> getGatePortalBlocks(Block block)
+	public static Set<Block> getGatePortalBlocks(final Block block)
 	{
-		int frameBlockSearchLimit = Plugin.getPlugin().getConfig().getInt(Plugin.confMaxGateBlocksKey);
+        if (block == null) {
+            throw new IllegalArgumentException("'block' must not be 'null'");
+        }
+
+        int frameBlockSearchLimit = Plugin.getPlugin().getConfig().getInt(Plugin.confMaxGateBlocksKey);
 
         Set<Block> blocks1 = getAirFloodBlocks(block, new HashSet<Block>(), exp1, frameBlockSearchLimit);
 		Set<Block> blocks2 = getAirFloodBlocks(block, new HashSet<Block>(), exp2, frameBlockSearchLimit);
@@ -165,7 +173,10 @@ public class FloodUtil
 	}
 
 
-    protected static Set<Block> getAirFloodBlocks(Block startBlock, Set<Block> foundBlocks, Set<BlockFace> expandFaces, int limit)
+    protected static Set<Block> getAirFloodBlocks(final Block           startBlock,
+                                                        Set<Block>      foundBlocks,
+                                                  final Set<BlockFace>  expandFaces,
+                                                        int             limit)
 	{
 		if (foundBlocks == null) {
 			return null;
