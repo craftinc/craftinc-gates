@@ -16,66 +16,46 @@
 */
 package de.craftinc.gates.commands;
 
-
-import java.util.Set;
 import java.util.logging.Level;
 
 import de.craftinc.gates.util.GateBlockChangeSender;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 
 import de.craftinc.gates.Plugin;
 
 
-public class CommandSetLocation extends BaseLocationCommand 
+public class CommandHide extends BaseCommand
 {
-	
-	public CommandSetLocation() 
+	public CommandHide()
 	{
-		aliases.add("location");
-		aliases.add("l");
+		aliases.add("hide");
+        aliases.add("h");
 		
 		requiredParameters.add("id");		
 		
-		helpDescription = "Set the entrance of the gate to your current location.";
+		helpDescription = "Makes a gate NOT consist of gate blocks while open.";
 		
 		requiredPermission = Plugin.permissionManage;
 		
-		needsPermissionAtCurrentLocation = true;
+		needsPermissionAtCurrentLocation = false;
 		shouldPersistToDisk = true;
-		senderMustBePlayer = true;
+		senderMustBePlayer = false;
 	}
 	
 	
 	public void perform() 
 	{
-		Location playerLocation = getValidPlayerLocation();
-		
-		if (playerLocation == null) 
-		{
-			sendMessage("There is not enough room for a gate to open here");
-			return;
-		}
-		
 		try 
 		{
-			Location oldLocation = gate.getLocation();
-            Set<Location> oldGateBlockLocations = gate.getGateBlockLocations();
-
-            gate.setLocation(playerLocation);
-            Plugin.getPlugin().getGatesManager().handleGateLocationChange(gate, oldLocation, oldGateBlockLocations);
-
-			sendMessage(ChatColor.GREEN + "The location of '" + gate.getId() + "' is now at your current location.");
+			gate.setHidden(true);
+            GateBlockChangeSender.updateGateBlocks(gate);
+			sendMessage(ChatColor.GREEN + "The gate '" + gate.getId() + "' is now hidden.");
 		} 
 		catch (Exception e) 
 		{
-			sendMessage(ChatColor.RED + "Setting the location for the gate failed! See server log for more information");
+			sendMessage(ChatColor.RED + "Hiding the gate failed! See server log for more information");
 			Plugin.log(Level.WARNING, e.getMessage());
 			e.printStackTrace();
 		}
-
-        GateBlockChangeSender.updateGateBlocks(gate);
 	}
-	
 }
-

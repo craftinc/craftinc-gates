@@ -16,45 +16,68 @@
 */
 package de.craftinc.gates.commands;
 
+
+import java.util.Set;
 import java.util.logging.Level;
 
 import de.craftinc.gates.util.GateBlockChangeSender;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 
 import de.craftinc.gates.Plugin;
+import org.bukkit.block.Block;
 
 
-public class CommandSetHidden extends BaseCommand 
+public class CommandLocation extends BaseLocationCommand
 {
-	public CommandSetHidden() 
+	
+	public CommandLocation()
 	{
-		aliases.add("hide");
+		aliases.add("location");
+		aliases.add("lo");
 		
 		requiredParameters.add("id");		
 		
-		helpDescription = "Makes a gate NOT consist of gate blocks while open.";
+		helpDescription = "Set the entrance of the gate to your current location.";
 		
 		requiredPermission = Plugin.permissionManage;
 		
-		needsPermissionAtCurrentLocation = false;
+		needsPermissionAtCurrentLocation = true;
 		shouldPersistToDisk = true;
-		senderMustBePlayer = false;
+		senderMustBePlayer = true;
 	}
 	
 	
 	public void perform() 
 	{
+		Location playerLocation = getValidPlayerLocation();
+		
+		if (playerLocation == null) 
+		{
+			sendMessage("There is not enough room for a gate to open here");
+			return;
+		}
+		
 		try 
 		{
-			gate.setHidden(true);
-            GateBlockChangeSender.updateGateBlocks(gate);
-			sendMessage(ChatColor.GREEN + "The gate '" + gate.getId() + "' is now hidden.");
+			Location oldLocation = gate.getLocation();
+            Set<Location> oldGateBlockLocations = gate.getGateBlockLocations();
+            Set<Block> oldFrameBlocks = gate.getGateFrameBlocks();
+
+            gate.setLocation(playerLocation);
+            Plugin.getPlugin().getGatesManager().handleGateLocationChange(gate, oldLocation, oldGateBlockLocations, oldFrameBlocks);
+
+			sendMessage(ChatColor.GREEN + "The location of '" + gate.getId() + "' is now at your current location.");
 		} 
 		catch (Exception e) 
 		{
-			sendMessage(ChatColor.RED + "Hiding the gate failed! See server log for more information");
+			sendMessage(ChatColor.RED + "Setting the location for the gate failed! See server log for more information");
 			Plugin.log(Level.WARNING, e.getMessage());
 			e.printStackTrace();
 		}
+
+        GateBlockChangeSender.updateGateBlocks(gate);
 	}
+	
 }
+

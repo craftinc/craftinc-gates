@@ -24,13 +24,13 @@ import de.craftinc.gates.GatesManager;
 import de.craftinc.gates.Plugin;
 
 
-public class CommandCreate extends BaseLocationCommand 
+public class CommandNew extends BaseLocationCommand
 {
-	public CommandCreate() 
+	public CommandNew()
 	{
-		aliases.add("create");
 		aliases.add("new");
-		
+        aliases.add("n");
+
 		requiredParameters.add("id");		
 		
 		senderMustBePlayer = true;
@@ -75,7 +75,7 @@ public class CommandCreate extends BaseLocationCommand
 		else 
 		{
 			sendMessage("Now you should build a frame and execute:");
-			sendMessage(new CommandSetLocation().getUsageTemplate(true, true));
+			sendMessage(new CommandLocation().getUsageTemplate(true, true));
 		}
 	}
 }

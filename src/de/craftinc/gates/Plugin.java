@@ -130,17 +130,17 @@ public class Plugin extends JavaPlugin
 		
 		// Add the commands
 		commands.add(new CommandHelp());
-		commands.add(new CommandCreate());
-		commands.add(new CommandDelete());
-		commands.add(new CommandSetLocation());
-		commands.add(new CommandSetExit());
+		commands.add(new CommandNew());
+		commands.add(new CommandRemove());
+		commands.add(new CommandLocation());
+		commands.add(new CommandExit());
 		commands.add(new CommandOpen());
 		commands.add(new CommandRename());
 		commands.add(new CommandClose());
 		commands.add(new CommandList());
 		commands.add(new CommandInfo());
-		commands.add(new CommandSetHidden());
-		commands.add(new CommandSetVisible());
+		commands.add(new CommandHide());
+		commands.add(new CommandUnhide());
 
 		
 		// Register events

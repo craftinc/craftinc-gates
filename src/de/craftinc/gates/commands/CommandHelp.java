@@ -33,17 +33,17 @@ public class CommandHelp extends BaseCommand
 		List<String> allUsageStrings = new ArrayList<String>();
 		
 		allUsageStrings.add( new CommandHelp().getUsageTemplate(true, true) );
-		allUsageStrings.add( new CommandCreate().getUsageTemplate(true, true) );
-		allUsageStrings.add( new CommandDelete().getUsageTemplate(true, true) );
-		allUsageStrings.add( new CommandSetLocation().getUsageTemplate(true, true) );
-		allUsageStrings.add( new CommandSetExit().getUsageTemplate(true, true) );
+		allUsageStrings.add( new CommandNew().getUsageTemplate(true, true) );
+		allUsageStrings.add( new CommandRemove().getUsageTemplate(true, true) );
+		allUsageStrings.add( new CommandLocation().getUsageTemplate(true, true) );
+		allUsageStrings.add( new CommandExit().getUsageTemplate(true, true) );
 		allUsageStrings.add( new CommandOpen().getUsageTemplate(true, true) );
 		allUsageStrings.add( new CommandRename().getUsageTemplate(true, true) );
 		allUsageStrings.add( new CommandClose().getUsageTemplate(true, true) );
 		allUsageStrings.add( new CommandList().getUsageTemplate(true, true) );
 		allUsageStrings.add( new CommandInfo().getUsageTemplate(true, true) );
-		allUsageStrings.add( new CommandSetHidden().getUsageTemplate(true, true) );
-		allUsageStrings.add( new CommandSetVisible().getUsageTemplate(true, true) );
+		allUsageStrings.add( new CommandHide().getUsageTemplate(true, true) );
+		allUsageStrings.add( new CommandUnhide().getUsageTemplate(true, true) );
 		
 		Collections.sort(allUsageStrings);
 		

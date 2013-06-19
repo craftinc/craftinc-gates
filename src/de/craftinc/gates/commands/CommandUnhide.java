@@ -16,31 +16,28 @@
 */
 package de.craftinc.gates.commands;
 
-import java.util.logging.Level;
-
-import de.craftinc.gates.util.GateBlockChangeSender;
 import org.bukkit.ChatColor;
 
 import de.craftinc.gates.Plugin;
 
 
-public class CommandSetExit extends BaseCommand 
+public class CommandUnhide extends BaseCommand
 {
 	
-	public CommandSetExit() 
+	public CommandUnhide()
 	{
-		aliases.add("exit");
-		aliases.add("e");
+		aliases.add("unhide");
+		aliases.add("u");
 		
 		requiredParameters.add("id");		
 		
-		helpDescription = "Change exit of location.";
+		helpDescription = "Make that gate visible";
 		
 		requiredPermission = Plugin.permissionManage;
 		
-		needsPermissionAtCurrentLocation = true;
+		needsPermissionAtCurrentLocation = false;
 		shouldPersistToDisk = true;
-		senderMustBePlayer = true;
+		senderMustBePlayer = false;
 	}
 	
 	
@@ -48,15 +45,14 @@ public class CommandSetExit extends BaseCommand
 	{
 		try 
 		{
-			gate.setExit(player.getLocation());
-			sendMessage(ChatColor.GREEN + "The exit of gate '" + gate.getId() + "' is now where you stand.");
-		} 
-		catch (Exception e) {
-            GateBlockChangeSender.updateGateBlocks(gate);
-            sendMessage(ChatColor.RED + "Setting the exit for the gate failed! See server log for more information");
-			Plugin.log(Level.WARNING, e.getMessage());
-			e.printStackTrace();
+			gate.setHidden(false);
+			sendMessage(ChatColor.GREEN + "The gate " + gate.getId() + " is now visible.");
 		}
+		catch (Exception e) {
+			sendMessage(ChatColor.RED + e.getMessage());
+		}
+		
+		
 	}
-}
 
+}

@@ -28,10 +28,8 @@ public class CommandInfo extends BaseCommand
 	public CommandInfo()
 	{
 		aliases.add("info");
-		aliases.add("details");
 		aliases.add("i");
-		aliases.add("d");
-		
+
 		requiredParameters.add("id");		
 		
 		helpDescription = "Print detailed information about a certain gate.";

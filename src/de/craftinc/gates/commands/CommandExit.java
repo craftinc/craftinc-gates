@@ -16,40 +16,46 @@
 */
 package de.craftinc.gates.commands;
 
+import java.util.logging.Level;
+
 import de.craftinc.gates.util.GateBlockChangeSender;
 import org.bukkit.ChatColor;
 
 import de.craftinc.gates.Plugin;
 
 
-public class CommandDelete extends BaseCommand 
+public class CommandExit extends BaseCommand
 {
-	public CommandDelete() 
+	public CommandExit()
 	{
-		aliases.add("delete");
-		aliases.add("del");
-		aliases.add("remove");
-		aliases.add("rm");
+		aliases.add("exit");
+		aliases.add("e");
 		
 		requiredParameters.add("id");		
 		
-		senderMustBePlayer = false;
-		helpDescription = "Removes the gate from the game.";
+		helpDescription = "Change exit of location.";
 		
 		requiredPermission = Plugin.permissionManage;
 		
-		needsPermissionAtCurrentLocation = false;
+		needsPermissionAtCurrentLocation = true;
 		shouldPersistToDisk = true;
-		
-		senderMustBePlayer = false;
+		senderMustBePlayer = true;
 	}
 	
 	
 	public void perform() 
 	{
-		Plugin.getPlugin().getGatesManager().handleDeletion(gate);
-        GateBlockChangeSender.updateGateBlocks(gate);
-		sendMessage(ChatColor.GREEN + "Gate with id '" + gate.getId() + "' was deleted.");
+		try 
+		{
+			gate.setExit(player.getLocation());
+			sendMessage(ChatColor.GREEN + "The exit of gate '" + gate.getId() + "' is now where you stand.");
+		} 
+		catch (Exception e) {
+            GateBlockChangeSender.updateGateBlocks(gate);
+            sendMessage(ChatColor.RED + "Setting the exit for the gate failed! See server log for more information");
+			Plugin.log(Level.WARNING, e.getMessage());
+			e.printStackTrace();
+		}
 	}
 }
 

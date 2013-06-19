@@ -16,43 +16,39 @@
 */
 package de.craftinc.gates.commands;
 
+import de.craftinc.gates.util.GateBlockChangeSender;
 import org.bukkit.ChatColor;
 
 import de.craftinc.gates.Plugin;
 
 
-public class CommandSetVisible extends BaseCommand 
+public class CommandRemove extends BaseCommand
 {
-	
-	public CommandSetVisible() 
+	public CommandRemove()
 	{
-		aliases.add("unhide");
-		aliases.add("uh");
+		aliases.add("delete");
+		aliases.add("del");
+		aliases.add("remove");
 		
 		requiredParameters.add("id");		
 		
-		helpDescription = "Make that gate visible";
+		senderMustBePlayer = false;
+		helpDescription = "Removes the gate from the game.";
 		
 		requiredPermission = Plugin.permissionManage;
 		
 		needsPermissionAtCurrentLocation = false;
 		shouldPersistToDisk = true;
+		
 		senderMustBePlayer = false;
 	}
 	
 	
 	public void perform() 
 	{
-		try 
-		{
-			gate.setHidden(false);
-			sendMessage(ChatColor.GREEN + "The gate " + gate.getId() + " is now visible.");
-		}
-		catch (Exception e) {
-			sendMessage(ChatColor.RED + e.getMessage());
-		}
-		
-		
+		Plugin.getPlugin().getGatesManager().handleDeletion(gate);
+        GateBlockChangeSender.updateGateBlocks(gate);
+		sendMessage(ChatColor.GREEN + "Gate with id '" + gate.getId() + "' was deleted.");
 	}
-
 }
+

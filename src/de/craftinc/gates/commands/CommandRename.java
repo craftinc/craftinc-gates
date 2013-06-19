@@ -27,9 +27,8 @@ public class CommandRename extends BaseCommand
 	public CommandRename() 
 	{
 		aliases.add("rename");
-		aliases.add("changename");
-		aliases.add("cn");
-		
+		aliases.add("rn");
+
 		hasGateParam = true;
 		senderMustBePlayer = false;
 		
