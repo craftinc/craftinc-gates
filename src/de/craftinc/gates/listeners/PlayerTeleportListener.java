@@ -32,6 +32,6 @@ public class PlayerTeleportListener implements Listener
             return;
         }
 
-        GateBlockChangeSender.updateGateBlocks(event.getPlayer(), event.getTo());
+        GateBlockChangeSender.updateGateBlocks(event.getPlayer(), event.getTo(), true);
     }
 }

@@ -19,6 +19,7 @@ package de.craftinc.gates.util;
 
 import de.craftinc.gates.Plugin;
 import de.craftinc.gates.Gate;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -29,17 +30,15 @@ import java.util.Set;
 
 public class GateBlockChangeSender
 {
-    public static void updateGateBlocks(final Player player)
-    {
-        if (player == null) {
-            throw new IllegalArgumentException("'player' must not be 'null'!");
-        }
-
-        updateGateBlocks(player, player.getLocation());
-    }
-
-
-    public static void updateGateBlocks(final Player player, final Location location)
+    /**
+     * Sends gate blocks to player at a given location. Will send the updates either immediately or
+     * immediately and after a short delay.
+     * @param player      A player to send block changes to. Must not be null!
+     * @param location    The location to look for gates nearby. Must not be null!
+     * @param sendDelayed Set to 'true' if the block changes shall be send a second time after a one
+     *                    second delay.
+     */
+    public static void updateGateBlocks(final Player player, final Location location, boolean sendDelayed)
     {
         if (player == null) {
             throw new IllegalArgumentException("'player' must not be 'null'!");
@@ -68,10 +67,45 @@ public class GateBlockChangeSender
                 }
             }
         }
+
+        if (sendDelayed) {
+            Bukkit.getScheduler().scheduleSyncDelayedTask(Plugin.getPlugin(), new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    updateGateBlocks(player, location, false);
+                }
+            }, 20L);
+        }
     }
 
 
+    /**
+     * This method calls: updateGateBlocks(player, location, false);
+     */
+    public static void updateGateBlocks(final Player player, final Location location)
+    {
+        updateGateBlocks(player, location, false);
+    }
 
+    /**
+     * This method calls: updateGateBlocks(player, player.getLocation(), false);
+     */
+    public static void updateGateBlocks(final Player player)
+    {
+        if (player == null) {
+            throw new IllegalArgumentException("'player' must not be 'null'!");
+        }
+
+        updateGateBlocks(player, player.getLocation(), false);
+    }
+
+
+    /**
+     * Sends block changes to players near a given gate.
+     * @param gate Must not be 'null'!
+     */
     public static void updateGateBlocks(final Gate gate)
     {
         if (gate == null) {

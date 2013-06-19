@@ -33,6 +33,6 @@ public class PlayerRespawnListener implements Listener
         System.out.println("player: " + event.getPlayer());
         System.out.println("position: " + event.getPlayer().getLocation());
 
-        GateBlockChangeSender.updateGateBlocks(event.getPlayer(), event.getRespawnLocation());
+        GateBlockChangeSender.updateGateBlocks(event.getPlayer(), event.getRespawnLocation(), true);
     }
 }
