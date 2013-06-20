@@ -103,7 +103,7 @@ public class GatesManager
 	
 	
 	@SuppressWarnings("unchecked")
-	public void loadGatesFromDisk()
+	public boolean loadGatesFromDisk()
 	{
 		this.gatesConfigFile = new File(Plugin.getPlugin().getDataFolder(), "gates.yml");
 		
@@ -118,8 +118,7 @@ public class GatesManager
             catch (IOException e) {
                 this.storageFileIsInvalid = true;
 				Plugin.log(Level.SEVERE, "Cannot create gate storage file! No gates will be persisted.");
-                Plugin.getPlugin().getServer().getPluginManager().disablePlugin(Plugin.getPlugin());
-                return;
+                return false;
 			}
 		}
 		
@@ -131,8 +130,7 @@ public class GatesManager
         catch (Exception e) {
             this.storageFileIsInvalid = true;
             Plugin.log(Level.SEVERE, "Gate file on disk is invalid. No gates loaded. Plugin will be disabled! (" + Arrays.toString(e.getStackTrace()) + ")");
-            Plugin.getPlugin().getServer().getPluginManager().disablePlugin(Plugin.getPlugin());
-            return;
+            return false;
         }
 
 		this.gates = (List<Gate>)gatesConfig.getList(gatesPath);
@@ -146,9 +144,8 @@ public class GatesManager
 			if (!(o instanceof Gate)) {
                 this.storageFileIsInvalid = true;
 				Plugin.log(Level.SEVERE, "Gate file on disk is invalid. No gates loaded. Plugin will be disabled! (Invalid gate class detected)");
-                Plugin.getPlugin().getServer().getPluginManager().disablePlugin(Plugin.getPlugin());
-				break;
-			}
+                return false;
+        	}
 		}
 
         for (Gate g : this.gates) {
@@ -178,14 +175,18 @@ public class GatesManager
         if (fileStorageVersion > storageVersion) {
             this.storageFileIsInvalid = true;
             Plugin.log(Level.SEVERE, "Unsupported storage version detected! Make sure you have the latest version of Craft Inc. Gates installed. Plugin will be disabled!");
-            Plugin.getPlugin().getServer().getPluginManager().disablePlugin(Plugin.getPlugin());
-            return;
+            return false;
         }
 
         if (fileStorageVersion < storageVersion && !this.gates.isEmpty()) {
             Plugin.log("Outdated storage version detected. Performing data migration...");
-            MigrationUtil.performMigration(fileStorageVersion, storageVersion, this.gates);
+            boolean success = MigrationUtil.performMigration(fileStorageVersion, storageVersion, this.gates);
+
+            this.storageFileIsInvalid = !success;
+            return success;
         }
+
+        return true;
 	}
 
 

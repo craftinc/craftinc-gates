@@ -147,9 +147,16 @@ public class Plugin extends JavaPlugin
 		this.registerEventListeners();
 		
 		// Load gates
-		gatesManager.loadGatesFromDisk();
-		
-		log("Enabled");
+		boolean success = gatesManager.loadGatesFromDisk();
+
+        if (success) {
+            log("Enabled");
+
+        }
+        else {
+            PluginManager pm = this.getServer().getPluginManager();
+            pm.disablePlugin(this);
+        }
 	}
 
 
@@ -167,7 +174,6 @@ public class Plugin extends JavaPlugin
             pm.registerEvents(this.blockBreakListener, this);
         }
     }
-
 
 	
 	// -------------------------------------------- //

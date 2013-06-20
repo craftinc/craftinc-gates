@@ -29,7 +29,7 @@ import java.util.logging.Level;
 
 public class MigrationUtil
 {
-    public static void performMigration(int storageVersion, int currentVersion, List<Gate> gates)
+    public static boolean performMigration(int storageVersion, int currentVersion, List<Gate> gates)
     {
         if (currentVersion == 1 && storageVersion == 0) {
 
@@ -43,10 +43,12 @@ public class MigrationUtil
                     }
                 }
             }
+
+            return true;
         }
         else {
             Plugin.log(Level.SEVERE, "Supplied storage version is currently not supported! Make sure you have the latest version of Craft Inc. Gates installed. Plugin will be disabled!");
-            Plugin.getPlugin().getServer().getPluginManager().disablePlugin(Plugin.getPlugin());
+            return false;
         }
     }
 }
