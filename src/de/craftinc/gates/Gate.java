@@ -307,7 +307,7 @@ public class Gate implements ConfigurationSerializable
 			validate(); // make sure to not write invalid stuff to disk
 		} 
 		catch (Exception e) {
-			Plugin.log("Gate " + this.getId() + " seems to be not valid. It got closed before serializing!");
+			Plugin.log("Gate " + this.getId() + " seems to be not valid. It got closed before serializing! (Reason: " + e.getMessage() + ")");
 		}
 		
 		Map<String, Object> retVal = new HashMap<String, Object>();
