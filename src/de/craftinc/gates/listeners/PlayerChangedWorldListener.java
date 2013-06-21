@@ -29,7 +29,6 @@ public class PlayerChangedWorldListener implements Listener
     @EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerChangeWorld(PlayerChangedWorldEvent event)
     {
-        System.out.println("location: " + event.getPlayer().getLocation());
         GateBlockChangeSender.updateGateBlocks(event.getPlayer());
     }
 }

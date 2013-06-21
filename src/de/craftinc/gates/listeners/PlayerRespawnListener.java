@@ -29,10 +29,6 @@ public class PlayerRespawnListener implements Listener
     @EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerRespawn(PlayerRespawnEvent event)
     {
-        System.out.println("in onPlayerRespawn");
-        System.out.println("player: " + event.getPlayer());
-        System.out.println("position: " + event.getPlayer().getLocation());
-
         GateBlockChangeSender.updateGateBlocks(event.getPlayer(), event.getRespawnLocation(), true);
     }
 }
