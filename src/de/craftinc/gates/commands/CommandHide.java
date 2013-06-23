@@ -45,14 +45,12 @@ public class CommandHide extends BaseCommand
 	
 	public void perform() 
 	{
-		try 
-		{
+		try {
 			gate.setHidden(true);
             GateBlockChangeSender.updateGateBlocks(gate);
 			sendMessage(ChatColor.GREEN + "The gate '" + gate.getId() + "' is now hidden.");
 		} 
-		catch (Exception e) 
-		{
+		catch (Exception e) {
 			sendMessage(ChatColor.RED + "Hiding the gate failed! See server log for more information");
 			Plugin.log(Level.WARNING, e.getMessage());
 			e.printStackTrace();

@@ -53,8 +53,6 @@ public class CommandUnhide extends BaseCommand
 		catch (Exception e) {
 			sendMessage(ChatColor.RED + e.getMessage());
 		}
-		
-		
 	}
 
 }
