@@ -102,11 +102,16 @@ public class GateBlockChangeSender
     }
 
 
+    public static void updateGateBlocks(final Gate gate)
+    {
+        updateGateBlocks(gate, false);
+    }
+
     /**
      * Sends block changes to players near a given gate.
      * @param gate Must not be 'null'!
      */
-    public static void updateGateBlocks(final Gate gate)
+    public static void updateGateBlocks(final Gate gate, boolean deleted)
     {
         if (gate == null) {
             throw new IllegalArgumentException("'gate must not be 'null'!");
@@ -126,7 +131,7 @@ public class GateBlockChangeSender
 
         Material material;
 
-        if (gate.isOpen() && !gate.isHidden()) {
+        if (gate.isOpen() && !gate.isHidden() && !deleted) {
             material = Material.PORTAL;
         }
         else {
