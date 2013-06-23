@@ -73,7 +73,7 @@ public class CommandNew extends BaseLocationCommand
 		}
 		else 
 		{
-			sendMessage("Now you should build a frame and execute:");
+			sendMessage(ChatColor.RED + "Your location is invalid!" + ChatColor.AQUA + "Go somewhere else and execute:");
 			sendMessage(new CommandLocation().getUsageTemplate(true, true));
 		}
 
