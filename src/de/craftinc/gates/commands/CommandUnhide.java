@@ -16,6 +16,7 @@
 */
 package de.craftinc.gates.commands;
 
+import de.craftinc.gates.util.GateBlockChangeSender;
 import org.bukkit.ChatColor;
 
 import de.craftinc.gates.Plugin;
@@ -46,6 +47,7 @@ public class CommandUnhide extends BaseCommand
 		try 
 		{
 			gate.setHidden(false);
+            GateBlockChangeSender.updateGateBlocks(gate);
 			sendMessage(ChatColor.GREEN + "The gate " + gate.getId() + " is now visible.");
 		}
 		catch (Exception e) {
