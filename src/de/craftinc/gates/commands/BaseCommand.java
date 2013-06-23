@@ -92,7 +92,7 @@ public abstract class BaseCommand
 	
 	protected boolean validateCall() 
 	{
-		boolean allParamtertersThere = parameters.size() >= requiredParameters.size();
+		boolean allParametersThere = parameters.size() >= requiredParameters.size();
 		boolean senderIsPlayer = this.sender instanceof Player;
 		boolean hasGateParameter = false;
 		
@@ -108,19 +108,18 @@ public abstract class BaseCommand
 			valid = false;
 		}
 		else {
-            if (!allParamtertersThere) {
+            if (!allParametersThere) {
                 sendMessage(ChatColor.RED + "Some parameters are missing! " + ChatColor.AQUA + "Usage: " + this.getUsageTemplate(true));
                 valid = false;
-            } else if (!senderHasPermission && this.hasGateParam) {
+            }
+            else if ((!senderHasPermission && this.hasGateParam) ||
+                       (!senderHasPermission) ||
+                       (this.hasGateParam && !hasGateParameter)) {
+
                 sendMessage(ChatColor.RED + "You either provided a invalid gate or do not have permission to " + this.helpDescription.toLowerCase());
                 valid = false;
-            } else if (!senderHasPermission) {
-                sendMessage(ChatColor.RED + "You lack the permissions to " + this.helpDescription.toLowerCase());
-                valid = false;
-            } else if (this.hasGateParam && !hasGateParameter) {
-                sendMessage(ChatColor.RED + "There exists no gate with id " + this.parameters.get(0));
-                valid = false;
-            } else {
+            }
+            else {
                 valid = true;
             }
         }
