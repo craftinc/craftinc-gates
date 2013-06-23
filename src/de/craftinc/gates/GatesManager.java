@@ -56,7 +56,7 @@ public class GatesManager
 
 	public Gate getGateWithId(final String id)
 	{
-		return gatesById.get(id);
+		return gatesById.get(id.toLowerCase());
 	}
 	
 	
@@ -484,7 +484,7 @@ public class GatesManager
 	
 	public boolean gateExists(final String id)
 	{
-		return gatesById.containsKey(id);
+		return gatesById.containsKey(id.toLowerCase());
 	}
 	
 	

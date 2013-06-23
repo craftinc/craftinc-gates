@@ -43,9 +43,9 @@ public class Gate implements ConfigurationSerializable
      * You should never create two gates with the same 'id'. Also see 'setId(String id)'.
      * @param id This parameter must not be 'null'. An exception will be thrown otherwise!
      */
-	public Gate(String id)
+	public Gate(final String id)
 	{
-        setId(id);
+        setId(id.toLowerCase());
 	}
 	
 	
