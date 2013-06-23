@@ -274,13 +274,13 @@ public class Gate implements ConfigurationSerializable
 			exit = LocationUtil.deserializeLocation((Map<String, Object>) map.get(exitKey));
 			
 			if (map.containsKey(exitPitchKey)) {
-				exit.setPitch(((Double)map.get(exitPitchKey)).floatValue());
-				exit.setYaw(((Double)map.get(exitYawKey)).floatValue());
+				exit.setPitch(((Number)map.get(exitPitchKey)).floatValue());
+				exit.setYaw(((Number)map.get(exitYawKey)).floatValue());
 			}
 			
 			if (map.containsKey(locationPitchKey)) {
-				location.setPitch(((Double)map.get(locationPitchKey)).floatValue());
-				location.setYaw(((Double)map.get(locationYawKey)).floatValue());
+				location.setPitch(((Number)map.get(locationPitchKey)).floatValue());
+				location.setYaw(((Number)map.get(locationYawKey)).floatValue());
 			}
 			
 			gateBlockLocations = new HashSet<Location>();
