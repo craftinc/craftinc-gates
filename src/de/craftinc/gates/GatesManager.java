@@ -88,7 +88,7 @@ public class GatesManager
             return;
         }
 
-        gatesConfig.set(gatesPath, new ArrayList<Object>(gatesById.values()));
+        gatesConfig.set(gatesPath, gates);
         gatesConfig.set(storageVersionPath, storageVersion);
 		
 		try {
@@ -288,18 +288,24 @@ public class GatesManager
 
     protected void removeGateByLocation(final Set<Location> gateBlocks)
 	{
-		for (Location l : gateBlocks) {
-			SimpleLocation sl = new SimpleLocation(l);
-			gatesByLocation.remove(sl);
-		}
+		if (gateBlocks != null) {
+
+            for (Location l : gateBlocks) {
+                SimpleLocation sl = new SimpleLocation(l);
+                gatesByLocation.remove(sl);
+            }
+        }
 	}
 
 
     protected void removeGateByFrameLocation(final Set<Block> gateFrameBlocks)
     {
-        for (Block block : gateFrameBlocks) {
-            SimpleLocation sl = new SimpleLocation(block.getLocation());
-            gatesByFrameLocation.remove(sl);
+        if (gateFrameBlocks != null) {
+
+            for (Block block : gateFrameBlocks) {
+                SimpleLocation sl = new SimpleLocation(block.getLocation());
+                gatesByFrameLocation.remove(sl);
+            }
         }
     }
 
@@ -460,7 +466,9 @@ public class GatesManager
 	
 	public void handleNewGate(final Gate g)
 	{
-		this.addGateByChunk(g);
+		this.gates.add(g);
+
+        this.addGateByChunk(g);
 		this.addGateByLocations(g);
 		this.addGateWithId(g);
         this.addGateByFrameLocations(g);
@@ -469,7 +477,9 @@ public class GatesManager
 	
 	public void handleDeletion(final Gate g)
 	{
-		this.removeGateById(g.getId());
+        this.gates.remove(g);
+
+        this.removeGateById(g.getId());
 		this.removeGateFromChunk(g, g.getLocation());
 		this.removeGateByLocation(g.getGateBlockLocations());
         this.removeGateByFrameLocation(g.getGateFrameBlocks());
