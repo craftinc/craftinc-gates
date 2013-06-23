@@ -312,10 +312,6 @@ public class GatesManager
 
     protected void addGateByLocations(final Gate g)
 	{
-        if (g.getGateBlockLocations().isEmpty()) {
-            System.out.println("gate has no block locations!");
-        }
-
         for (Location l : g.getGateBlockLocations()) {
 			SimpleLocation sl = new SimpleLocation(l);
 			gatesByLocation.put(sl, g);

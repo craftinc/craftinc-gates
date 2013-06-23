@@ -73,7 +73,5 @@ public class CommandInfo extends BaseCommand
                         gate.getExit().getWorld().getName());
 		else
 			sendMessage(ChatColor.DARK_AQUA + "NOTE: this gate has no exit");
-
-        System.out.println("frame: " + gate.getGateFrameBlocks());
 	}
 }
