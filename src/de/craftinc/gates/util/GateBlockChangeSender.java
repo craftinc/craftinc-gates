@@ -119,7 +119,7 @@ public class GateBlockChangeSender
 
         for (Player p : Plugin.getPlugin().getServer().getOnlinePlayers()) {
 
-            if (p.getLocation().distance(gateLocation) < searchRadius) {
+            if (p.getWorld() == gateLocation.getWorld() && p.getLocation().distance(gateLocation) < searchRadius) {
                 playersNearby.add(p);
             }
         }
