@@ -77,6 +77,7 @@ public class CommandLocation extends BaseLocationCommand
             }
 
             Plugin.getPlugin().getGatesManager().handleGateLocationChange(gate, oldLocation, oldGateBlockLocations, oldFrameBlocks);
+            GateBlockChangeSender.updateGateBlocks(gate);
 
 			sendMessage(ChatColor.GREEN + "The location of '" + gate.getId() + "' is now at your current location.");
 		} 
@@ -86,8 +87,6 @@ public class CommandLocation extends BaseLocationCommand
 			Plugin.log(Level.WARNING, e.getMessage());
 			e.printStackTrace();
 		}
-
-        GateBlockChangeSender.updateGateBlocks(gate);
 	}
 	
 }

@@ -48,7 +48,6 @@ public class PlayerMoveListener implements Listener
             GateBlockChangeSender.updateGateBlocks(event.getPlayer(), event.getTo());
         }
 
-		
 		GatesManager gateManager = Plugin.getPlugin().getGatesManager();
 		Gate gateAtLocation = gateManager.getGateAtLocation(event.getTo());
 
@@ -59,6 +58,8 @@ public class PlayerMoveListener implements Listener
         if (!gateAtLocation.isOpen()) {
             return;
         }
+
+        System.out.println("player: " + event.getPlayer() + " location: " + event.getTo());
 
 		
 		// Check for permission

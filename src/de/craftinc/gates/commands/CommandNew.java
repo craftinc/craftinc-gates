@@ -58,7 +58,6 @@ public class CommandNew extends BaseLocationCommand
 		}
 		
 		gate = new Gate(id);
-		gatesManager.handleNewGate(gate);
 		sendMessage(ChatColor.GREEN + "Gate with id '" + id + "' was created.");
 
 		
@@ -77,6 +76,8 @@ public class CommandNew extends BaseLocationCommand
 			sendMessage("Now you should build a frame and execute:");
 			sendMessage(new CommandLocation().getUsageTemplate(true, true));
 		}
+
+        gatesManager.handleNewGate(gate);
 	}
 }
 

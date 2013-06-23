@@ -45,14 +45,12 @@ public class CommandOpen extends BaseCommand
 	
 	public void perform() 
 	{
-		try 
-		{
+		try {
 			gate.setOpen(true);
             GateBlockChangeSender.updateGateBlocks(gate);
 			sendMessage(ChatColor.GREEN + "The gate was opened.");
 		} 
-		catch (Exception e) 
-		{
+		catch (Exception e) {
 			sendMessage(ChatColor.RED + e.getMessage());
 		}
 	}
