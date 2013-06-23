@@ -60,11 +60,22 @@ public class CommandLocation extends BaseLocationCommand
 		
 		try 
 		{
-			Location oldLocation = gate.getLocation();
+			boolean gateOpen = gate.isOpen();
+
+            if (gateOpen) {
+                gate.setOpen(false);
+            }
+
+            Location oldLocation = gate.getLocation();
             Set<Location> oldGateBlockLocations = gate.getGateBlockLocations();
             Set<Block> oldFrameBlocks = gate.getGateFrameBlocks();
 
             gate.setLocation(playerLocation);
+
+            if (gateOpen) {
+                gate.setOpen(true);
+            }
+
             Plugin.getPlugin().getGatesManager().handleGateLocationChange(gate, oldLocation, oldGateBlockLocations, oldFrameBlocks);
 
 			sendMessage(ChatColor.GREEN + "The location of '" + gate.getId() + "' is now at your current location.");
