@@ -46,8 +46,19 @@ public class CommandOpen extends BaseCommand
 	public void perform() 
 	{
 		try {
-			gate.setOpen(true);
+            boolean needsGateManagerUpdate = false;
+
+			if (gate.getGateBlockLocations().isEmpty()) {
+                needsGateManagerUpdate = true;
+            }
+
+            gate.setOpen(true);
             GateBlockChangeSender.updateGateBlocks(gate);
+
+            if (needsGateManagerUpdate) {
+                Plugin.getPlugin().getGatesManager().handleGateLocationChange(gate, null, null, null);
+            }
+
 			sendMessage(ChatColor.GREEN + "The gate was opened.");
 		} 
 		catch (Exception e) {
