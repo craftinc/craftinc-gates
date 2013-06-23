@@ -18,7 +18,6 @@ package de.craftinc.gates.commands;
 
 
 import java.util.Set;
-import java.util.logging.Level;
 
 import de.craftinc.gates.util.GateBlockChangeSender;
 import org.bukkit.ChatColor;
@@ -83,9 +82,10 @@ public class CommandLocation extends BaseLocationCommand
 		} 
 		catch (Exception e) 
 		{
-			sendMessage(ChatColor.RED + "Setting the location for the gate failed! See server log for more information");
-			Plugin.log(Level.WARNING, e.getMessage());
-			e.printStackTrace();
+            GateBlockChangeSender.updateGateBlocks(gate);
+
+			sendMessage(ChatColor.RED + "There seems to be no frame at your new location! The gate got closed!" + ChatColor.AQUA + "You should build a frame now and execute:");
+            sendMessage(new CommandOpen().getUsageTemplate(true, true));
 		}
 	}
 	
