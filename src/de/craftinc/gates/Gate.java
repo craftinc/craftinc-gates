@@ -45,7 +45,7 @@ public class Gate implements ConfigurationSerializable
      */
 	public Gate(final String id)
 	{
-        setId(id.toLowerCase());
+        setId(id);
 	}
 	
 	
@@ -53,11 +53,7 @@ public class Gate implements ConfigurationSerializable
 	{
 		return super.toString() + " " + this.getId();
 	}
-	
-	
-	/*
-	 * SETTER & GETTER
-	 */
+    
 
     /**
      *
@@ -76,7 +72,7 @@ public class Gate implements ConfigurationSerializable
      *         supplied. Note that the supplied 'location' will be set even if an exception is thrown. Note that this
      *         gate will be closed if an exception is thrown.
      */
-	public void setLocation(Location location)  throws Exception
+	public void setLocation(final Location location) throws Exception
 	{
 		this.location = location;
 		
@@ -107,7 +103,7 @@ public class Gate implements ConfigurationSerializable
      *         supplied 'exit' will be set even if an exception is thrown. Note that this gate will be closed if an
      *         exception is thrown.
      */
-	public void setExit(Location exit) throws Exception
+	public void setExit(final Location exit) throws Exception
 	{
 		this.exit = exit;
 		validate();
@@ -129,13 +125,13 @@ public class Gate implements ConfigurationSerializable
      * Note that this method will not check if another gate with the same 'id' exists!
      * @param id This parameter must not be 'null'. An exception will be thrown otherwise!
      */
-	public void setId(String id)
+	public void setId(final String id)
     {
         if (id == null) {
             throw new IllegalArgumentException("gate 'id' cannot be 'null'");
         }
 
-		this.id = id;
+		this.id = id.toLowerCase();
 	}
 
 
