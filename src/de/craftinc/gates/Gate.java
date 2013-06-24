@@ -294,18 +294,18 @@ public class Gate implements ConfigurationSerializable
 			
 			Plugin.getPlugin().getGatesManager().storeInvalidGate(map);
 		}
+
+        try {
+            validate(); // make sure to not write invalid stuff to disk
+        }
+        catch (Exception e) {
+            Plugin.log("The loaded gate " + this.getId() + " seems to be not valid: " + e.getMessage());
+        }
 	}
 	
 	
 	public Map<String, Object> serialize() 
 	{
-		try {
-			validate(); // make sure to not write invalid stuff to disk
-		} 
-		catch (Exception e) {
-			Plugin.log("Gate " + this.getId() + " seems to be not valid. It got closed before serializing! (Reason: " + e.getMessage() + ")");
-		}
-		
 		Map<String, Object> retVal = new HashMap<String, Object>();
 		
 		retVal.put(idKey, id);
