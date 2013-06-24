@@ -69,7 +69,7 @@ public abstract class BaseCommand
 		
 		this.perform();
 		
-		if (this.shouldPersistToDisk) {
+		if (this.shouldPersistToDisk && Plugin.getPlugin().getConfig().getBoolean(Plugin.confSaveOnChangesKey)) {
 			Plugin.getPlugin().getGatesManager().saveGatesToDisk();
 		}
 	}

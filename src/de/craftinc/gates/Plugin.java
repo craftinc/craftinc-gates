@@ -48,6 +48,7 @@ public class Plugin extends JavaPlugin
     public static final String confShowTeleportMessageKey = "showTeleportMessage";
     public static final String confGateTeleportNoPermissionMessageKey = "gateTeleportNoPermissionMessage";
     public static final String confShowTeleportNoPermissionMessageKey = "showTeleportNoPermissionMessage";
+    public static final String confSaveOnChangesKey = "saveOnChanges";
 	
 	private static Plugin instance;
 	private static Permission permission;
@@ -151,7 +152,6 @@ public class Plugin extends JavaPlugin
 
         if (success) {
             log("Enabled");
-
         }
         else {
             PluginManager pm = this.getServer().getPluginManager();

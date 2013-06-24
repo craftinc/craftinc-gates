@@ -53,7 +53,7 @@ public class Gate implements ConfigurationSerializable
 	{
 		return super.toString() + " " + this.getId();
 	}
-    
+
 
     /**
      *
