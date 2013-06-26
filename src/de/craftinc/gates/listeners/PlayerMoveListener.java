@@ -52,16 +52,16 @@ public class PlayerMoveListener implements Listener
 		Gate gateAtLocation = gateManager.getGateAtLocation(event.getTo());
 
 		if (gateAtLocation == null) {
-            Location headTo = new Location(event.getTo().getWorld(),
-                                           event.getTo().getX(),
-                                           event.getTo().getY()+1.0,
-                                           event.getTo().getZ());
+//            Location headTo = new Location(event.getTo().getWorld(),
+//                                           event.getTo().getX(),
+//                                           event.getTo().getY()+1.0,
+//                                           event.getTo().getZ());
+//
+//            gateAtLocation = gateManager.getGateAtLocation(headTo);
 
-            gateAtLocation = gateManager.getGateAtLocation(headTo);
-
-            if (gateAtLocation == null) {
+//            if (gateAtLocation == null) {
                 return;
-            }
+//            }
 		}
 
         if (!gateAtLocation.isOpen()) {

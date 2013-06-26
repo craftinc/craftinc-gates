@@ -36,6 +36,22 @@ public class SimpleLocation
     	this.y = l.getBlockY();
     	this.z = l.getBlockZ();
     }
+
+
+    public SimpleLocation(Location l, boolean isHeadPosition)
+    {
+        this.world = l.getWorld().getName();
+
+        // Using Block coordinates makes it possible to compare block locations with player locations.
+        // There might be an offset of 1 otherwise.
+        this.x = l.getBlockX();
+        this.y = l.getBlockY();
+        this.z = l.getBlockZ();
+
+        if (isHeadPosition) {
+            this.y--;
+        }
+    }
     
     
     @Override

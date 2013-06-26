@@ -244,13 +244,23 @@ public class GatesManager
 
     protected void fillGatesByLocation()
 	{
-		int numGateBlocks = 0;
+		Set<Location> gateBlocks = new HashSet<Location>();
 		
 		for (Gate g : gates) {
-			numGateBlocks += g.gateBlockLocations.size();
+
+            for (Location l : g.getGateBlockLocations()) {
+                gateBlocks.add(l);
+
+                Location headLocation = new Location(l.getWorld(),
+                                                     l.getX(),
+                                                     l.getY()+1,
+                                                     l.getZ());
+
+                gateBlocks.add(headLocation);
+            }
 		}
 		
-		gatesByLocation = new HashMap<SimpleLocation, Gate>((int)(numGateBlocks*1.25));
+		gatesByLocation = new HashMap<SimpleLocation, Gate>((int)(gateBlocks.size()*1.25));
 		
 		for (Gate g : gates) {
 			this.addGateByLocations(g);
@@ -291,8 +301,12 @@ public class GatesManager
 		if (gateBlocks != null) {
 
             for (Location l : gateBlocks) {
+
                 SimpleLocation sl = new SimpleLocation(l);
                 gatesByLocation.remove(sl);
+
+                SimpleLocation headLocation = new SimpleLocation(l, true);
+                gatesByLocation.remove(headLocation);
             }
         }
 	}
@@ -313,8 +327,12 @@ public class GatesManager
     protected void addGateByLocations(final Gate g)
 	{
         for (Location l : g.getGateBlockLocations()) {
+
 			SimpleLocation sl = new SimpleLocation(l);
 			gatesByLocation.put(sl, g);
+
+            SimpleLocation headLocation = new SimpleLocation(l, true);
+            gatesByLocation.put(headLocation, g);
 		}
 	}
 
