@@ -1,105 +1,96 @@
-# Craft Inc. Gates – Easily create portals with custom design
 
-(previously known as __AncientGates__)
+# Craft Inc. Gates #
 
-With this plugin players can create gates that will teleport anyone who enter the gate to specific a location.
-The hightlights are: __It is so darn easy to use!__ and __The gates can look any way you like__
+<Logo here>
 
-Try the ingame command: __/gate__
+We are happy to finally announce __Craft Inc. Gates__. 
 
-Check out our **[Craft Inc. Minecraft Server](http://www.craftinc.de)**! Everyone is welcome!
+This awesome plugin lets you _travel_ to far away places and worlds _faster then light_! Just create a gate at any locations and set an exit somewhere else.
 
-Thought first you should take a look at the demonstration oloflarsson and karibu6 created:
-__[http://www.youtube.com/watch?v=L4hyqTpeEaA](http://www.youtube.com/watch?v=L4hyqTpeEaA)__
+This has been made available by the hard work of the research and development department of the _Craft Inc. Cooperation_. Under the lead of Professor Didderr Craftman scientists worked years to find a way to bend time and space inside the minecraft universe to enable _ultra fast transportation_.
+
+Now it is time for _you_ to try out this wonderful plugin. Simply install this plugin, create a gate and feel the funny tickle in your brain while traveling.*
+
+The key features of this are:
+
+* Gates with and without a frame
+* Gates consisting of portal blocks or gates made of air (so called hidden gates)
+* Gates with destinations in different worlds
+* Gates with custom shapes (gates can any way you want)
 
 
-## FAQ
+*The Craft Inc. Cooperation won't take any responsibility for sea sickness, memory loss and sudden suffocation in walls while traveling with our gates!
+## FAQ ##
 
 __Who can create a gate?__
 
-See the _Permissions_ section.
+Have a look at the [_Permissions_](http://dev.bukkit.org/bukkit-plugins/craftinc-gates/pages/permissions/) page.
 
 __Who can destroy a gate?__
 
 Anyone if you do not use a third-party protection plugin like Grief Prevention.
 
-__Are there IConnomy integration, Features for user to dial other gates etc?__
+__Is there a IConnomy integration? Features for user to dial other gates etc?__
 
-Nope. This plugin is very minimalistic and plain. Server operators manage the portals players use them any time they are open.
+Nope. We currently don't plane to integrate such features. I you really need such a feature please inform us. If there are a lot of people requesting such features we might change our mind.
 
-## Usage
+__Is there a list of all commands?__
 
-__Note that the commands mentioned in this section will be made available with the upcoming 2.1 release of Craft Inc. Gates! Meanwhile type '/gate help' while playing to see the current set of commands.__
+Sure, type _/gate help_ in-game or have a look at the [_Commands_](http://dev.bukkit.org/bukkit-plugins/craftinc-gates/pages/commands/) page.
 
-With the __/gate__ plugin you can create gates which will teleport players anywhere you want. Just build a portal (like those nether portal). The gates can look any way you like.
+__When I destroy the frame of gate it stops working. Shouldn't it still work?__
 
-To make the gate work place yourself in a newly created gate frame and type __/gate create [id]__. Afterwards walk to the destination of your portal and type __/gate exit [id]__ to set the destination. With __/gate open [id]__ you can get your newly created gate to work.
-
-To hide a gate simply call __/gate hide [id]__. Now that gate won’t have purple blocks when open. You can even remove the frame without stopping the hidden gate from working. But unhiding a gate without a frame is not possible!
+Yes and no. To make gates without a frame work you need to tweak the _checkForBrokenGateFrames_ setting. Have a look at the [_Configuration_](http://dev.bukkit.org/bukkit-plugins/craftinc-gates/pages/configuration/) page for more information.
 
 
-Use the following commands to modify your gates even further:
+## Usage ##
+With this plugin you can create gates which will teleport players anywhere you want. The gates can look any way you like.
 
-* __/gate close,c [id]__
-Closes a gate to prevent players from using it.
+To make the gate work place yourself inside a newly created gate frame and type __/gate new [id]__. Afterwards walk to the destination of your portal and type __/gate exit [id]__ to set the destination. With __/gate open [id]__ you can get your newly created gate to work.
 
-* __/gate create,new [id]__
-Creates a gate at your current location.
+To hide a gate simply call __/gate hide [id]__. Now that gate won’t have purple blocks when opened.
 
-* __/gate delete,del,remove,rm [id]__
-Removes the gate from the game.
-
-* __/gate exit,e [id]__
-Changes the location where the gate will teleport players to your current location.
-
-* __/gate help,h,? [page]__ 
-Prints the help pages
-
-* __/gate hide,h [id]__
-Makes a gate NOT consist of gate blocks while open.
-
-* __/gate info,details,i,d [id]__
-Prints detailed informations about a certain gate.
-
-* __/gate list,ls [page]__
-Prints all availiable gates.
-
-* __/gate location,l [id]__
-Sets the entrance of the gate to your current location.
-
-* __/gate open,o [id]__
- Open a gate so players can use it.
-
-* __/gate rename,changename,cn [current name] [new name]__
-Changes the name/id of the gate.
-
-* __/gate unhide,uh [id]__
- Makes that gate visible.
+Have a look at the [_Commands_](http://dev.bukkit.org/bukkit-plugins/craftinc-gates/pages/commands/) page to find out how to modify gates even further.
 
 
+## Installing ##
 
-## Permissions
-
-* __craftincgates.info__
-Gives access to info and list commands.
-
-* __craftincgates.use__
-Allows you to travel via gates.
-
-* __craftincgates.manage__
-Gives access to commands manipulating gates.
-
-## Installing
-
-1. Download the latest release: __[http://dev.bukkit.org/server-mods/craftinc-gates/files/](http://dev.bukkit.org/server-mods/craftinc-gates/files/)__
-2. Put the downloaded _CraftIncGates.jar_ in the plugins folder.
+1. Download the latest release __[here](http://dev.bukkit.org/bukkit-mods/craftinc-gates/files/)__
+2. Extract the content of the zip file into the plugins folder of your Bukkit server.
 3. Start or reload the server.
 
-## Bugs and other Problems
+## Craft Inc. ##
+Check out our __[Craft Inc. Minecraft Server](http://www.craftinc.de)__. Everyone is welcome!
 
-Please use our [issue tracker](https://github.com/craftinc/craftinc-gates/issues?milestone=1&state=open) on github.
+Also check out our other great plugins:
+
+* [__Craft Inc. BorderProtection__](http://dev.bukkit.org/bukkit-mods/craftinc-borderprotection/)
+protect your worlds with a border players cannot cross.
+
+*  [__Craft Inc. Replicator__](http://dev.bukkit.org/bukkit-mods/craftinc-replicator/) 
+allows players to build a replicator to replicate blocks and other items. (still experimental)
+
+* __Craft Inc. Scarecrow__
+coming soon!
+
+## Roadmap ##
+* __Version 2.3__
+	* Info-Tools for gates. (Get the name of a gate you standing next to.)
+	* Search command for nearby gates. (Visually highlight nearby gates. Especially useful for hidden gates!)
+* __Future__
+	* Optionally allow animals and mobs to travel via gates.
+	* Allow players to use gates while sitting inside a minecart or boat
+	* Dynmap integration.
+	* Per player permissions for using an managing gates.
+	* Horizontal gates.
+
+## Bugs and other Problems ##
+Please use our [_issue tracker_](https://github.com/craftinc/craftinc-gates/issues?milestone=1&state=open) on GitHub.
+
+## Legal Information ##
+This project is a fork of the original [_Ancient Gates_](https://github.com/bladedpenguin/minecraft-ancient-gates). It is licensed under the [_LGPL_](http://www.gnu.org/licenses/lgpl-3.0.txt) just like the Bukkit project. Thanks to all current an previous [_contributors_](https://github.com/craftinc/craftinc-gates/blob/development/AUTHORS.txt).
+The font used for the Craft Inc. Gates logo is called [_MineCrafter 3_](http://www.minecraftforum.net/topic/892789-minecrafter-3-font-simply-easy/) and has been made available under the creative commons license. Thanks to Asherz08, MadPixel and Ashley Denham for this great font.
 
 
-## License
 
-This project has a LGPL license just like the Bukkit project.
+
