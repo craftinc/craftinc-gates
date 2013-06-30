@@ -9,17 +9,18 @@ This awesome plugin lets you _travel_ to far away places and worlds _faster then
 
 This has been made available by the hard work of the research and development department of the _Craft Inc. Cooperation_. Under the lead of Professor Didderr Craftman scientists worked years to find a way to bend time and space inside the minecraft universe to enable _ultra fast transportation_.
 
-Now it is time for _you_ to try out this wonderful plugin. Simply install this plugin, create a gate and feel the funny tickle in your brain while traveling.*
+Now it is time for _you_ to try out this wonderful plugin. Simply install this plugin, create a gate and feel the funny tickle insisde your brain while traveling.*
 
 The key features of this are:
 
-* Gates with and without a frame
-* Gates consisting of portal blocks or gates made of air (so called hidden gates)
+* Gates with and without frames
+* Gates consisting of portal blocks and gates made of air (so called hidden gates)
 * Gates with destinations in different worlds
 * Gates with custom shapes (gates can any way you want)
 
 
-*The Craft Inc. Cooperation won't take any responsibility for sea sickness, memory loss and sudden suffocation in walls while traveling with our gates!
+*The Craft Inc. Cooperation won't take any responsibility for sea sickness, memory loss and sudden suffocation in walls while traveling with one of our gates!
+
 ## FAQ ##
 
 __Who can create a gate?__
@@ -32,7 +33,7 @@ Anyone if you do not use a third-party protection plugin like Grief Prevention.
 
 __Is there a IConnomy integration? Features for user to dial other gates etc?__
 
-Nope. We currently don't plane to integrate such features. I you really need such a feature please inform us. If there are a lot of people requesting such features we might change our mind.
+Nope. We currently don't plane to integrate such features. If you really need such an integration please inform us. If there are a lot of people requesting such features we might change our mind.
 
 __Is there a list of all commands?__
 
@@ -40,7 +41,7 @@ Sure, type _/gate help_ in-game or have a look at the [_Commands_](http://dev.bu
 
 __When I destroy the frame of gate it stops working. Shouldn't it still work?__
 
-Yes and no. To make gates without a frame work you need to tweak the _checkForBrokenGateFrames_ setting. Have a look at the [_Configuration_](http://dev.bukkit.org/bukkit-plugins/craftinc-gates/pages/configuration/) page for more information.
+Yes and no. To make gates work without a frame you need to tweak the _checkForBrokenGateFrames_ setting. Have a look at the [_Configuration_](http://dev.bukkit.org/bukkit-plugins/craftinc-gates/pages/configuration/) page for more information.
 
 
 ## Usage ##
@@ -55,7 +56,7 @@ Have a look at the [_Commands_](http://dev.bukkit.org/bukkit-plugins/craftinc-ga
 
 ## Installing ##
 
-1. Download the latest release __[here](http://dev.bukkit.org/bukkit-mods/craftinc-gates/files/)__
+1. Download the latest release _[here](http://dev.bukkit.org/bukkit-mods/craftinc-gates/files/)_
 2. Extract the content of the zip file into the plugins folder of your Bukkit server.
 3. Start or reload the server.
 
