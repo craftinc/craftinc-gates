@@ -4,8 +4,8 @@
 * Added a configuration file (have a look at the bukkit-dev page for more information).
 * Resolved issues with (random) teleports to the nether.
 * Made it possible to create non hidden gates without a frame. (Turned off by default!)
-* Changed the behavior regarding portal blocks. Starting with this version no blocks will be set by the plugin. All portal blocks will only be visible by on client side.
-* Added checks preventing the plugin from overwriting gate storage file on error.
+* Changed the behavior regarding portal blocks. Starting with this version no blocks will be set by the plugin. All portal blocks will only be visible on client side.
+* Added checks preventing the plugin from overwriting the gate storage file on error.
 * Added the ability to change and disable messages on teleport and insufficient permissions via a config file.
 
 ## 2.1.2 ##
