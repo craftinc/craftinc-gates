@@ -7,12 +7,15 @@
 * Changed the behavior regarding portal blocks. Starting with this version no blocks will be set by the plugin. All portal blocks will only be visible by on client side.
 * Added checks preventing the plugin from overwriting gate storage file on error.
 * Added the ability to change and disable messages on teleport and insufficient permissions via a config file.
+
 ## 2.1.2 ##
 * Fixed a bug where players got teleported one block beside the real portal.
 * Fixed a bug where gates with no location caused multiple exceptions.
+
 ## 2.1.1 ##
 * Made the list command more reliable.
 * Error messages will be displayed less frequent.
+
 ## 2.1.0 ##
 * Command outputs are now colored.
 * Fixed a bug where players in creative mode would not be teleported correctly.
