@@ -257,7 +257,7 @@ public class Gate implements ConfigurationSerializable
     public Gate(Map<String, Object> map)
 	{
         try {
-			id = map.get(idKey).toString();
+			id = map.get(idKey).toString().toLowerCase();
 
             if (id == null) {
                 throw new Exception("gates need to have an id");
