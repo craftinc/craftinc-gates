@@ -89,6 +89,5 @@ public class CommandLocation extends BaseLocationCommand
             sendMessage(new CommandOpen().getUsageTemplate(true, true));
 		}
 	}
-	
 }
 
