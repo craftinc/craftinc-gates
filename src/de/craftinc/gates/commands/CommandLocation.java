@@ -63,6 +63,7 @@ public class CommandLocation extends BaseLocationCommand
 
             if (gateOpen) {
                 gate.setOpen(false);
+                GateBlockChangeSender.updateGateBlocks(gate);
             }
 
             Location oldLocation = gate.getLocation();
