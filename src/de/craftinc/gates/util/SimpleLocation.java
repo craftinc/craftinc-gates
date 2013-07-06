@@ -52,6 +52,14 @@ public class SimpleLocation
             this.y--;
         }
     }
+
+
+    @Override
+    public String toString()
+    {
+        return super.toString() + " x: " + x + " y: " + y + " z: " + z + " world: " + world;
+    }
+
     
     
     @Override
