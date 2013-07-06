@@ -110,14 +110,20 @@ public class GateBlockChangeSender
     /**
      * Sends block changes to players near a given gate.
      * @param gate Must not be 'null'!
+     * @param remove Set to true if all visible gate blocks shall be removed.
      */
-    public static void updateGateBlocks(final Gate gate, boolean deleted)
+    public static void updateGateBlocks(final Gate gate, boolean remove)
     {
         if (gate == null) {
             throw new IllegalArgumentException("'gate must not be 'null'!");
         }
 
         Location gateLocation = gate.getLocation();
+
+        if (gate.getGateBlockLocations().isEmpty()) {
+            return;
+        }
+
         ArrayList<Player> playersNearby = new ArrayList<Player>();
 
         int searchRadius = Plugin.getPlugin().getConfig().getInt(Plugin.confPlayerGateBlockUpdateRadiusKey);
@@ -131,7 +137,7 @@ public class GateBlockChangeSender
 
         Material material;
 
-        if (gate.isOpen() && !gate.isHidden() && !deleted) {
+        if (gate.isOpen() && !gate.isHidden() && !remove) {
             material = Material.PORTAL;
         }
         else {

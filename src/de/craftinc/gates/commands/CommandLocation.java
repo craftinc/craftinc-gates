@@ -56,38 +56,30 @@ public class CommandLocation extends BaseLocationCommand
 			sendMessage("There is not enough room for a gate to open here");
 			return;
 		}
+
+        Location oldLocation = gate.getLocation();
+        Set<Location> oldGateBlockLocations = gate.getGateBlockLocations();
+        Set<Block> oldFrameBlocks = gate.getGateFrameBlocks();
 		
 		try 
 		{
-			boolean gateOpen = gate.isOpen();
-
-            if (gateOpen) {
-                gate.setOpen(false);
-                GateBlockChangeSender.updateGateBlocks(gate);
+            if (gate.isOpen()) {
+                GateBlockChangeSender.updateGateBlocks(gate, true);
             }
-
-            Location oldLocation = gate.getLocation();
-            Set<Location> oldGateBlockLocations = gate.getGateBlockLocations();
-            Set<Block> oldFrameBlocks = gate.getGateFrameBlocks();
 
             gate.setLocation(playerLocation);
-
-            if (gateOpen) {
-                gate.setOpen(true);
-            }
-
-            Plugin.getPlugin().getGatesManager().handleGateLocationChange(gate, oldLocation, oldGateBlockLocations, oldFrameBlocks);
-            GateBlockChangeSender.updateGateBlocks(gate);
 
 			sendMessage(ChatColor.GREEN + "The location of '" + gate.getId() + "' is now at your current location.");
 		} 
 		catch (Exception e) 
 		{
-            GateBlockChangeSender.updateGateBlocks(gate);
-
-			sendMessage(ChatColor.RED + "There seems to be no frame at your new location! The gate got closed!" + ChatColor.AQUA + " You should build a frame now and execute:");
+            sendMessage(ChatColor.RED + "There seems to be no frame at your new location! The gate got closed!" + ChatColor.AQUA + " You should build a frame now and execute:");
             sendMessage(new CommandOpen().getUsageTemplate(true, true));
 		}
-	}
+        finally {
+            Plugin.getPlugin().getGatesManager().handleGateLocationChange(gate, oldLocation, oldGateBlockLocations, oldFrameBlocks);
+            GateBlockChangeSender.updateGateBlocks(gate);
+        }
+    }
 }
 

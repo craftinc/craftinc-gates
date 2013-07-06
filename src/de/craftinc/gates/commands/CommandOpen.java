@@ -53,6 +53,7 @@ public class CommandOpen extends BaseCommand
             }
 
             gate.setOpen(true);
+
             GateBlockChangeSender.updateGateBlocks(gate);
 
             if (needsGateManagerUpdate) {

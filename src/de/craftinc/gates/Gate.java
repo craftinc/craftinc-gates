@@ -77,12 +77,13 @@ public class Gate implements ConfigurationSerializable
 		this.location = location;
 		
 		if (isOpen) {
-            if (this.gateBlockLocations == null || this.gateBlockLocations.size() == 0 ) {
-                findPortalBlocks();
-            }
-
+            findPortalBlocks();
 			validate();
 		}
+        else {
+            this.gateBlockLocations = new HashSet<Location>();
+            this.gateFrameBlocks = new HashSet<Block>();
+        }
 	}
 
 
@@ -211,17 +212,26 @@ public class Gate implements ConfigurationSerializable
 		}
 		
 		if (location == null) {
-			setOpen(false);
+			isOpen = false;
+            this.gateBlockLocations = new HashSet<Location>();
+            this.gateFrameBlocks = new HashSet<Block>();
+
 			throw new Exception("Gate got closed. It has no location.");
 		}
 		
 		if (exit == null) {
-			setOpen(false);
+            isOpen = false;
+            this.gateBlockLocations = new HashSet<Location>();
+            this.gateFrameBlocks = new HashSet<Block>();
+
 			throw new Exception("Gate got closed. It has no exit.");
 		}
 		
 		if (gateBlockLocations.size() == 0) {
-			setOpen(false);
+            isOpen = false;
+            this.gateBlockLocations = new HashSet<Location>();
+            this.gateFrameBlocks = new HashSet<Block>();
+
 			throw new Exception("Gate got closed. The frame is missing or broken. (no gate blocks)");
 		}
 
@@ -230,7 +240,10 @@ public class Gate implements ConfigurationSerializable
             for (Block b : gateFrameBlocks) {
 
                 if (b.getType() == Material.AIR) {
-                    setOpen(false);
+                    isOpen = false;
+                    this.gateBlockLocations = new HashSet<Location>();
+                    this.gateFrameBlocks = new HashSet<Block>();
+
                     throw new Exception("Gate got closed. The frame is missing or broken. (missing frame block(s))");
                 }
             }
