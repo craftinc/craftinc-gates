@@ -85,7 +85,7 @@ public class CommandLocation extends BaseLocationCommand
 		{
             GateBlockChangeSender.updateGateBlocks(gate);
 
-			sendMessage(ChatColor.RED + "There seems to be no frame at your new location! The gate got closed!" + ChatColor.AQUA + "You should build a frame now and execute:");
+			sendMessage(ChatColor.RED + "There seems to be no frame at your new location! The gate got closed!" + ChatColor.AQUA + " You should build a frame now and execute:");
             sendMessage(new CommandOpen().getUsageTemplate(true, true));
 		}
 	}
