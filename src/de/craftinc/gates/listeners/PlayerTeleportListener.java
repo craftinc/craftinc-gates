@@ -25,7 +25,7 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 
 public class PlayerTeleportListener implements Listener
 {
-    @EventHandler(priority = EventPriority.NORMAL)
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerTeleport(PlayerTeleportEvent event)
     {
         if (event.isCancelled()) {
