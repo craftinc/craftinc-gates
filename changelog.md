@@ -1,3 +1,6 @@
+## 2.2.1 ##
+* Changed priority of some event listeners to solve problems with WorldGuard and other protection plugins.
+
 ## 2.2.0 ##
 * Improved gate commands and shortcuts (have a look at the bukkit-dev page for more information).
 * Improved overall performance.
