@@ -44,6 +44,7 @@ public class CommandHelp extends BaseCommand
 		allUsageStrings.add( new CommandInfo().getUsageTemplate(true, true) );
 		allUsageStrings.add( new CommandHide().getUsageTemplate(true, true) );
 		allUsageStrings.add( new CommandUnhide().getUsageTemplate(true, true) );
+        allUsageStrings.add( new CommandExitOpen().getUsageTemplate(true, true) );
 		
 		Collections.sort(allUsageStrings);
 		

@@ -142,6 +142,7 @@ public class Plugin extends JavaPlugin
 		commands.add(new CommandInfo());
 		commands.add(new CommandHide());
 		commands.add(new CommandUnhide());
+        commands.add(new CommandExitOpen());
 
 		
 		// Register events
