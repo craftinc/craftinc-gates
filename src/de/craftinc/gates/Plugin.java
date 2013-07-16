@@ -16,6 +16,7 @@
 */
 package de.craftinc.gates;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -33,6 +34,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import de.craftinc.gates.commands.*;
+import org.mcstats.Metrics;
 
 
 public class Plugin extends JavaPlugin 
@@ -123,6 +125,15 @@ public class Plugin extends JavaPlugin
 	@Override
 	public void onEnable() 
 	{
+		// Setup Metrics
+        try {
+            Metrics metrics = new Metrics(this);
+            metrics.start();
+        }
+        catch (IOException e) {
+            log("Failed to start metrics!");
+        }
+
 		// Setup configuration
         this.saveDefaultConfig();
 
