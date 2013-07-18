@@ -16,7 +16,7 @@ commands:
 
 permissions:
   craftincgates.*:
-    description: Gives access to all ancient gates commands and lets you use open gates.
+    description: Gives access to all Craft Inc. Gates commands.
     children:
       craftincgates.info: true
       craftincgates.use: true
