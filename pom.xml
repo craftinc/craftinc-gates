@@ -5,12 +5,24 @@
     <groupId>de.craftinc</groupId>
     <artifactId>CraftIncGates</artifactId>
     <name>Craft Inc. Gates</name>
+    <url>http://dev.bukkit.org/bukkit-plugins/craftinc-gates/</url>
     <packaging>jar</packaging>
     <version>2.3.0-DEV</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
+    <!-- License -->
+    <licenses>
+
+        <license>
+            <name>GNU Lesser General Public License Version 3</name>
+            <url>https://www.gnu.org/licenses/lgpl-3.0-standalone.html</url>
+            <distribution>repo</distribution>
+        </license>
+        
+    </licenses>
 
     <build>
         <finalName>${project.name} ${project.version}</finalName>
@@ -61,14 +73,6 @@
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
-            <version>1.6.2-R0.1-SNAPSHOT</version>
-            <type>jar</type>
-            <scope>compile</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.bukkit</groupId>
-            <artifactId>craftbukkit</artifactId>
             <version>1.6.2-R0.1-SNAPSHOT</version>
             <type>jar</type>
             <scope>compile</scope>
