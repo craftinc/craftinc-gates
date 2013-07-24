@@ -29,7 +29,6 @@ import org.bukkit.block.Block;
 
 public class CommandLocation extends BaseLocationCommand
 {
-	
 	public CommandLocation()
 	{
 		aliases.add("location");

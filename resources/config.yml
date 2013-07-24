@@ -1,5 +1,6 @@
 maxGateBlocks: 50
 playerGateBlockUpdateRadius: 64
+highlightDuration: 5
 saveOnChanges: true
 checkForBrokenGateFrames: true
 gateTeleportMessage: "Thank you for traveling with Craft Inc. Gates."

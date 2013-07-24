@@ -51,6 +51,7 @@ public class Plugin extends JavaPlugin
     public static final String confGateTeleportNoPermissionMessageKey = "gateTeleportNoPermissionMessage";
     public static final String confShowTeleportNoPermissionMessageKey = "showTeleportNoPermissionMessage";
     public static final String confSaveOnChangesKey = "saveOnChanges";
+    public static final String confHighlightDurationKey = "highlightDuration";
 	
 	private static Plugin instance;
 	private static Permission permission;
@@ -154,6 +155,7 @@ public class Plugin extends JavaPlugin
 		commands.add(new CommandHide());
 		commands.add(new CommandUnhide());
         commands.add(new CommandExitOpen());
+        commands.add(new CommandNearby());
 
 		
 		// Register events

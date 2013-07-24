@@ -22,6 +22,7 @@ import de.craftinc.gates.Gate;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -30,6 +31,65 @@ import java.util.Set;
 
 public class GateBlockChangeSender
 {
+    /**
+     * Replaces gate frame blocks with glowstone for a short period of time.
+     * Uses the value stored in 'highlightDuration' inside the config file
+     * for determining when to de-highlight the frames.
+     * @param player The player for whom the frame should be highlighted.
+     *               Must not be null!
+     */
+    public static void temporaryHighlightGatesFrames(final Player player)
+    {
+        if (player == null) {
+            throw new IllegalArgumentException("'player' must not be 'null'!");
+        }
+
+        Location location = player.getLocation();
+        final Set<Gate> gatesNearby = Plugin.getPlugin().getGatesManager().getNearbyGates(location.getChunk());
+
+        if (gatesNearby == null) {
+            return; // no gates nearby
+        }
+
+        highlightGatesFrames(player, gatesNearby);
+
+
+        Plugin plugin = Plugin.getPlugin();
+        long highlightDuration = 20 * plugin.getConfig().getLong(Plugin.confHighlightDurationKey);
+
+        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+            @Override
+            public void run() {
+                dehighlightGateFrame(player, gatesNearby);
+            }
+        }, highlightDuration);
+    }
+
+
+    protected static void highlightGatesFrames(final Player player, final Set<Gate> gates)
+    {
+        for (Gate g : gates) {
+            Set<Block> frameBlocks = g.getGateFrameBlocks();
+
+            for (Block b : frameBlocks) {
+                player.sendBlockChange(b.getLocation(), Material.GLOWSTONE, (byte)0);
+            }
+        }
+    }
+
+
+    protected static void dehighlightGateFrame(final Player player, final Set<Gate> gates)
+    {
+        for (Gate g : gates) {
+            Set<Block> frameBlocks = g.getGateFrameBlocks();
+
+            for (Block b : frameBlocks) {
+                player.sendBlockChange(b.getLocation(), b.getType(), (byte)0);
+            }
+        }
+    }
+
+
     /**
      * Sends gate blocks to player at a given location. Will send the updates either immediately or
      * immediately and after a short delay.
