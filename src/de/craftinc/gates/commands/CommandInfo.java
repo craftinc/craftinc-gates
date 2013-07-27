@@ -61,14 +61,14 @@ public class CommandInfo extends BaseCommand
 		sendMessage(openHiddenMessage);
 		
 		if (gate.getLocation() != null)
-			sendMessage(ChatColor.DARK_AQUA + "from:  " + ChatColor.AQUA + "( " + (int)gate.getLocation().getX() +
+			sendMessage(ChatColor.DARK_AQUA + "location: " + ChatColor.AQUA + "( " + (int)gate.getLocation().getX() +
                         " | " + (int)gate.getLocation().getY() + " | " + (int)gate.getLocation().getZ() + " ) in " +
                         gate.getLocation().getWorld().getName());
 		else
 			sendMessage(ChatColor.DARK_AQUA + "NOTE: this gate has no location");
 		
 		if (gate.getExit() != null)
-			sendMessage(ChatColor.DARK_AQUA + "to:     " + ChatColor.AQUA + "( " + (int)gate.getExit().getX() + " | "
+			sendMessage(ChatColor.DARK_AQUA + "exit:    " + ChatColor.AQUA + "( " + (int)gate.getExit().getX() + " | "
                         + (int)gate.getExit().getY() + " | " + (int)gate.getExit().getZ() + " ) in " +
                         gate.getExit().getWorld().getName());
 		else
