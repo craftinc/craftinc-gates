@@ -1,12 +1,12 @@
 The following persons contributed to Craft Inc. Gates (previously named Ancient Gates):
 
-CURRENT MAINTAINER
+CURRENT MAINTAINERS
 
 	Tobias Ottenweller <mail@ottenweller.net>
 	Paul Schulze <info@paul-schulze.de>
 
 
-FORMER CONTRIBUTOR (alphabetical order)
+FORMER CONTRIBUTORS (alphabetical order)
 
 	Jacob Brunson <jacob@dimensionsmachine.com>
 	locutus <bladedpenguin@gmail.com>
