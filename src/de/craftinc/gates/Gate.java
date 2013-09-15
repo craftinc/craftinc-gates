@@ -16,6 +16,7 @@
 */
 package de.craftinc.gates;
 
+import de.craftinc.gates.util.ConfigurationUtil;
 import de.craftinc.gates.util.FloodUtil;
 import de.craftinc.gates.persistence.LocationUtil;
 import org.bukkit.Location;
@@ -57,7 +58,7 @@ public class Gate implements ConfigurationSerializable
 
     /**
      *
-     * @return This method might return a 'null' value.
+     * @return This method might return a 'null' data.
      */
 	public Location getLocation() 
 	{
@@ -100,7 +101,7 @@ public class Gate implements ConfigurationSerializable
     /**
      *
      * @param exit Supplying 'null' is permitted.
-     * @throws Exception An exception will be thrown if 'null' value is supplied and this gate is open. Note that the
+     * @throws Exception An exception will be thrown if 'null' data is supplied and this gate is open. Note that the
      *         supplied 'exit' will be set even if an exception is thrown. Note that this gate will be closed if an
      *         exception is thrown.
      */
@@ -235,7 +236,7 @@ public class Gate implements ConfigurationSerializable
 			throw new Exception("Gate got closed. The frame is missing or broken. (no gate blocks)");
 		}
 
-        if (!isHidden() && Plugin.getPlugin().getConfig().getBoolean(Plugin.confCheckForBrokenGateFramesKey)) {
+        if (!isHidden() && Plugin.getPlugin().getConfig().getBoolean(ConfigurationUtil.confCheckForBrokenGateFramesKey)) {
 
             for (Block b : gateFrameBlocks) {
 

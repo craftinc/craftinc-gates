@@ -7,3 +7,4 @@ gateTeleportMessage: "Thank you for traveling with Craft Inc. Gates."
 showTeleportMessage: true
 gateTeleportNoPermissionMessage: "You are not allowed to use this gate!"
 showTeleportNoPermissionMessage: true
+gateMaterial: "nether portal"

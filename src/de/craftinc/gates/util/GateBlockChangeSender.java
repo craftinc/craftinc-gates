@@ -19,6 +19,7 @@ package de.craftinc.gates.util;
 
 import de.craftinc.gates.Plugin;
 import de.craftinc.gates.Gate;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -33,7 +34,7 @@ public class GateBlockChangeSender
 {
     /**
      * Replaces gate frame blocks with glowstone for a short period of time.
-     * Uses the value stored in 'highlightDuration' inside the config file
+     * Uses the data stored in 'highlightDuration' inside the config file
      * for determining when to de-highlight the frames.
      * @param player The player for whom the frame should be highlighted.
      *               Must not be null!
@@ -55,7 +56,7 @@ public class GateBlockChangeSender
 
 
         Plugin plugin = Plugin.getPlugin();
-        long highlightDuration = 20 * plugin.getConfig().getLong(Plugin.confHighlightDurationKey);
+        long highlightDuration = 20 * plugin.getConfig().getLong(ConfigurationUtil.confHighlightDurationKey);
 
         Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
             @Override
@@ -109,6 +110,7 @@ public class GateBlockChangeSender
         }
 
         Set<Gate> gatesNearby = Plugin.getPlugin().getGatesManager().getNearbyGates(location.getChunk());
+        GateMaterial gateMaterial = ConfigurationUtil.getPortalMaterial();
 
         if (gatesNearby == null) {
             return; // no gates nearby
@@ -123,7 +125,7 @@ public class GateBlockChangeSender
             for (Location l : g.getGateBlockLocations()) {
 
                 if (l.getBlock().getType() == Material.AIR) {
-                    player.sendBlockChange(l, Material.PORTAL, (byte)0);
+                    player.sendBlockChange(l, gateMaterial.material, gateMaterial.data);
                 }
             }
         }
@@ -186,7 +188,7 @@ public class GateBlockChangeSender
 
         ArrayList<Player> playersNearby = new ArrayList<Player>();
 
-        int searchRadius = Plugin.getPlugin().getConfig().getInt(Plugin.confPlayerGateBlockUpdateRadiusKey);
+        int searchRadius = Plugin.getPlugin().getConfig().getInt(ConfigurationUtil.confPlayerGateBlockUpdateRadiusKey);
 
         for (Player p : Plugin.getPlugin().getServer().getOnlinePlayers()) {
 
@@ -195,10 +197,13 @@ public class GateBlockChangeSender
             }
         }
 
+        GateMaterial gateMaterial = ConfigurationUtil.getPortalMaterial();
         Material material;
+        byte data = 0;
 
         if (gate.isOpen() && !gate.isHidden() && !remove) {
-            material = Material.PORTAL;
+            material = gateMaterial.material;
+            data = gateMaterial.data;
         }
         else {
             material = Material.AIR;
@@ -209,7 +214,7 @@ public class GateBlockChangeSender
             for (Location l : gate.getGateBlockLocations()) {
 
                 if (l.getBlock().getType() == Material.AIR) { // on server-side a gate is always made out of AIR
-                    p.sendBlockChange(l, material, (byte)0);
+                    p.sendBlockChange(l, material, data);
                 }
             }
         }

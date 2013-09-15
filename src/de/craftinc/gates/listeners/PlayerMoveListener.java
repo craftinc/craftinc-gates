@@ -19,6 +19,7 @@ package de.craftinc.gates.listeners;
 import java.util.Calendar;
 import java.util.HashMap;
 
+import de.craftinc.gates.util.ConfigurationUtil;
 import de.craftinc.gates.util.GateBlockChangeSender;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -70,7 +71,7 @@ public class PlayerMoveListener implements Listener
 		
 		// Check for permission
 		if (!hasPermission(event.getPlayer(), gateAtLocation)
-            && Plugin.getPlugin().getConfig().getBoolean(Plugin.confShowTeleportNoPermissionMessageKey)) {
+            && Plugin.getPlugin().getConfig().getBoolean(ConfigurationUtil.confShowTeleportNoPermissionMessageKey)) {
 			
 			String playerName = event.getPlayer().getName();
 			
@@ -84,7 +85,7 @@ public class PlayerMoveListener implements Listener
 			// do not display messages more often than once per second
 			if (!this.lastNoPermissionMessages.containsKey(playerName) || this.lastNoPermissionMessages.get(playerName) < now - 10000L) {
 
-                String noPermissionString = Plugin.getPlugin().getConfig().getString(Plugin.confGateTeleportNoPermissionMessageKey);
+                String noPermissionString = Plugin.getPlugin().getConfig().getString(ConfigurationUtil.confGateTeleportNoPermissionMessageKey);
                 event.getPlayer().sendMessage(ChatColor.RED + noPermissionString);
 				this.lastNoPermissionMessages.put(playerName, now);
 			}
@@ -114,8 +115,8 @@ public class PlayerMoveListener implements Listener
 
         p.teleport(destLocation);
 
-        if (Plugin.getPlugin().getConfig().getBoolean(Plugin.confShowTeleportMessageKey)) {
-            String teleporMessage = Plugin.getPlugin().getConfig().getString(Plugin.confGateTeleportMessageKey);
+        if (Plugin.getPlugin().getConfig().getBoolean(ConfigurationUtil.confShowTeleportMessageKey)) {
+            String teleporMessage = Plugin.getPlugin().getConfig().getString(ConfigurationUtil.confGateTeleportMessageKey);
             p.sendMessage(ChatColor.DARK_AQUA + teleporMessage);
         }
 	}

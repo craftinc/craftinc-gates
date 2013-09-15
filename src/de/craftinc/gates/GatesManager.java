@@ -24,6 +24,7 @@ import java.util.*;
 import java.util.logging.Level;
 
 import de.craftinc.gates.persistence.MigrationUtil;
+import de.craftinc.gates.util.ConfigurationUtil;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -193,7 +194,7 @@ public class GatesManager
     protected int getChunkRadius()
     {
         if (this.chunkRadius == 0) {
-            this.chunkRadius = Plugin.getPlugin().getConfig().getInt(Plugin.confPlayerGateBlockUpdateRadiusKey);
+            this.chunkRadius = Plugin.getPlugin().getConfig().getInt(ConfigurationUtil.confPlayerGateBlockUpdateRadiusKey);
             this.chunkRadius = this.chunkRadius >> 4;
         }
 

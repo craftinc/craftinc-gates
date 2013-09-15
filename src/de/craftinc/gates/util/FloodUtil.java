@@ -148,7 +148,7 @@ public class FloodUtil
             throw new IllegalArgumentException("'block' must not be 'null'");
         }
 
-        int frameBlockSearchLimit = Plugin.getPlugin().getConfig().getInt(Plugin.confMaxGateBlocksKey);
+        int frameBlockSearchLimit = Plugin.getPlugin().getConfig().getInt(ConfigurationUtil.confMaxGateBlocksKey);
 
         Set<Block> blocks1 = getAirFloodBlocks(block, new HashSet<Block>(), exp1, frameBlockSearchLimit);
 		Set<Block> blocks2 = getAirFloodBlocks(block, new HashSet<Block>(), exp2, frameBlockSearchLimit);

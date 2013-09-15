@@ -19,6 +19,7 @@ package de.craftinc.gates.commands;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.craftinc.gates.util.ConfigurationUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -69,7 +70,7 @@ public abstract class BaseCommand
 		
 		this.perform();
 		
-		if (this.shouldPersistToDisk && Plugin.getPlugin().getConfig().getBoolean(Plugin.confSaveOnChangesKey)) {
+		if (this.shouldPersistToDisk && Plugin.getPlugin().getConfig().getBoolean(ConfigurationUtil.confSaveOnChangesKey)) {
 			Plugin.getPlugin().getGatesManager().saveGatesToDisk();
 		}
 	}

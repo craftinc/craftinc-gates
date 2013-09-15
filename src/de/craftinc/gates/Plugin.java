@@ -23,6 +23,7 @@ import java.util.logging.Logger;
 
 
 import de.craftinc.gates.listeners.*;
+import de.craftinc.gates.util.ConfigurationUtil;
 import net.milkbowl.vault.permission.Permission;
 
 import org.bukkit.ChatColor;
@@ -42,16 +43,6 @@ public class Plugin extends JavaPlugin
 	public static final String permissionInfo = "craftincgates.info";
 	public static final String permissionManage = "craftincgates.manage";
 	public static final String permissionUse = "craftincgates.use";
-
-    public static final String confMaxGateBlocksKey = "maxGateBlocks";
-    public static final String confPlayerGateBlockUpdateRadiusKey = "playerGateBlockUpdateRadius";
-    public static final String confCheckForBrokenGateFramesKey = "checkForBrokenGateFrames";
-    public static final String confGateTeleportMessageKey = "gateTeleportMessage";
-    public static final String confShowTeleportMessageKey = "showTeleportMessage";
-    public static final String confGateTeleportNoPermissionMessageKey = "gateTeleportNoPermissionMessage";
-    public static final String confShowTeleportNoPermissionMessageKey = "showTeleportNoPermissionMessage";
-    public static final String confSaveOnChangesKey = "saveOnChanges";
-    public static final String confHighlightDurationKey = "highlightDuration";
 	
 	private static Plugin instance;
 	private static Permission permission;
@@ -184,7 +175,7 @@ public class Plugin extends JavaPlugin
         pm.registerEvents(this.worldChangeListener, this);
         pm.registerEvents(this.joinListener, this);
 
-        if (getConfig().getBoolean(confCheckForBrokenGateFramesKey)) {
+        if (getConfig().getBoolean(ConfigurationUtil.confCheckForBrokenGateFramesKey)) {
             pm.registerEvents(this.blockBreakListener, this);
         }
     }
