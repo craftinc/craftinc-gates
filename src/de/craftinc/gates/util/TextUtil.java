@@ -22,15 +22,22 @@ import java.util.List;
 
 public class TextUtil 
 {
-	public static String titleize(String str) 
+	public static String titleize(String str)
 	{
-		String line = ChatColor.GOLD + repeat("_", 60);
 		String center = ".[ " + ChatColor.YELLOW + str + ChatColor.GOLD + " ].";
-		int pivot = line.length() / 2;
-		int eatLeft = center.length() / 2;
-		int eatRight = center.length() - eatLeft;
-		
-		return line.substring(0, pivot - eatLeft) + center + line.substring(pivot + eatRight);
+
+        if (center.length() >= 60) {
+            return ChatColor.GOLD + center;
+        }
+        else {
+            String line = ChatColor.GOLD + repeat("_", 60);
+
+            int pivot = line.length() / 2;
+            int eatLeft = center.length() / 2;
+            int eatRight = center.length() - eatLeft;
+
+            return line.substring(0, pivot - eatLeft) + center + line.substring(pivot + eatRight);
+        }
 	}
 	
 	

@@ -29,6 +29,8 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.Set;
 
+import static de.craftinc.gates.util.ConfigurationUtil.*;
+
 
 public class GateBlockChangeSender
 {
@@ -39,36 +41,16 @@ public class GateBlockChangeSender
      * @param player The player for whom the frame should be highlighted.
      *               Must not be null!
      */
-    public static void temporaryHighlightGatesFrames(final Player player)
+    public static void temporaryHighlightGatesFrames(final Player player, final Set<Gate> gates)
     {
         if (player == null) {
             throw new IllegalArgumentException("'player' must not be 'null'!");
         }
 
-        Location location = player.getLocation();
-        final Set<Gate> gatesNearby = Plugin.getPlugin().getGatesManager().getNearbyGates(location.getChunk());
-
-        if (gatesNearby == null) {
-            return; // no gates nearby
+        if (gates == null) {
+            throw new IllegalArgumentException("'gate' must not be 'null!");
         }
 
-        highlightGatesFrames(player, gatesNearby);
-
-
-        Plugin plugin = Plugin.getPlugin();
-        long highlightDuration = 20 * plugin.getConfig().getLong(ConfigurationUtil.confHighlightDurationKey);
-
-        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-            @Override
-            public void run() {
-                dehighlightGateFrame(player, gatesNearby);
-            }
-        }, highlightDuration);
-    }
-
-
-    protected static void highlightGatesFrames(final Player player, final Set<Gate> gates)
-    {
         for (Gate g : gates) {
             Set<Block> frameBlocks = g.getGateFrameBlocks();
 
@@ -76,10 +58,48 @@ public class GateBlockChangeSender
                 player.sendBlockChange(b.getLocation(), Material.GLOWSTONE, (byte)0);
             }
         }
+
+        Plugin plugin = Plugin.getPlugin();
+        long highlightDuration = 20 * plugin.getConfig().getLong(confHighlightDurationKey);
+
+        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+            @Override
+            public void run() {
+                dehighlightGatesFrames(player, gates);
+            }
+        }, highlightDuration);
     }
 
 
-    protected static void dehighlightGateFrame(final Player player, final Set<Gate> gates)
+    public static void temporaryHighlightGateFrame(final Player player, final Gate gate)
+    {
+        if (gate == null) {
+            throw new IllegalArgumentException("'gate' must not be 'null!");
+        }
+
+        if (player == null) {
+            throw new IllegalArgumentException("'player' must not be 'null'!");
+        }
+
+        Set<Block> frameBlocks = gate.getGateFrameBlocks();
+
+        for (Block b : frameBlocks) {
+            player.sendBlockChange(b.getLocation(), Material.GLOWSTONE, (byte)0);
+        }
+
+        Plugin plugin = Plugin.getPlugin();
+        long highlightDuration = 20 * plugin.getConfig().getLong(confHighlightDurationKey);
+
+        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+            @Override
+            public void run() {
+                dehighlightGateFrame(player, gate);
+            }
+        }, highlightDuration);
+    }
+
+
+    protected static void dehighlightGatesFrames(final Player player, final Set<Gate> gates)
     {
         for (Gate g : gates) {
             Set<Block> frameBlocks = g.getGateFrameBlocks();
@@ -87,6 +107,16 @@ public class GateBlockChangeSender
             for (Block b : frameBlocks) {
                 player.sendBlockChange(b.getLocation(), b.getType(), (byte)0);
             }
+        }
+    }
+
+
+    protected static void dehighlightGateFrame(final Player player, final Gate gate)
+    {
+        Set<Block> frameBlocks = gate.getGateFrameBlocks();
+
+        for (Block b : frameBlocks) {
+            player.sendBlockChange(b.getLocation(), b.getType(), (byte)0);
         }
     }
 
@@ -110,7 +140,7 @@ public class GateBlockChangeSender
         }
 
         Set<Gate> gatesNearby = Plugin.getPlugin().getGatesManager().getNearbyGates(location.getChunk());
-        GateMaterial gateMaterial = ConfigurationUtil.getPortalMaterial();
+        GateMaterial gateMaterial = getPortalMaterial();
 
         if (gatesNearby == null) {
             return; // no gates nearby
@@ -188,7 +218,7 @@ public class GateBlockChangeSender
 
         ArrayList<Player> playersNearby = new ArrayList<Player>();
 
-        int searchRadius = Plugin.getPlugin().getConfig().getInt(ConfigurationUtil.confPlayerGateBlockUpdateRadiusKey);
+        int searchRadius = Plugin.getPlugin().getConfig().getInt(confPlayerGateBlockUpdateRadiusKey);
 
         for (Player p : Plugin.getPlugin().getServer().getOnlinePlayers()) {
 
@@ -197,7 +227,7 @@ public class GateBlockChangeSender
             }
         }
 
-        GateMaterial gateMaterial = ConfigurationUtil.getPortalMaterial();
+        GateMaterial gateMaterial = getPortalMaterial();
         Material material;
         byte data = 0;
 

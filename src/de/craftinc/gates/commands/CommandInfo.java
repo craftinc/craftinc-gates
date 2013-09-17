@@ -17,10 +17,12 @@
 package de.craftinc.gates.commands;
 
 
+import de.craftinc.gates.util.GateBlockChangeSender;
 import org.bukkit.ChatColor;
 
 import de.craftinc.gates.Plugin;
 import de.craftinc.gates.util.TextUtil;
+import org.bukkit.entity.Player;
 
 
 public class CommandInfo extends BaseCommand 
@@ -30,48 +32,82 @@ public class CommandInfo extends BaseCommand
 		aliases.add("info");
 		aliases.add("i");
 
-		requiredParameters.add("id");		
+        optionalParameters.add("id");
 		
-		helpDescription = "Print detailed information about a certain gate.";
+		helpDescription = "Print detailed information about a certain or the closest gate.";
 		
 		requiredPermission = Plugin.permissionInfo;
 		
 		needsPermissionAtCurrentLocation = false;
 		shouldPersistToDisk = false;
 		senderMustBePlayer = false;
+        hasGateParam = false;
 	}
 	
 	
 	public void perform() 
 	{
-		sendMessage(TextUtil.titleize("Information about: '" + ChatColor.WHITE + gate.getId() + ChatColor.YELLOW + "'"));
-		
-		String openHiddenMessage = ChatColor.DARK_AQUA + "This gate is";
-		
-		if (gate.isOpen())
-			openHiddenMessage += ChatColor.AQUA + " open";
-		else
-			openHiddenMessage += ChatColor.AQUA + " closed";
-		
-		if (gate.isHidden())
-			openHiddenMessage += ChatColor.DARK_AQUA +" and" + ChatColor.AQUA + " hidden";
-		
-		openHiddenMessage += ".\n";
-		
-		sendMessage(openHiddenMessage);
-		
-		if (gate.getLocation() != null)
-			sendMessage(ChatColor.DARK_AQUA + "location: " + ChatColor.AQUA + "( " + (int)gate.getLocation().getX() +
-                        " | " + (int)gate.getLocation().getY() + " | " + (int)gate.getLocation().getZ() + " ) in " +
-                        gate.getLocation().getWorld().getName());
-		else
-			sendMessage(ChatColor.DARK_AQUA + "NOTE: this gate has no location");
-		
-		if (gate.getExit() != null)
-			sendMessage(ChatColor.DARK_AQUA + "exit:    " + ChatColor.AQUA + "( " + (int)gate.getExit().getX() + " | "
-                        + (int)gate.getExit().getY() + " | " + (int)gate.getExit().getZ() + " ) in " +
-                        gate.getExit().getWorld().getName());
-		else
-			sendMessage(ChatColor.DARK_AQUA + "NOTE: this gate has no exit");
+		if (this.parameters.size() > 0) {
+
+            if (!this.setGateUsingParameter(this.parameters.get(0))) {
+                sendMessage(ChatColor.RED + "You either provided a invalid gate or do not have permission to " + this.helpDescription.toLowerCase());
+                return;
+            }
+
+            sendMessage(TextUtil.titleize("Information about: '" + ChatColor.WHITE + gate.getId() + ChatColor.YELLOW + "'"));
+        }
+        else {
+            boolean senderIsPlayer = this.sender instanceof Player;
+
+            if (!senderIsPlayer) {
+                sendMessage(ChatColor.RED + "Only ingame players can perform this command without a supplied gate id!");
+                return;
+            }
+
+            Player p = (Player)this.sender;
+            this.gate = Plugin.getPlugin().getGatesManager().getNearestGate(p.getLocation());
+
+            if (!this.hasPermission() || this.gate == null) {
+                sendMessage(ChatColor.RED + "There is either no gate nearby or you do not have permission to " + this.helpDescription.toLowerCase());
+                return;
+            }
+
+            Plugin.log(this.gate.toString());
+
+            sendMessage(TextUtil.titleize("Information about closest gate: '" + ChatColor.WHITE + gate.getId() + ChatColor.YELLOW + "'"));
+        }
+
+        String openHiddenMessage = ChatColor.DARK_AQUA + "This gate is";
+
+        if (gate.isOpen())
+            openHiddenMessage += ChatColor.AQUA + " open";
+        else
+            openHiddenMessage += ChatColor.AQUA + " closed";
+
+        if (gate.isHidden())
+            openHiddenMessage += ChatColor.DARK_AQUA +" and" + ChatColor.AQUA + " hidden";
+
+        openHiddenMessage += ".\n";
+
+        sendMessage(openHiddenMessage);
+
+        if (gate.getLocation() != null)
+            sendMessage(ChatColor.DARK_AQUA + "location: " + ChatColor.AQUA + "( " + (int)gate.getLocation().getX() +
+                    " | " + (int)gate.getLocation().getY() + " | " + (int)gate.getLocation().getZ() + " ) in " +
+                    gate.getLocation().getWorld().getName());
+        else
+            sendMessage(ChatColor.DARK_AQUA + "NOTE: this gate has no location");
+
+        if (gate.getExit() != null)
+            sendMessage(ChatColor.DARK_AQUA + "exit:    " + ChatColor.AQUA + "( " + (int)gate.getExit().getX() + " | "
+                    + (int)gate.getExit().getY() + " | " + (int)gate.getExit().getZ() + " ) in " +
+                    gate.getExit().getWorld().getName());
+        else
+            sendMessage(ChatColor.DARK_AQUA + "NOTE: this gate has no exit");
+
+
+        if (this.sender instanceof Player) {
+            GateBlockChangeSender.temporaryHighlightGateFrame((Player)this.sender, this.gate);
+        }
 	}
 }

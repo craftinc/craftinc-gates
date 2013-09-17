@@ -66,7 +66,36 @@ public class GatesManager
 		SimpleChunk simpleChunk = new SimpleChunk(chunk);
 		return gatesByChunk.get(simpleChunk);
 	}
-	
+
+
+    /**
+     * Returns the closest gate.
+     * @param location The location at which to look for a gate.
+     * @return Might return null if there are no nearby gates.
+     */
+    public Gate getNearestGate(final Location location)
+    {
+        Set<Gate> nearbyGates = getNearbyGates(location.getChunk());
+
+        if (nearbyGates == null) {
+            return null;
+        }
+
+        double minDist = Double.MAX_VALUE;
+        Gate nearestGate = null;
+
+        for (Gate g : nearbyGates) {
+            double dist = location.distance(g.getLocation());
+
+            if (dist < minDist) {
+                minDist = dist;
+                nearestGate = g;
+            }
+        }
+
+        return nearestGate;
+    }
+
 	
 	public Gate getGateAtLocation(final Location location)
 	{
