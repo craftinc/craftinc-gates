@@ -49,3 +49,7 @@ is set to _true_.
 * __showTeleportNoPermissionMessage__
 A boolean (_true_ or _false_) determining wether the _no permission message_ will 
 be displayed.
+
+
+* __gateMaterial__
+A String representing the material all gates will consist of. Have a look at our [_Gate Material Page_](http://dev.bukkit.org/bukkit-plugins/craftinc-gates/pages/gate-materials/)  for all possible values.

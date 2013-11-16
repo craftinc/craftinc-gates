@@ -1,3 +1,10 @@
+## 2.3.0 ##
+* Added a command for setting the exit and opening a gate at once.
+*  Enabled the ability to change the gate block material.
+*  Added a command printing all nearby gates while highlighting them.
+*  Changed the info command to highlight gates.
+*  Updated the info command to print information about the nearest gate if no gate name got supplied.
+
 ## 2.2.1 ##
 * Changed priority of some event listeners to solve problems with WorldGuard and other protection plugins.
 
