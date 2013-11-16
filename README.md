@@ -75,15 +75,11 @@ allows players to build a replicator to replicate blocks and other items. (still
 coming soon!
 
 ## Roadmap ##
-* __Version 2.3__
-	* Info-Tools for gates. (Get the name of a gate you standing next to.)
-	* Search command for nearby gates. (Visually highlight nearby gates. Especially useful for hidden gates!)
-* __Future__
-	* Optionally allow animals and mobs to travel via gates.
-	* Allow players to use gates while sitting inside a minecart or boat
-	* Dynmap integration.
-	* Per player permissions for using and managing gates.
-	* Horizontal gates.
+* Optionally allow animals and mobs to travel via gates.
+* Allow players to use gates while sitting inside a minecart or boat
+* Dynmap integration.
+* Per player permissions for using and managing gates.
+* Horizontal gates.
 
 ## Bugs and other Problems ##
 Please use our [_issue tracker_](https://github.com/craftinc/craftinc-gates/issues?state=open) on GitHub.
