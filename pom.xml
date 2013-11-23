@@ -55,7 +55,7 @@
                 <executions>
                     <execution>
                         <id>Run Test Bukkit Server</id>
-                        <phase>package</phase>
+                        <phase>install</phase>
                         <goals>
                             <goal>exec</goal>
                         </goals>
