@@ -21,7 +21,7 @@
             <url>https://www.gnu.org/licenses/lgpl-3.0-standalone.html</url>
             <distribution>repo</distribution>
         </license>
-        
+
     </licenses>
 
     <build>
@@ -65,6 +65,26 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>1.7.1</version>
+                <configuration>
+                    <artifactSet>
+                        <includes>
+                            <include>org.mcstats.bukkit:metrics</include>
+                        </includes>
+                    </artifactSet>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
@@ -81,7 +101,7 @@
         <dependency>
             <groupId>net.milkbowl.vault</groupId>
             <artifactId>Vault</artifactId>
-            <version>1.2.26-SNAPSHOT</version>
+            <version>1.2.27-SNAPSHOT</version>
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
@@ -89,7 +109,7 @@
         <dependency>
             <groupId>org.mcstats.bukkit</groupId>
             <artifactId>metrics</artifactId>
-            <version>R6</version>
+            <version>R8-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
 
