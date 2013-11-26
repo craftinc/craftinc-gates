@@ -1,7 +1,4 @@
-
 # Craft Inc. Gates #
-
-<Logo here>
 
 We are happy to finally announce __Craft Inc. Gates__. 
 
@@ -87,3 +84,4 @@ Please use our [_issue tracker_](https://github.com/craftinc/craftinc-gates/issu
 ## Legal Information ##
 This project is a fork of the original [_Ancient Gates_](https://github.com/bladedpenguin/minecraft-ancient-gates). It is licensed under the [_LGPL_](http://www.gnu.org/licenses/lgpl-3.0.txt) just like the Bukkit project. Thanks to all current and previous [_contributors_](https://github.com/craftinc/craftinc-gates/blob/development/AUTHORS.txt).
 The font used for the Craft Inc. Gates logo is called [_MineCrafter 3_](http://www.minecraftforum.net/topic/892789-minecrafter-3-font-simply-easy/) and has been made available under the creative commons license. Thanks to Asherz08, MadPixel and Ashley Denham for this great font.
+This plugin utilizes [Hidendra's plugin metrics system](http://mcstats.org), which means that the following information is collected and sent to mcstats.org: A unique identifier The server's version of Java Whether the server is in offline or online mode The plugin's version The server's version The OS version/name and architecture The core count for the CPU The number of players online...
