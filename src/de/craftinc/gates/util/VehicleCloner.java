@@ -40,6 +40,7 @@ public class VehicleCloner
             boat.setOccupiedDeceleration(parentBoat.getOccupiedDeceleration());
             boat.setUnoccupiedDeceleration(parentBoat.getUnoccupiedDeceleration());
             boat.setWorkOnLand(parentBoat.getWorkOnLand());
+            boat.setVelocity(parentBoat.getVelocity());
         }
         else if (clone instanceof Horse) {
             Horse horse = (Horse)clone;
@@ -91,6 +92,7 @@ public class VehicleCloner
             minecart.setSlowWhenEmpty(parentMinecart.isSlowWhenEmpty());
             minecart.setMaxSpeed(parentMinecart.getMaxSpeed());
             minecart.setDamage(parentMinecart.getDamage());
+            minecart.setVelocity(parentMinecart.getVelocity());
         }
         else  if (clone instanceof Pig) {
             Pig pig = (Pig)clone;
