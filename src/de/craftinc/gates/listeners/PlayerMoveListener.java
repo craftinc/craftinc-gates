@@ -21,9 +21,12 @@ import java.util.HashMap;
 
 import de.craftinc.gates.util.ConfigurationUtil;
 import de.craftinc.gates.util.GateBlockChangeSender;
+import de.craftinc.gates.util.VehicleCloner;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Vehicle;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -32,6 +35,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import de.craftinc.gates.Gate;
 import de.craftinc.gates.GatesManager;
 import de.craftinc.gates.Plugin;
+import org.bukkit.scheduler.BukkitScheduler;
 
 
 public class PlayerMoveListener implements Listener
@@ -49,8 +53,8 @@ public class PlayerMoveListener implements Listener
             GateBlockChangeSender.updateGateBlocks(event.getPlayer(), event.getTo());
         }
 
-		GatesManager gateManager = Plugin.getPlugin().getGatesManager();
-		Gate gateAtLocation = gateManager.getGateAtLocation(event.getTo());
+		final GatesManager gateManager = Plugin.getPlugin().getGatesManager();
+		final Gate gateAtLocation = gateManager.getGateAtLocation(event.getTo());
 
 		if ((gateAtLocation == null) || !gateAtLocation.isOpen()) {
                 return;
@@ -60,19 +64,19 @@ public class PlayerMoveListener implements Listener
 		if (!hasPermission(event.getPlayer(), gateAtLocation)
             && Plugin.getPlugin().getConfig().getBoolean(ConfigurationUtil.confShowTeleportNoPermissionMessageKey)) {
 			
-			String playerName = event.getPlayer().getName();
+			final String playerName = event.getPlayer().getName();
 			
 			if (playerName == null) {
 				return;
 			}
 	        
 	        // get the current time
-	        Long now = Calendar.getInstance().getTimeInMillis();
+	        final Long now = Calendar.getInstance().getTimeInMillis();
 			
 			// do not display messages more often than once per second
 			if (!this.lastNoPermissionMessages.containsKey(playerName) || this.lastNoPermissionMessages.get(playerName) < now - 10000L) {
 
-                String noPermissionString = Plugin.getPlugin().getConfig().getString(ConfigurationUtil.confGateTeleportNoPermissionMessageKey);
+                final String noPermissionString = Plugin.getPlugin().getConfig().getString(ConfigurationUtil.confGateTeleportNoPermissionMessageKey);
                 event.getPlayer().sendMessage(ChatColor.RED + noPermissionString);
 				this.lastNoPermissionMessages.put(playerName, now);
 			}
@@ -85,38 +89,68 @@ public class PlayerMoveListener implements Listener
 
     /**
      * Teleports a player.
-     * @param p The player to teleport.
-     * @param g The gate to which exit the player will be teleported.
+     * @param player The player to teleport.
+     * @param gate The gate to which exit the player will be teleported.
      */
-	private void teleportPlayer(Player p, Gate g)
+	private void teleportPlayer(final Player player, final Gate gate)
 	{
-        Float newYaw = g.getExit().getYaw() - g.getLocation().getYaw() + p.getLocation().getYaw();
+        // Destination
+        final Float newYaw = gate.getExit().getYaw() - gate.getLocation().getYaw() + player.getLocation().getYaw();
+        final Location destLocation = new Location( gate.getExit().getWorld(),
+                                                    gate.getExit().getX(),
+                                                    gate.getExit().getY(),
+                                                    gate.getExit().getZ(),
+                                                    newYaw,
+                                                    player.getLocation().getPitch()
+                                                  );
 
-        Location destLocation = new Location( g.getExit().getWorld(),
-                                              g.getExit().getX(),
-                                              g.getExit().getY(),
-                                              g.getExit().getZ(),
-                                              newYaw,
-                                              p.getLocation().getPitch()
-                                            );
+        // Riding (eject player)
+        final Entity vehicle = player.getVehicle();
+        final boolean vehicleIsSuitable = (vehicle != null) && (vehicle instanceof Vehicle);
 
-        p.teleport(destLocation);
+        if (vehicleIsSuitable) {
+            vehicle.eject();
+            vehicle.remove();
+        }
 
+        // Teleport
+        player.teleport(destLocation);
+
+        // Riding (mount player)
+        if (vehicleIsSuitable) {
+            final Plugin plugin = Plugin.getPlugin();
+            final BukkitScheduler scheduler = plugin.getServer().getScheduler();
+
+            destLocation.getChunk().load(); // load the destination chunk, no new entity will be created otherwise
+
+            scheduler.scheduleSyncDelayedTask(plugin, new Runnable() {
+                public void run()
+                {
+                    // TODO: the code below should be executed after the chunk got loaded and not after a fixed time!
+
+                    // create a new entity at the destination location
+                    final Vehicle newVehicle = VehicleCloner.clone((Vehicle)vehicle, destLocation);
+                    newVehicle.setPassenger(player);
+                }
+            }, 2);
+        }
+
+        // Message
         if (Plugin.getPlugin().getConfig().getBoolean(ConfigurationUtil.confShowTeleportMessageKey)) {
-            String teleportMessage = Plugin.getPlugin().getConfig().getString(ConfigurationUtil.confGateTeleportMessageKey);
-            p.sendMessage(ChatColor.DARK_AQUA + teleportMessage);
+            final String teleportMessage = Plugin.getPlugin().getConfig().getString(ConfigurationUtil.confGateTeleportMessageKey);
+            player.sendMessage(ChatColor.DARK_AQUA + teleportMessage);
         }
 	}
 	
 	
-	protected boolean hasPermission(Player player, Gate gate) 
+	protected boolean hasPermission(final Player player, final Gate gate)
 	{
 		if (Plugin.getPermission() == null) { // fallback: use the standard bukkit permission system
 			return player.hasPermission(Plugin.permissionUse);
 		}
 		else {
-			boolean permAtLocation = Plugin.getPermission().has(gate.getLocation().getWorld(), player.getName(), Plugin.permissionUse);
-			boolean permAtExit = Plugin.getPermission().has(gate.getExit().getWorld(), player.getName(), Plugin.permissionUse);
+			final boolean permAtLocation = Plugin.getPermission().has(gate.getLocation().getWorld(), player.getName(), Plugin.permissionUse);
+			final boolean permAtExit = Plugin.getPermission().has(gate.getExit().getWorld(), player.getName(), Plugin.permissionUse);
 			
 			return permAtLocation && permAtExit;
 		}
