@@ -52,23 +52,10 @@ public class PlayerMoveListener implements Listener
 		GatesManager gateManager = Plugin.getPlugin().getGatesManager();
 		Gate gateAtLocation = gateManager.getGateAtLocation(event.getTo());
 
-		if (gateAtLocation == null) {
-//            Location headTo = new Location(event.getTo().getWorld(),
-//                                           event.getTo().getX(),
-//                                           event.getTo().getY()+1.0,
-//                                           event.getTo().getZ());
-//
-//            gateAtLocation = gateManager.getGateAtLocation(headTo);
-
-//            if (gateAtLocation == null) {
+		if ((gateAtLocation == null) || !gateAtLocation.isOpen()) {
                 return;
-//            }
 		}
 
-        if (!gateAtLocation.isOpen()) {
-            return;
-        }
-		
 		// Check for permission
 		if (!hasPermission(event.getPlayer(), gateAtLocation)
             && Plugin.getPlugin().getConfig().getBoolean(ConfigurationUtil.confShowTeleportNoPermissionMessageKey)) {
@@ -116,8 +103,8 @@ public class PlayerMoveListener implements Listener
         p.teleport(destLocation);
 
         if (Plugin.getPlugin().getConfig().getBoolean(ConfigurationUtil.confShowTeleportMessageKey)) {
-            String teleporMessage = Plugin.getPlugin().getConfig().getString(ConfigurationUtil.confGateTeleportMessageKey);
-            p.sendMessage(ChatColor.DARK_AQUA + teleporMessage);
+            String teleportMessage = Plugin.getPlugin().getConfig().getString(ConfigurationUtil.confGateTeleportMessageKey);
+            p.sendMessage(ChatColor.DARK_AQUA + teleportMessage);
         }
 	}
 	
