@@ -31,3 +31,4 @@ bukkit/
 
 # bukkit test-server
 bukkit-testserver/
+dependency-reduced-pom.xml
