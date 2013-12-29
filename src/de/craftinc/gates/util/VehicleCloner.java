@@ -42,46 +42,58 @@ public class VehicleCloner
             boat.setWorkOnLand(parentBoat.getWorkOnLand());
             boat.setVelocity(parentBoat.getVelocity());
         }
-        else if (clone instanceof Horse) {
-            Horse horse = (Horse)clone;
-            Horse parentHorse = (Horse)parent;
+        else if (clone instanceof Animals) {
+            Animals animal = (Animals)clone;
+            Animals parentAnimal = (Animals)parent;
 
-            horse.getInventory().setArmor(parentHorse.getInventory().getArmor());
-            horse.getInventory().setSaddle(parentHorse.getInventory().getSaddle());
-            horse.setCarryingChest(parentHorse.isCarryingChest());
-            horse.getInventory().setContents(parentHorse.getInventory().getContents());
-            horse.setTamed(parentHorse.isTamed());
-            horse.setOwner(parentHorse.getOwner());
-            horse.setJumpStrength(parentHorse.getJumpStrength());
-            horse.setMaxDomestication(parentHorse.getMaxDomestication());
-            horse.setDomestication(parentHorse.getDomestication());
-            horse.setStyle(parentHorse.getStyle());
-            horse.setColor(parentHorse.getColor());
-            horse.setVariant(parentHorse.getVariant());
-            horse.setMaxHealth(parentHorse.getMaxHealth());
-            horse.setHealth(parentHorse.getMaxHealth());
-            horse.setRemainingAir(parentHorse.getRemainingAir());
-            horse.setMaximumAir(parentHorse.getMaximumAir());
-            horse.setMaximumNoDamageTicks(parentHorse.getMaximumNoDamageTicks());
-            horse.setLastDamage(parentHorse.getLastDamage());
-            horse.setNoDamageTicks(parentHorse.getNoDamageTicks());
-            horse.addPotionEffects(parentHorse.getActivePotionEffects());
-            horse.setRemoveWhenFarAway(parentHorse.getRemoveWhenFarAway());
-            horse.setCanPickupItems(parentHorse.getCanPickupItems());
-            horse.setCustomName(parentHorse.getCustomName());
-            horse.setCustomNameVisible(parentHorse.isCustomNameVisible());
-            horse.setTarget(parentHorse.getTarget());
-            horse.setAge(parentHorse.getAge());
-            horse.setAgeLock(parentHorse.getAgeLock());
+            animal.setMaxHealth(parentAnimal.getMaxHealth());
+            animal.setHealth(parentAnimal.getMaxHealth());
+            animal.setRemainingAir(parentAnimal.getRemainingAir());
+            animal.setMaximumAir(parentAnimal.getMaximumAir());
+            animal.setMaximumNoDamageTicks(parentAnimal.getMaximumNoDamageTicks());
+            animal.setLastDamage(parentAnimal.getLastDamage());
+            animal.setNoDamageTicks(parentAnimal.getNoDamageTicks());
+            animal.addPotionEffects(parentAnimal.getActivePotionEffects());
+            animal.setRemoveWhenFarAway(parentAnimal.getRemoveWhenFarAway());
+            animal.setCanPickupItems(parentAnimal.getCanPickupItems());
+            animal.setCustomName(parentAnimal.getCustomName());
+            animal.setCustomNameVisible(parentAnimal.isCustomNameVisible());
+            animal.setTarget(parentAnimal.getTarget());
+            animal.setAge(parentAnimal.getAge());
+            animal.setAgeLock(parentAnimal.getAgeLock());
 
-            if (parentHorse.isAdult()) {
-                horse.setAdult();
+            if (clone instanceof Horse) {
+                Horse horse = (Horse)clone;
+                Horse parentHorse = (Horse)parent;
+
+                horse.getInventory().setArmor(parentHorse.getInventory().getArmor());
+                horse.getInventory().setSaddle(parentHorse.getInventory().getSaddle());
+                horse.setCarryingChest(parentHorse.isCarryingChest());
+                horse.getInventory().setContents(parentHorse.getInventory().getContents());
+                horse.setTamed(parentHorse.isTamed());
+                horse.setOwner(parentHorse.getOwner());
+                horse.setJumpStrength(parentHorse.getJumpStrength());
+                horse.setMaxDomestication(parentHorse.getMaxDomestication());
+                horse.setDomestication(parentHorse.getDomestication());
+                horse.setStyle(parentHorse.getStyle());
+                horse.setColor(parentHorse.getColor());
+                horse.setVariant(parentHorse.getVariant());
+
+                if (parentHorse.isAdult()) {
+                    horse.setAdult();
+                }
+                else {
+                    horse.setBaby();
+                }
+
+                horse.setBreed(parentHorse.canBreed());
             }
-            else {
-                horse.setBaby();
-            }
+            else  if (clone instanceof Pig) {
+                Pig pig = (Pig)clone;
+                Pig parentPig = (Pig)parent;
 
-            horse.setBreed(parentHorse.canBreed());
+                pig.setSaddle(parentPig.hasSaddle());
+            }
         }
         else if (clone instanceof Minecart) {
             Minecart minecart = (Minecart)clone;
@@ -93,12 +105,6 @@ public class VehicleCloner
             minecart.setMaxSpeed(parentMinecart.getMaxSpeed());
             minecart.setDamage(parentMinecart.getDamage());
             minecart.setVelocity(parentMinecart.getVelocity());
-        }
-        else  if (clone instanceof Pig) {
-            Pig pig = (Pig)clone;
-            Pig parentPig = (Pig)parent;
-
-            pig.setSaddle(parentPig.hasSaddle());
         }
 
         return clone;
