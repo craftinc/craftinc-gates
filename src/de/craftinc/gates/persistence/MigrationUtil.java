@@ -31,33 +31,44 @@ public class MigrationUtil
 {
     public static boolean performMigration(int storageVersion, int currentVersion, List<Gate> gates)
     {
-        if (storageVersion == 0 && currentVersion >= 1) {
-
-            for (Gate g : gates) {
-
-                for (Location l : g.getGateBlockLocations()) {
-                    Block b = l.getBlock();
-
-                    if (b.getType() == Material.PORTAL) {
-                        b.setType(Material.AIR);
-                    }
-                }
-            }
+        if (storageVersion == 0 && currentVersion >= 2) {
+            removePortalBlocks(gates);
+            updateAllowVehicles(gates);
 
             return true;
         }
         else if (storageVersion == 1  && currentVersion >= 2) {
-
-            for (Gate g : gates) {
-
-                g.setAllowsVehicles(true);
-            }
+            updateAllowVehicles(gates);
 
             return true;
         }
         else {
             Plugin.log(Level.SEVERE, "Supplied storage version is currently not supported! Make sure you have the latest version of Craft Inc. Gates installed. Plugin will be disabled!");
             return false;
+        }
+    }
+
+
+    protected static void removePortalBlocks(List<Gate> gates)
+    {
+        for (Gate g : gates) {
+
+            for (Location l : g.getGateBlockLocations()) {
+                Block b = l.getBlock();
+
+                if (b.getType() == Material.PORTAL) {
+                    b.setType(Material.AIR);
+                }
+            }
+        }
+    }
+
+
+    protected static void updateAllowVehicles(List<Gate> gates)
+    {
+        for (Gate g : gates) {
+
+            g.setAllowsVehicles(true);
         }
     }
 }
