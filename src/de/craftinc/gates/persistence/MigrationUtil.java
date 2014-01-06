@@ -31,7 +31,7 @@ public class MigrationUtil
 {
     public static boolean performMigration(int storageVersion, int currentVersion, List<Gate> gates)
     {
-        if (currentVersion == 1 && storageVersion == 0) {
+        if (storageVersion == 0 && currentVersion >= 1) {
 
             for (Gate g : gates) {
 
@@ -42,6 +42,15 @@ public class MigrationUtil
                         b.setType(Material.AIR);
                     }
                 }
+            }
+
+            return true;
+        }
+        else if (storageVersion == 1  && currentVersion >= 2) {
+
+            for (Gate g : gates) {
+
+                g.setAllowsVehicles(true);
             }
 
             return true;

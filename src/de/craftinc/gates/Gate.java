@@ -37,6 +37,8 @@ public class Gate implements ConfigurationSerializable
 	
 	protected boolean isHidden = false;
 	protected boolean isOpen = false;
+
+    protected boolean allowsVehicles = true;
 	
 	protected String id;
 
@@ -167,6 +169,18 @@ public class Gate implements ConfigurationSerializable
 	}
 
 
+    public void setAllowsVehicles(boolean allowsVehicles)
+    {
+        this.allowsVehicles = allowsVehicles;
+    }
+
+
+    public boolean getAllowsVehicles()
+    {
+        return this.allowsVehicles;
+    }
+
+
     /**
      *
      * @return Will never return 'null' but might return an empty Set.
@@ -265,17 +279,14 @@ public class Gate implements ConfigurationSerializable
 	static protected String locationPitchKey = "locationPitch";
 	static protected String exitYawKey = "exitYaw";
 	static protected String exitPitchKey = "exitPitch";
-	
+	static protected String allowsVehiclesKey = "allowsVehiclesKey";
+
 	
 	@SuppressWarnings("unchecked")
     public Gate(Map<String, Object> map)
 	{
         try {
 			id = map.get(idKey).toString().toLowerCase();
-
-            if (id == null) {
-                throw new Exception("gates need to have an id");
-            }
 
 			isHidden = (Boolean)map.get(isHiddenKey);
 			isOpen = (Boolean)map.get(isOpenKey);
@@ -292,6 +303,10 @@ public class Gate implements ConfigurationSerializable
 				location.setPitch(((Number)map.get(locationPitchKey)).floatValue());
 				location.setYaw(((Number)map.get(locationYawKey)).floatValue());
 			}
+
+            if (map.containsKey(allowsVehiclesKey)) {
+                allowsVehicles = (Boolean)map.get(allowsVehiclesKey);
+            }
 			
 			gateBlockLocations = new HashSet<Location>();
 			List<Map<String, Object>> serializedGateBlocks = (List<Map<String, Object>>)map.get(gateBlocksKey);
@@ -327,6 +342,7 @@ public class Gate implements ConfigurationSerializable
 		retVal.put(exitKey, LocationUtil.serializeLocation(exit));
 		retVal.put(isHiddenKey, isHidden);
 		retVal.put(isOpenKey, isOpen);
+        retVal.put(allowsVehiclesKey, allowsVehiclesKey);
 		
 		if (exit != null) {
 			retVal.put(exitPitchKey, exit.getPitch());

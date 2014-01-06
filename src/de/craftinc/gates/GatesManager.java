@@ -41,7 +41,7 @@ public class GatesManager
     protected FileConfiguration gatesConfig;
     protected static final String gatesPath = "gates"; // path to gates inside the yaml file
     protected static final String storageVersionPath = "version";
-    protected static final int storageVersion = 1;
+    protected static final int storageVersion = 2;
 
     protected int chunkRadius;
 

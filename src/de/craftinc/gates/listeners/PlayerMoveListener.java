@@ -104,10 +104,20 @@ public class PlayerMoveListener implements Listener
                                                     player.getLocation().getPitch()
                                                   );
 
-        // Riding (eject player)
+        // Riding
         final Entity vehicle = player.getVehicle();
         final boolean vehicleIsSuitable = (vehicle != null) && (vehicle instanceof Vehicle);
 
+        if (vehicle != null && (!vehicleIsSuitable) || !gate.getAllowsVehicles()) {
+
+            if (!gate.getAllowsVehicles()) {
+                // TODO: display not allowed message
+            }
+
+            return;
+        }
+
+        //  (eject player)
         if (vehicleIsSuitable) {
             vehicle.eject();
             vehicle.remove();
@@ -126,7 +136,7 @@ public class PlayerMoveListener implements Listener
             scheduler.scheduleSyncDelayedTask(plugin, new Runnable() {
                 public void run()
                 {
-                    // TODO: the code below should be executed after the chunk got loaded and not after a fixed time!
+                    // FIXME: the code below should be executed after the chunk got loaded and not after a fixed time!
 
                     // create a new entity at the destination location
                     final Vehicle newVehicle = VehicleCloner.clone((Vehicle)vehicle, destLocation);
