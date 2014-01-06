@@ -17,6 +17,7 @@
 package de.craftinc.gates.commands;
 
 import de.craftinc.gates.Plugin;
+import org.bukkit.ChatColor;
 
 public class CommandDenyRiding extends BaseCommand
 {
@@ -27,7 +28,7 @@ public class CommandDenyRiding extends BaseCommand
 
         requiredParameters.add("id");
 
-        helpDescription = "Allow players NOT to travel while riding.";
+        helpDescription = "Deny players to travel while riding.";
 
         requiredPermission = Plugin.permissionManage;
 
@@ -41,5 +42,6 @@ public class CommandDenyRiding extends BaseCommand
     protected void perform()
     {
         gate.setAllowsVehicles(false);
+        sendMessage(ChatColor.GREEN + "Traveling while riding is now disabled for this gate.");
     }
 }

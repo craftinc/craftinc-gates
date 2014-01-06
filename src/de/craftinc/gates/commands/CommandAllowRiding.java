@@ -18,6 +18,7 @@ package de.craftinc.gates.commands;
 
 
 import de.craftinc.gates.Plugin;
+import org.bukkit.ChatColor;
 
 public class CommandAllowRiding extends BaseCommand
 {
@@ -42,5 +43,6 @@ public class CommandAllowRiding extends BaseCommand
     protected void perform()
     {
         gate.setAllowsVehicles(true);
+        sendMessage(ChatColor.GREEN + "Traveling while riding is now enabled for this gate.");
     }
 }
