@@ -342,7 +342,7 @@ public class Gate implements ConfigurationSerializable
 		retVal.put(exitKey, LocationUtil.serializeLocation(exit));
 		retVal.put(isHiddenKey, isHidden);
 		retVal.put(isOpenKey, isOpen);
-        retVal.put(allowsVehiclesKey, allowsVehiclesKey);
+        retVal.put(allowsVehiclesKey, allowsVehicles);
 		
 		if (exit != null) {
 			retVal.put(exitPitchKey, exit.getPitch());
