@@ -54,6 +54,20 @@ public class GatesManager
 
     protected boolean storageFileIsInvalid = false;
 
+    protected Set<GateChangeListener> changeListeners = new HashSet<GateChangeListener>();
+
+
+    public void addGateChangeListener(GateChangeListener listener)
+    {
+        this.changeListeners.add(listener);
+    }
+
+
+    public void removeGateChangeListener(GateChangeListener listener)
+    {
+        this.changeListeners.remove(listener);
+    }
+
 
 	public Gate getGateWithId(final String id)
 	{
@@ -489,6 +503,13 @@ public class GatesManager
 	{
 		this.removeGateById(oldId);
 		this.addGateWithId(g);
+
+        Map<String, Object> changeSet = new HashMap<String, Object>();
+        changeSet.put(GateChangeListener.changedID, oldId);
+
+        for (GateChangeListener l : this.changeListeners) {
+            l.gateChangedHandler(g, changeSet);
+        }
 	}
 	
 	
@@ -505,7 +526,27 @@ public class GatesManager
 
         this.removeGateByFrameLocation(oldGateFrameBlocks);
         this.addGateByFrameLocations(g);
+
+        Map<String, Object> changeSet = new HashMap<String, Object>();
+        changeSet.put(GateChangeListener.changedLocation, oldLocation);
+
+        for (GateChangeListener l : this.changeListeners) {
+            l.gateChangedHandler(g, changeSet);
+        }
 	}
+
+    // TODO: call this method!
+    public void handleGateExitChange(final Gate g, final Location oldExit)
+    {
+        // nothing to do
+
+        Map<String, Object> changeSet = new HashMap<String, Object>();
+        changeSet.put(GateChangeListener.changedExit, oldExit);
+
+        for (GateChangeListener l : this.changeListeners) {
+            l.gateChangedHandler(g, changeSet);
+        }
+    }
 	
 	
 	public void handleNewGate(final Gate g)
@@ -516,6 +557,14 @@ public class GatesManager
 		this.addGateByLocations(g);
 		this.addGateWithId(g);
         this.addGateByFrameLocations(g);
+
+
+        Map<String, Object> changeSet = new HashMap<String, Object>();
+        changeSet.put(GateChangeListener.newGate, null);
+
+        for (GateChangeListener l : this.changeListeners) {
+            l.gateChangedHandler(g, changeSet);
+        }
 	}
 	
 	
@@ -527,6 +576,13 @@ public class GatesManager
 		this.removeGateFromChunk(g, g.getLocation());
 		this.removeGateByLocation(g.getGateBlockLocations());
         this.removeGateByFrameLocation(g.getGateFrameBlocks());
+
+        Map<String, Object> changeSet = new HashMap<String, Object>();
+        changeSet.put(GateChangeListener.removedGate, null);
+
+        for (GateChangeListener l : this.changeListeners) {
+            l.gateChangedHandler(g, changeSet);
+        }
 	}
 	
 	
