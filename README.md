@@ -56,8 +56,9 @@ Have a look at the [_Commands_](http://dev.bukkit.org/bukkit-plugins/craftinc-ga
 ## Installing ##
 
 1. Download the latest release _[here](http://dev.bukkit.org/bukkit-plugins/craftinc-gates/files/)_
-2. Extract the content of the zip file into the plugins folder of your Bukkit server.
-3. Start or reload the server.
+2. Delete any old versions of _Craft Inc. Gates_ (only the .jar files) including the extra dynmap-plugin for this plugin. 
+3. Extract the content of the zip file into the plugins folder of your Bukkit server.
+4. Start or reload the server.
 
 ## Craft Inc. ##
 Check out our __[Craft Inc. Minecraft Server](http://www.craftinc.de)__. Everyone is welcome!
