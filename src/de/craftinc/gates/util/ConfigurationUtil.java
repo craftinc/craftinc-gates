@@ -62,10 +62,10 @@ public class ConfigurationUtil
             material.material = Material.DEAD_BUSH;
         }
         else if (materialString.equals("dandelion")) {
-            material.material = Material.YELLOW_FLOWER; // TODO: this will change with minecraft 1.7
+            material.material = Material.YELLOW_FLOWER;
         }
         else if (materialString.equals("poppy")) {
-            material.material = Material.RED_ROSE; // TODO: this will change with minecraft 1.7
+            material.material = Material.RED_ROSE;
         }
         else if (materialString.equals("brown mushroom")) {
             material.material = Material.BROWN_MUSHROOM;
