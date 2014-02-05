@@ -29,6 +29,7 @@ public class ConfigurationUtil
     public static final String confPlayerGateBlockUpdateRadiusKey = "playerGateBlockUpdateRadius";
     public static final String confCheckForBrokenGateFramesKey = "checkForBrokenGateFrames";
     public static final String confGateTeleportMessageKey = "gateTeleportMessage";
+    public static final String confGateTeleportVehicleNotAllowedMessageKey = "gateTeleportVehicleNotAllowedMessage";
     public static final String confShowTeleportMessageKey = "showTeleportMessage";
     public static final String confGateTeleportNoPermissionMessageKey = "gateTeleportNoPermissionMessage";
     public static final String confShowTeleportNoPermissionMessageKey = "showTeleportNoPermissionMessage";
@@ -62,10 +63,10 @@ public class ConfigurationUtil
             material.material = Material.DEAD_BUSH;
         }
         else if (materialString.equals("dandelion")) {
-            material.material = Material.YELLOW_FLOWER; // TODO: this will change with minecraft 1.7
+            material.material = Material.YELLOW_FLOWER;
         }
         else if (materialString.equals("poppy")) {
-            material.material = Material.RED_ROSE; // TODO: this will change with minecraft 1.7
+            material.material = Material.RED_ROSE;
         }
         else if (materialString.equals("brown mushroom")) {
             material.material = Material.BROWN_MUSHROOM;
