@@ -10,10 +10,12 @@ Now it is time for _you_ to try out this wonderful plugin. Simply install, creat
 
 The key features of this are:
 
+* Dynmap integration
 * Gates with and without frames
 * Gates consisting of portal blocks and gates made of air (so called hidden gates)
 * Gates with destinations in different worlds
 * Gates with custom shapes (gates can look any way you want)
+* Riding through gates
 
 
 *The Craft Inc. Corporation won't take any responsibility for seasickness, memory loss and sudden suffocation in walls while traveling with one of our gates!

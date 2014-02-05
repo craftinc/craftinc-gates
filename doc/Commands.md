@@ -1,5 +1,11 @@
+* __/gate allowRiding, ar [id]__
+Update a gate so players can travel through it while riding.
+
 * __/gate close, c [id]__
 Closes a gate to prevent players from using it.
+
+* __/gate denyRiding, dr [id]__
+Update a gate so players can NOT travel through it while riding.
 
 * __/gate delete, del, remove [id]__
 Removes the gate from the game.

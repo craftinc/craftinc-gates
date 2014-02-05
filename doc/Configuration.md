@@ -41,10 +41,12 @@ be displayed.
 
 
 * __gateTeleportNoPermissionMessage__
-A string value going to displayed every time when a player enters a gate and is not 
-allowed to use that gate. Will only be displayed if _showTeleportNoPermissionMessage_
+A string value going to displayed every time when a player enters a gate and is not allowed to use that gate. Will only be displayed if _showTeleportNoPermissionMessage_
 is set to _true_.
 
+
+* __gateTeleportVehicleNotAllowedMessage__
+A string value being displayed when a player tries to go through a gate while riding when riding through this gate is disabled. Will only be displayed if _showTeleportNoPermissionMessage_ is set to _true_.
 
 * __showTeleportNoPermissionMessage__
 A boolean (_true_ or _false_) determining wether the _no permission message_ will 

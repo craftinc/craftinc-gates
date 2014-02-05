@@ -1,3 +1,8 @@
+## 2.4.0 ##
+* Resolved issues with closing gates (special thanks to THCFrosD)
+* Added support for riding through gates (with horses, mine carts, pigs and boats)
+* Dynmap integration (extra plugin)
+
 ## 2.3.0 ##
 * Added a command for setting the exit and opening a gate at once.
 *  Enabled the ability to change the gate block material.
