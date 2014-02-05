@@ -106,6 +106,10 @@ public class CommandInfo extends BaseCommand
             sendMessage(ChatColor.DARK_AQUA + "NOTE: this gate has no exit");
 
 
+        if (gate.getAllowsVehicles())
+            sendMessage(ChatColor.DARK_AQUA + "You can ride through this gate.");
+
+
         if (this.sender instanceof Player) {
             GateBlockChangeSender.temporaryHighlightGateFrame((Player)this.sender, this.gate);
         }
