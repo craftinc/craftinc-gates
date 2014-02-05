@@ -29,6 +29,7 @@ public class ConfigurationUtil
     public static final String confPlayerGateBlockUpdateRadiusKey = "playerGateBlockUpdateRadius";
     public static final String confCheckForBrokenGateFramesKey = "checkForBrokenGateFrames";
     public static final String confGateTeleportMessageKey = "gateTeleportMessage";
+    public static final String confGateTeleportVehicleNotAllowedMessageKey = "gateTeleportVehicleNotAllowedMessage";
     public static final String confShowTeleportMessageKey = "showTeleportMessage";
     public static final String confGateTeleportNoPermissionMessageKey = "gateTeleportNoPermissionMessage";
     public static final String confShowTeleportNoPermissionMessageKey = "showTeleportNoPermissionMessage";

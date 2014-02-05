@@ -110,8 +110,9 @@ public class PlayerMoveListener implements Listener
 
         if (vehicle != null && (!vehicleIsSuitable) || !gate.getAllowsVehicles()) {
 
-            if (!gate.getAllowsVehicles()) {
-                // TODO: display not allowed message
+            if (!gate.getAllowsVehicles() && Plugin.getPlugin().getConfig().getBoolean(ConfigurationUtil.confShowTeleportNoPermissionMessageKey)) {
+                final String notAllowedMessage = Plugin.getPlugin().getConfig().getString(ConfigurationUtil.confGateTeleportVehicleNotAllowedMessageKey);
+                player.sendMessage(ChatColor.DARK_AQUA + notAllowedMessage);
             }
 
             return;
