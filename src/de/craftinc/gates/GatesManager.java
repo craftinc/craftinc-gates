@@ -535,7 +535,7 @@ public class GatesManager
         }
 	}
 
-    // TODO: call this method!
+
     public void handleGateExitChange(final Gate g, final Location oldExit)
     {
         // nothing to do

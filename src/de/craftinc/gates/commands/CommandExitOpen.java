@@ -20,6 +20,7 @@ package de.craftinc.gates.commands;
 import de.craftinc.gates.Plugin;
 import de.craftinc.gates.util.GateBlockChangeSender;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 
 import java.util.logging.Level;
 
@@ -46,8 +47,10 @@ public class CommandExitOpen extends BaseCommand
     {
         try
         {
+            Location oldExit = gate.getExit();
             gate.setExit(player.getLocation());
             sendMessage(ChatColor.GREEN + "The exit of gate '" + gate.getId() + "' is now where you stand.");
+            Plugin.getPlugin().getGatesManager().handleGateExitChange(gate, oldExit);
 
             try {
                 boolean needsGateManagerUpdate = false;

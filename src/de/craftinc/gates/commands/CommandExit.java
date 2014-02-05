@@ -22,6 +22,7 @@ import de.craftinc.gates.util.GateBlockChangeSender;
 import org.bukkit.ChatColor;
 
 import de.craftinc.gates.Plugin;
+import org.bukkit.Location;
 
 
 public class CommandExit extends BaseCommand
@@ -47,8 +48,10 @@ public class CommandExit extends BaseCommand
 	{
 		try 
 		{
+            Location oldExit = gate.getExit();
 			gate.setExit(player.getLocation());
 			sendMessage(ChatColor.GREEN + "The exit of gate '" + gate.getId() + "' is now where you stand.");
+            Plugin.getPlugin().getGatesManager().handleGateExitChange(gate, oldExit);
 		} 
 		catch (Exception e) {
             GateBlockChangeSender.updateGateBlocks(gate);
