@@ -1,7 +1,5 @@
 # Craft Inc. Gates #
 
-We are happy to finally announce __Craft Inc. Gates__. 
-
 This awesome plugin lets you _travel_ to far away places and worlds _faster than light_! Just create a gate at any location and set an exit somewhere else.
 
 This has been made available by the hard work of the research and development department of the _Craft Inc. Corporation_. Under the lead of Professor Ddidderr Craftman scientists worked years to find a way to bend time and space inside the Minecraft universe to enable _ultra fast transportation_.
@@ -56,7 +54,7 @@ Have a look at the [_Commands_](http://dev.bukkit.org/bukkit-plugins/craftinc-ga
 ## Installing ##
 
 1. Download the latest release _[here](http://dev.bukkit.org/bukkit-plugins/craftinc-gates/files/)_
-2. Delete any old versions of _Craft Inc. Gates_ (only the .jar files) including the extra dynmap-plugin for this plugin. 
+2. Delete any old versions of _Craft Inc. Gates_ (only the .jar files) including the extra dynmap-plugin of this plugin. 
 3. Extract the content of the zip file into the plugins folder of your Bukkit server.
 4. Start or reload the server.
 
@@ -75,9 +73,6 @@ allows players to build a replicator to replicate blocks and other items. (still
 coming soon!
 
 ## Roadmap ##
-* Optionally allow animals and mobs to travel via gates.
-* Allow players to use gates while sitting inside a minecart or boat
-* Dynmap integration.
 * Per player permissions for using and managing gates.
 * Horizontal gates.
 
