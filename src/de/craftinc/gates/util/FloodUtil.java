@@ -185,10 +185,8 @@ public class FloodUtil {
         }
 
         if (startBlock.getType() == Material.AIR) {
-            // ... We found a block :D ...
             foundBlocks.add(startBlock);
 
-            // ... And flood away !
             for (BlockFace face : expandFaces) {
                 Block potentialBlock = startBlock.getRelative(face);
                 foundBlocks = getAirFloodBlocks(potentialBlock, foundBlocks, expandFaces, limit);
