@@ -26,11 +26,11 @@ import de.craftinc.gates.Plugin;
 
 
 public class LocationUtil {
-    protected final static String worldKey = "world";
-    protected final static String xKey = "x";
-    protected final static String yKey = "y";
-    protected final static String zKey = "z";
 
+    private final static String worldKey = "world";
+    private final static String xKey = "x";
+    private final static String yKey = "y";
+    private final static String zKey = "z";
 
     protected static World getWorld(final String name) throws Exception {
         if (name == null) {
@@ -46,7 +46,6 @@ public class LocationUtil {
         return world;
     }
 
-
     /**
      * Serializes a location. Helps storing locations inside yaml files. NOTE: We do not care about yaw
      * and pitch for gate locations. So we won't serialize them.
@@ -59,7 +58,7 @@ public class LocationUtil {
             return null;
         }
 
-        Map<String, Object> serializedLocation = new HashMap<String, Object>();
+        Map<String, Object> serializedLocation = new HashMap<>();
 
         serializedLocation.put(worldKey, l.getWorld().getName());
         serializedLocation.put(xKey, l.getX());
@@ -68,7 +67,6 @@ public class LocationUtil {
 
         return serializedLocation;
     }
-
 
     /**
      * @param map A map generated with the 'serializeLocation' method. Supplying 'null' is ok.

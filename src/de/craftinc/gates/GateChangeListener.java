@@ -20,11 +20,11 @@ package de.craftinc.gates;
 import java.util.Map;
 
 public interface GateChangeListener {
-    public static final String newGate = "GateChangeListener-newGate"; // value will be null
-    public static final String removedGate = "GateChangeListener-removedGate"; // value will be null
-    public static final String changedID = "GateChangeListener-changedID"; // value will be the old ID
-    public static final String changedLocation = "GateChangeListener-changedLocation"; // value will the old location
-    public static final String changedExit = "GateChangeListener-changedExit"; // value will be the old exit
+    String newGate = "GateChangeListener-newGate"; // value will be null
+    String removedGate = "GateChangeListener-removedGate"; // value will be null
+    String changedID = "GateChangeListener-changedID"; // value will be the old ID
+    String changedLocation = "GateChangeListener-changedLocation"; // value will the old location
+    String changedExit = "GateChangeListener-changedExit"; // value will be the old exit
 
-    public void gateChangedHandler(final Gate g, final Map<String, Object> changeSet);
+    void gateChangedHandler(final Gate g, final Map<String, Object> changeSet);
 }

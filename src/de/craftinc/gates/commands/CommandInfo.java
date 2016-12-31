@@ -50,7 +50,7 @@ public class CommandInfo extends BaseCommand {
                 return;
             }
 
-            sendMessage(TextUtil.titleize("Information about: '" + ChatColor.WHITE + gate.getId() + ChatColor.YELLOW + "'"));
+            sendMessage(TextUtil.titleSize("Information about: '" + ChatColor.WHITE + gate.getId() + ChatColor.YELLOW + "'"));
         } else {
             boolean senderIsPlayer = this.sender instanceof Player;
 
@@ -69,7 +69,7 @@ public class CommandInfo extends BaseCommand {
 
             Plugin.log(this.gate.toString());
 
-            sendMessage(TextUtil.titleize("Information about closest gate: '" + ChatColor.WHITE + gate.getId() + ChatColor.YELLOW + "'"));
+            sendMessage(TextUtil.titleSize("Information about closest gate: '" + ChatColor.WHITE + gate.getId() + ChatColor.YELLOW + "'"));
         }
 
         String openHiddenMessage = ChatColor.DARK_AQUA + "This gate is";

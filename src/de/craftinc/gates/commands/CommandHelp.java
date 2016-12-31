@@ -25,36 +25,36 @@ import java.util.List;
 
 public class CommandHelp extends BaseCommand {
 
-    public static List<List<String>> helpPages;
+    private static List<List<String>> helpPages;
 
     static {
         // sort the usage strings
-        List<String> allUsageStrings = new ArrayList<String>();
+        List<String> allUsageStrings = new ArrayList<>();
 
-        allUsageStrings.add(new CommandHelp().getUsageTemplate(true, true));
-        allUsageStrings.add(new CommandNew().getUsageTemplate(true, true));
-        allUsageStrings.add(new CommandRemove().getUsageTemplate(true, true));
-        allUsageStrings.add(new CommandLocation().getUsageTemplate(true, true));
-        allUsageStrings.add(new CommandExit().getUsageTemplate(true, true));
-        allUsageStrings.add(new CommandOpen().getUsageTemplate(true, true));
-        allUsageStrings.add(new CommandRename().getUsageTemplate(true, true));
-        allUsageStrings.add(new CommandClose().getUsageTemplate(true, true));
-        allUsageStrings.add(new CommandList().getUsageTemplate(true, true));
-        allUsageStrings.add(new CommandInfo().getUsageTemplate(true, true));
-        allUsageStrings.add(new CommandHide().getUsageTemplate(true, true));
-        allUsageStrings.add(new CommandUnhide().getUsageTemplate(true, true));
-        allUsageStrings.add(new CommandExitOpen().getUsageTemplate(true, true));
-        allUsageStrings.add(new CommandNearby().getUsageTemplate(true, true));
+        allUsageStrings.add(new CommandHelp().getUsageTemplate(true));
+        allUsageStrings.add(new CommandNew().getUsageTemplate(true));
+        allUsageStrings.add(new CommandRemove().getUsageTemplate(true));
+        allUsageStrings.add(new CommandLocation().getUsageTemplate(true));
+        allUsageStrings.add(new CommandExit().getUsageTemplate(true));
+        allUsageStrings.add(new CommandOpen().getUsageTemplate(true));
+        allUsageStrings.add(new CommandRename().getUsageTemplate(true));
+        allUsageStrings.add(new CommandClose().getUsageTemplate(true));
+        allUsageStrings.add(new CommandList().getUsageTemplate(true));
+        allUsageStrings.add(new CommandInfo().getUsageTemplate(true));
+        allUsageStrings.add(new CommandHide().getUsageTemplate(true));
+        allUsageStrings.add(new CommandUnhide().getUsageTemplate(true));
+        allUsageStrings.add(new CommandExitOpen().getUsageTemplate(true));
+        allUsageStrings.add(new CommandNearby().getUsageTemplate(true));
 
         Collections.sort(allUsageStrings);
 
 
         // put 5 commands on one page
-        helpPages = new ArrayList<List<String>>();
+        helpPages = new ArrayList<>();
 
         while (!allUsageStrings.isEmpty()) {
             int toIndex = allUsageStrings.size() >= 6 ? 5 : allUsageStrings.size();
-            List<String> currentHelpPage = new ArrayList<String>(allUsageStrings.subList(0, toIndex));
+            List<String> currentHelpPage = new ArrayList<>(allUsageStrings.subList(0, toIndex));
             helpPages.add(currentHelpPage);
 
             allUsageStrings.removeAll(currentHelpPage);
@@ -92,7 +92,7 @@ public class CommandHelp extends BaseCommand {
             page = 1;
         }
 
-        sendMessage(TextUtil.titleize("Craft Inc. Gates Help (" + page + "/" + helpPages.size() + ")"));
+        sendMessage(TextUtil.titleSize("Craft Inc. Gates Help (" + page + "/" + helpPages.size() + ")"));
 
         page -= 1;
         if (page < 0 || page >= helpPages.size()) {

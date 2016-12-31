@@ -28,6 +28,7 @@ import java.util.logging.Level;
 
 
 public class MigrationUtil {
+
     public static boolean performMigration(int storageVersion, int currentVersion, List<Gate> gates) {
         if (storageVersion == 0 && currentVersion >= 2) {
             removePortalBlocks(gates);
@@ -44,8 +45,7 @@ public class MigrationUtil {
         }
     }
 
-
-    protected static void removePortalBlocks(List<Gate> gates) {
+    private static void removePortalBlocks(List<Gate> gates) {
         for (Gate g : gates) {
 
             for (Location l : g.getGateBlockLocations()) {
@@ -58,10 +58,8 @@ public class MigrationUtil {
         }
     }
 
-
-    protected static void updateAllowVehicles(List<Gate> gates) {
+    private static void updateAllowVehicles(List<Gate> gates) {
         for (Gate g : gates) {
-
             g.setAllowsVehicles(true);
         }
     }

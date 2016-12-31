@@ -32,30 +32,28 @@ import de.craftinc.gates.util.TextUtil;
 
 public abstract class BaseCommand {
 
-    protected List<String> aliases = new ArrayList<String>();
-    protected List<String> requiredParameters = new ArrayList<String>();
-    protected List<String> optionalParameters = new ArrayList<String>();
+    protected List<String> aliases = new ArrayList<>();
+    protected List<String> requiredParameters = new ArrayList<>();
+    List<String> optionalParameters = new ArrayList<>();
 
     protected String helpDescription = "no description";
 
-    protected List<String> parameters;
-    protected CommandSender sender;
+    List<String> parameters;
+    CommandSender sender;
     protected Player player;
     protected Gate gate;
 
     protected boolean senderMustBePlayer = true;
-    protected boolean hasGateParam = true;
+    boolean hasGateParam = true;
 
     protected String requiredPermission;
     protected boolean needsPermissionAtCurrentLocation;
 
     protected boolean shouldPersistToDisk;
 
-
     public List<String> getAliases() {
         return aliases;
     }
-
 
     public void execute(CommandSender sender, List<String> parameters) {
         this.sender = sender;
@@ -66,7 +64,7 @@ public abstract class BaseCommand {
         }
 
         if (this.senderMustBePlayer) {
-            this.player = (Player) sender;
+            this.player = (Player)sender;
         }
 
         this.perform();
@@ -81,14 +79,11 @@ public abstract class BaseCommand {
         return config.getBoolean(ConfigurationUtil.confSaveOnChangesKey);
     }
 
-
     abstract protected void perform();
-
 
     protected void sendMessage(String message) {
         sender.sendMessage(message);
     }
-
 
     protected void sendMessage(List<String> messages) {
         for (String message : messages) {
@@ -96,8 +91,7 @@ public abstract class BaseCommand {
         }
     }
 
-
-    protected boolean validateCall() {
+    private boolean validateCall() {
         boolean allParametersThere = parameters.size() >= requiredParameters.size();
         boolean senderIsPlayer = this.sender instanceof Player;
         boolean hasGateParameter = false;
@@ -110,17 +104,23 @@ public abstract class BaseCommand {
         boolean valid;
 
         if (this.senderMustBePlayer && !senderIsPlayer) {
-            sendMessage(ChatColor.RED + "This command can only be used by ingame players.");
+            sendMessage(ChatColor.RED + "This command can only be used by in-game players.");
             valid = false;
         } else {
             if (!allParametersThere) {
-                sendMessage(ChatColor.RED + "Some parameters are missing! " + ChatColor.AQUA + "Usage: " + this.getUsageTemplate(true));
+                sendMessage(ChatColor.RED + "Some parameters are missing! " +
+                        ChatColor.AQUA + "Usage: " +
+                        this.getUsageTemplate()
+                );
                 valid = false;
             } else if ((!senderHasPermission && this.hasGateParam) ||
                     (!senderHasPermission) ||
                     (this.hasGateParam && !hasGateParameter)) {
 
-                sendMessage(ChatColor.RED + "You either provided a invalid gate or do not have permission to " + this.helpDescription.toLowerCase());
+                sendMessage(ChatColor.RED +
+                        "You either provided a invalid gate or do not have permission to " +
+                        this.helpDescription.toLowerCase()
+                );
                 valid = false;
             } else {
                 valid = true;
@@ -130,8 +130,7 @@ public abstract class BaseCommand {
         return valid;
     }
 
-
-    protected boolean setGateUsingParameter(String param) {
+    boolean setGateUsingParameter(String param) {
         GatesManager gateManager = Plugin.getPlugin().getGatesManager();
 
         if (!gateManager.gateExists(param)) {
@@ -142,11 +141,10 @@ public abstract class BaseCommand {
         }
     }
 
-
     /**
      * This will return false if a gate is required for this command but this.gate == null.
      */
-    protected boolean hasPermission() {
+    boolean hasPermission() {
         if (Plugin.getPermission() == null) { // fallback - use the standard bukkit permission system
             return this.sender.hasPermission(this.requiredPermission);
         }
@@ -160,32 +158,35 @@ public abstract class BaseCommand {
         Player p = (Player) this.sender;
         boolean hasPermission = false;
 
-        if (this.requiredPermission.equals(Plugin.permissionInfo)) {
+        switch (this.requiredPermission) {
+            case Plugin.permissionInfo:
 
-            if (this.hasGateParam) {
+                if (this.hasGateParam) {
+                    hasPermission = this.hasPermissionAtGateLocationAndExit(p);
+                } else {
+                    hasPermission = hasPermissionAtPlayerLocation(p);
+                }
+                break;
+            case Plugin.permissionUse:
                 hasPermission = this.hasPermissionAtGateLocationAndExit(p);
-            } else {
-                hasPermission = Plugin.getPermission().has(p.getWorld(), p.getName(), this.requiredPermission);
-            }
-        } else if (this.requiredPermission.equals(Plugin.permissionUse)) {
-            hasPermission = this.hasPermissionAtGateLocationAndExit(p);
-        } else if (this.requiredPermission.equals(Plugin.permissionManage)) {
+                break;
+            case Plugin.permissionManage:
 
-            if (this.needsPermissionAtCurrentLocation && this.hasGateParam) {
-                boolean hasPersmissionAtCurrentLocation = Plugin.getPermission().has(p.getWorld(), p.getName(), this.requiredPermission);
-                hasPermission = hasPersmissionAtCurrentLocation && this.hasPermissionAtGateLocationAndExit(p);
-            } else if (this.needsPermissionAtCurrentLocation) {
-                hasPermission = Plugin.getPermission().has(p.getWorld(), p.getName(), this.requiredPermission);
-            } else {
-                hasPermission = this.hasPermissionAtGateLocationAndExit(p);
-            }
+                if (this.needsPermissionAtCurrentLocation && this.hasGateParam) {
+                    boolean hasPermissionAtCurrentLocation = hasPermissionAtPlayerLocation(p);
+                    hasPermission = hasPermissionAtCurrentLocation && this.hasPermissionAtGateLocationAndExit(p);
+                } else if (this.needsPermissionAtCurrentLocation) {
+                    hasPermission = hasPermissionAtPlayerLocation(p);
+                } else {
+                    hasPermission = this.hasPermissionAtGateLocationAndExit(p);
+                }
+                break;
         }
 
         return hasPermission;
     }
 
-
-    protected boolean hasPermissionAtGateLocationAndExit(Player p) {
+    private boolean hasPermissionAtGateLocationAndExit(Player p) {
         if (this.gate == null || p == null) {
             return false;
         }
@@ -196,20 +197,21 @@ public abstract class BaseCommand {
         return permAtLocation & permAtExit;
     }
 
+    private boolean hasPermissionAtPlayerLocation(Player p) {
+        return Plugin.getPermission().has(p.getWorld(), p.getName(), this.requiredPermission);
+    }
 
-    // -------------------------------------------- //
-    // Help and usage description
-    // -------------------------------------------- //
-    protected String getUsageTemplate(boolean withColor, boolean withDescription) {
+    /*
+        Help and usage description
+    */
+
+    String getUsageTemplate(boolean withDescription) {
         String ret = "";
 
-        if (withColor) {
-            ret += ChatColor.AQUA;
-        }
-
+        ret += ChatColor.AQUA;
         ret += "/" + Plugin.getPlugin().getBaseCommand() + " " + TextUtil.implode(this.getAliases(), ",") + " ";
 
-        List<String> parts = new ArrayList<String>();
+        List<String> parts = new ArrayList<>();
 
         for (String requiredParameter : this.requiredParameters) {
             parts.add("[" + requiredParameter + "]");
@@ -219,24 +221,19 @@ public abstract class BaseCommand {
             parts.add("*[" + optionalParameter + "]");
         }
 
-        if (withColor) {
-            ret += ChatColor.DARK_AQUA;
-        }
 
+        ret += ChatColor.DARK_AQUA;
         ret += TextUtil.implode(parts, " ");
 
         if (withDescription) {
             ret += " ";
-
-            if (withColor) {
-                ret += ChatColor.YELLOW;
-            }
+            ret += ChatColor.YELLOW;
             ret += this.helpDescription;
         }
         return ret;
     }
 
-    protected String getUsageTemplate(boolean withColor) {
-        return getUsageTemplate(withColor, false);
+    private String getUsageTemplate() {
+        return getUsageTemplate(false);
     }
 }

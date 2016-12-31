@@ -29,17 +29,22 @@ import java.util.*;
 
 public class Gate implements ConfigurationSerializable {
     protected Location location; /* saving both location and gateBlockLocations is redundant but makes it easy to allow players to reshape gates */
-    protected Set<Location> gateBlockLocations = new HashSet<Location>(); /* Locations of the blocks inside the gate */
-    protected Set<Block> gateFrameBlocks = new HashSet<Block>();
+    private Set<Location> gateBlockLocations = new HashSet<>(); /* Locations of the blocks inside the gate */
+
+    private Set<Block> gateFrameBlocks = new HashSet<>();
 
     protected Location exit;
 
-    protected boolean isHidden = false;
-    protected boolean isOpen = false;
+    private boolean isHidden = false;
+    private boolean isOpen = false;
 
-    protected boolean allowsVehicles = true;
+    private boolean allowsVehicles = true;
 
     protected String id;
+
+    public static String getGateBlocksKey() {
+        return gateBlocksKey;
+    }
 
     /**
      * You should never create two gates with the same 'id'. Also see 'setId(String id)'.
@@ -77,11 +82,10 @@ public class Gate implements ConfigurationSerializable {
             findPortalBlocks();
             validate();
         } else {
-            this.gateBlockLocations = new HashSet<Location>();
-            this.gateFrameBlocks = new HashSet<Block>();
+            this.gateBlockLocations = new HashSet<>();
+            this.gateFrameBlocks = new HashSet<>();
         }
     }
-
 
     /**
      * @return This method might return a 'null' value.
@@ -89,7 +93,6 @@ public class Gate implements ConfigurationSerializable {
     public Location getExit() {
         return exit;
     }
-
 
     /**
      * @param exit Supplying 'null' is permitted.
@@ -102,14 +105,12 @@ public class Gate implements ConfigurationSerializable {
         validate();
     }
 
-
     /**
      * @return This method will never return 'null'.
      */
     public String getId() {
         return id;
     }
-
 
     /**
      * Every gate should have an unique 'id'. You should therefore check if another gate with the same 'id' exists.
@@ -125,22 +126,18 @@ public class Gate implements ConfigurationSerializable {
         this.id = id.toLowerCase();
     }
 
-
     public boolean isHidden() {
         return isHidden;
     }
-
 
     public void setHidden(boolean isHidden) throws Exception {
         this.isHidden = isHidden;
         this.validate();
     }
 
-
     public boolean isOpen() {
         return isOpen;
     }
-
 
     public void setOpen(boolean isOpen) throws Exception {
         if (isOpen && !this.isOpen) {
@@ -151,16 +148,13 @@ public class Gate implements ConfigurationSerializable {
         validate();
     }
 
-
     public void setAllowsVehicles(boolean allowsVehicles) {
         this.allowsVehicles = allowsVehicles;
     }
 
-
     public boolean getAllowsVehicles() {
         return this.allowsVehicles;
     }
-
 
     /**
      * @return Will never return 'null' but might return an empty Set.
@@ -169,7 +163,6 @@ public class Gate implements ConfigurationSerializable {
         return gateBlockLocations;
     }
 
-
     /**
      * @return Will never return 'null' but might return an empty Set.
      */
@@ -177,9 +170,8 @@ public class Gate implements ConfigurationSerializable {
         return gateFrameBlocks;
     }
 
-
-    protected void findPortalBlocks() {
-        gateBlockLocations = new HashSet<Location>();
+    private void findPortalBlocks() {
+        gateBlockLocations = new HashSet<>();
         Set<Block> gateBlocks = FloodUtil.getGatePortalBlocks(location.getBlock());
 
         if (gateBlocks != null) {
@@ -191,35 +183,34 @@ public class Gate implements ConfigurationSerializable {
         gateFrameBlocks = FloodUtil.getFrame(gateBlocks);
     }
 
-
     /**
      * Checks if values attributes do add up; will close gate on wrong values.
      */
-    public void validate() throws Exception {
+    void validate() throws Exception {
         if (!isOpen) {
             return;
         }
 
         if (location == null) {
             isOpen = false;
-            this.gateBlockLocations = new HashSet<Location>();
-            this.gateFrameBlocks = new HashSet<Block>();
+            this.gateBlockLocations = new HashSet<>();
+            this.gateFrameBlocks = new HashSet<>();
 
             throw new Exception("Gate got closed. It has no location.");
         }
 
         if (exit == null) {
             isOpen = false;
-            this.gateBlockLocations = new HashSet<Location>();
-            this.gateFrameBlocks = new HashSet<Block>();
+            this.gateBlockLocations = new HashSet<>();
+            this.gateFrameBlocks = new HashSet<>();
 
             throw new Exception("Gate got closed. It has no exit.");
         }
 
         if (gateBlockLocations.size() == 0) {
             isOpen = false;
-            this.gateBlockLocations = new HashSet<Location>();
-            this.gateFrameBlocks = new HashSet<Block>();
+            this.gateBlockLocations = new HashSet<>();
+            this.gateFrameBlocks = new HashSet<>();
 
             throw new Exception("Gate got closed. The frame is missing or broken. (no gate blocks)");
         }
@@ -230,8 +221,8 @@ public class Gate implements ConfigurationSerializable {
 
                 if (b.getType() == Material.AIR) {
                     isOpen = false;
-                    this.gateBlockLocations = new HashSet<Location>();
-                    this.gateFrameBlocks = new HashSet<Block>();
+                    this.gateBlockLocations = new HashSet<>();
+                    this.gateFrameBlocks = new HashSet<>();
 
                     throw new Exception("Gate got closed. The frame is missing or broken. (missing frame block(s))");
                 }
@@ -243,17 +234,17 @@ public class Gate implements ConfigurationSerializable {
     /*
      * INTERFACE: ConfigurationSerializable
      */
-    static protected String idKey = "id";
-    static protected String locationKey = "location";
-    static protected String gateBlocksKey = "gateBlocks";
-    static protected String exitKey = "exit";
-    static protected String isHiddenKey = "hidden";
-    static protected String isOpenKey = "open";
-    static protected String locationYawKey = "locationYaw";
-    static protected String locationPitchKey = "locationPitch";
-    static protected String exitYawKey = "exitYaw";
-    static protected String exitPitchKey = "exitPitch";
-    static protected String allowsVehiclesKey = "allowsVehiclesKey";
+    static private String idKey = "id";
+    static private String locationKey = "location";
+    static private String gateBlocksKey = "gateBlocks";
+    static private String exitKey = "exit";
+    static private String isHiddenKey = "hidden";
+    static private String isOpenKey = "open";
+    static private String locationYawKey = "locationYaw";
+    static private String locationPitchKey = "locationPitch";
+    static private String exitYawKey = "exitYaw";
+    static private String exitPitchKey = "exitPitch";
+    static private String allowsVehiclesKey = "allowsVehiclesKey";
 
 
     @SuppressWarnings("unchecked")
@@ -281,7 +272,7 @@ public class Gate implements ConfigurationSerializable {
                 allowsVehicles = (Boolean) map.get(allowsVehiclesKey);
             }
 
-            gateBlockLocations = new HashSet<Location>();
+            gateBlockLocations = new HashSet<>();
             List<Map<String, Object>> serializedGateBlocks = (List<Map<String, Object>>) map.get(gateBlocksKey);
 
             for (Map<String, Object> sgb : serializedGateBlocks) {
@@ -305,7 +296,7 @@ public class Gate implements ConfigurationSerializable {
 
 
     public Map<String, Object> serialize() {
-        Map<String, Object> retVal = new HashMap<String, Object>();
+        Map<String, Object> retVal = new HashMap<>();
 
         retVal.put(idKey, id);
         retVal.put(locationKey, LocationUtil.serializeLocation(location));
@@ -324,7 +315,7 @@ public class Gate implements ConfigurationSerializable {
             retVal.put(locationYawKey, location.getYaw());
         }
 
-        List<Map<String, Object>> serializedGateBlocks = new ArrayList<Map<String, Object>>();
+        List<Map<String, Object>> serializedGateBlocks = new ArrayList<>();
 
         for (Location l : gateBlockLocations) {
             serializedGateBlocks.add(LocationUtil.serializeLocation(l));

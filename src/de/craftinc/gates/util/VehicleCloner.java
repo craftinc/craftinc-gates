@@ -21,6 +21,7 @@ import org.bukkit.entity.*;
 
 
 public class VehicleCloner {
+
     public static Vehicle clone(Vehicle parent, Location cloneLocation) {
         Vehicle clone = cloneLocation.getWorld().spawn(cloneLocation, parent.getClass());
 

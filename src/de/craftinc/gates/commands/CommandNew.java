@@ -62,7 +62,7 @@ public class CommandNew extends BaseLocationCommand {
             }
         } else {
             sendMessage(ChatColor.RED + "Your location is invalid!" + ChatColor.AQUA + "Go somewhere else and execute:");
-            sendMessage(new CommandLocation().getUsageTemplate(true, true));
+            sendMessage(new CommandLocation().getUsageTemplate(true));
         }
 
         gatesManager.handleNewGate(gate);

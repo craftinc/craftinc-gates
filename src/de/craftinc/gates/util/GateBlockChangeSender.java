@@ -97,7 +97,7 @@ public class GateBlockChangeSender {
     }
 
 
-    protected static void dehighlightGatesFrames(final Player player, final Set<Gate> gates) {
+    private static void dehighlightGatesFrames(final Player player, final Set<Gate> gates) {
         for (Gate g : gates) {
             Set<Block> frameBlocks = g.getGateFrameBlocks();
 
@@ -108,7 +108,7 @@ public class GateBlockChangeSender {
     }
 
 
-    protected static void dehighlightGateFrame(final Player player, final Gate gate) {
+    private static void dehighlightGateFrame(final Player player, final Gate gate) {
         Set<Block> frameBlocks = gate.getGateFrameBlocks();
 
         for (Block b : frameBlocks) {
@@ -207,7 +207,7 @@ public class GateBlockChangeSender {
             return;
         }
 
-        ArrayList<Player> playersNearby = new ArrayList<Player>();
+        ArrayList<Player> playersNearby = new ArrayList<>();
 
         int searchRadius = Plugin.getPlugin().getConfig().getInt(confPlayerGateBlockUpdateRadiusKey);
 

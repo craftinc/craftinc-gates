@@ -21,25 +21,21 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 
-public abstract class BaseLocationCommand extends BaseCommand {
+abstract class BaseLocationCommand extends BaseCommand {
 
-    protected Location getValidPlayerLocation() {
+    Location getValidPlayerLocation() {
         // The player might stand in a half block or a sign or whatever
         // Therefore we load some extra locations and blocks
-        Block playerBlock = player.getLocation().getBlock();
+        Location location = player.getLocation().clone();
+        Block playerBlock = location.getBlock();
         Block upBlock = playerBlock.getRelative(BlockFace.UP);
 
         if (playerBlock.getType() == Material.AIR) {
-            return player.getLocation();
+            return location;
         } else if (upBlock.getType() == Material.AIR) {
-            return new Location(player.getLocation().getWorld(),
-                    player.getLocation().getX(),
-                    player.getLocation().getY() + 1,
-                    player.getLocation().getZ(),
-                    player.getLocation().getYaw(),
-                    player.getLocation().getPitch());
+            return location.add(0, 1, 0);
+        } else {
+            return null;
         }
-
-        return null;
     }
 }
