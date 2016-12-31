@@ -24,36 +24,33 @@ import org.bukkit.ChatColor;
 import de.craftinc.gates.Plugin;
 
 
-public class CommandHide extends BaseCommand
-{
-	public CommandHide()
-	{
-		aliases.add("hide");
+public class CommandHide extends BaseCommand {
+
+    public CommandHide() {
+        aliases.add("hide");
         aliases.add("h");
-		
-		requiredParameters.add("id");		
-		
-		helpDescription = "Makes a gate NOT consist of gate blocks while open.";
-		
-		requiredPermission = Plugin.permissionManage;
-		
-		needsPermissionAtCurrentLocation = false;
-		shouldPersistToDisk = true;
-		senderMustBePlayer = false;
-	}
-	
-	
-	public void perform() 
-	{
-		try {
-			gate.setHidden(true);
+
+        requiredParameters.add("id");
+
+        helpDescription = "Makes a gate NOT consist of gate blocks while open.";
+
+        requiredPermission = Plugin.permissionManage;
+
+        needsPermissionAtCurrentLocation = false;
+        shouldPersistToDisk = true;
+        senderMustBePlayer = false;
+    }
+
+
+    public void perform() {
+        try {
+            gate.setHidden(true);
             GateBlockChangeSender.updateGateBlocks(gate);
-			sendMessage(ChatColor.GREEN + "The gate '" + gate.getId() + "' is now hidden.");
-		} 
-		catch (Exception e) {
-			sendMessage(ChatColor.RED + "Hiding the gate failed! See server log for more information");
-			Plugin.log(Level.WARNING, e.getMessage());
-			e.printStackTrace();
-		}
-	}
+            sendMessage(ChatColor.GREEN + "The gate '" + gate.getId() + "' is now hidden.");
+        } catch (Exception e) {
+            sendMessage(ChatColor.RED + "Hiding the gate failed! See server log for more information");
+            Plugin.log(Level.WARNING, e.getMessage());
+            e.printStackTrace();
+        }
+    }
 }

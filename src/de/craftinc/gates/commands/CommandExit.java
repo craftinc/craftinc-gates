@@ -24,41 +24,35 @@ import org.bukkit.ChatColor;
 import de.craftinc.gates.Plugin;
 import org.bukkit.Location;
 
+public class CommandExit extends BaseCommand {
 
-public class CommandExit extends BaseCommand
-{
-	public CommandExit()
-	{
-		aliases.add("exit");
-		aliases.add("e");
-		
-		requiredParameters.add("id");		
-		
-		helpDescription = "Change exit of location.";
-		
-		requiredPermission = Plugin.permissionManage;
-		
-		needsPermissionAtCurrentLocation = true;
-		shouldPersistToDisk = true;
-		senderMustBePlayer = true;
-	}
-	
-	
-	public void perform() 
-	{
-		try 
-		{
+    public CommandExit() {
+        aliases.add("exit");
+        aliases.add("e");
+
+        requiredParameters.add("id");
+
+        helpDescription = "Change exit of location.";
+
+        requiredPermission = Plugin.permissionManage;
+
+        needsPermissionAtCurrentLocation = true;
+        shouldPersistToDisk = true;
+        senderMustBePlayer = true;
+    }
+
+
+    public void perform() {
+        try {
             Location oldExit = gate.getExit();
-			gate.setExit(player.getLocation());
-			sendMessage(ChatColor.GREEN + "The exit of gate '" + gate.getId() + "' is now where you stand.");
+            gate.setExit(player.getLocation());
+            sendMessage(ChatColor.GREEN + "The exit of gate '" + gate.getId() + "' is now where you stand.");
             Plugin.getPlugin().getGatesManager().handleGateExitChange(gate, oldExit);
-		} 
-		catch (Exception e) {
+        } catch (Exception e) {
             GateBlockChangeSender.updateGateBlocks(gate);
             sendMessage(ChatColor.RED + "Setting the exit for the gate failed! See server log for more information");
-			Plugin.log(Level.WARNING, e.getMessage());
-			e.printStackTrace();
-		}
-	}
+            Plugin.log(Level.WARNING, e.getMessage());
+            e.printStackTrace();
+        }
+    }
 }
-

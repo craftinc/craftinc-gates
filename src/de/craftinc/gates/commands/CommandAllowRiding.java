@@ -20,19 +20,16 @@ package de.craftinc.gates.commands;
 import de.craftinc.gates.Plugin;
 import org.bukkit.ChatColor;
 
-public class CommandAllowRiding extends BaseCommand
-{
-    public CommandAllowRiding()
-    {
+public class CommandAllowRiding extends BaseCommand {
+
+    public CommandAllowRiding() {
         aliases.add("allowRiding");
         aliases.add("ar");
 
         requiredParameters.add("id");
 
         helpDescription = "Allow players to travel while riding.";
-
         requiredPermission = Plugin.permissionManage;
-
         needsPermissionAtCurrentLocation = false;
         shouldPersistToDisk = true;
 
@@ -40,8 +37,7 @@ public class CommandAllowRiding extends BaseCommand
     }
 
     @Override
-    protected void perform()
-    {
+    protected void perform() {
         gate.setAllowsVehicles(true);
         sendMessage(ChatColor.GREEN + "Traveling while riding is now enabled for this gate.");
     }

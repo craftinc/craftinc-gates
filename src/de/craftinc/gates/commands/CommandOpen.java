@@ -16,39 +16,31 @@
 */
 package de.craftinc.gates.commands;
 
-
 import de.craftinc.gates.util.GateBlockChangeSender;
 import org.bukkit.ChatColor;
 
 import de.craftinc.gates.Plugin;
 
+public class CommandOpen extends BaseCommand {
 
-public class CommandOpen extends BaseCommand 
-{
-	
-	public CommandOpen()
-	{
-		aliases.add("open");
-		aliases.add("o");
-		
-		requiredParameters.add("id");		
-		
-		helpDescription = "Open a gate so players can use it.";
-		
-		requiredPermission = Plugin.permissionManage;
-		
-		needsPermissionAtCurrentLocation = false;
-		shouldPersistToDisk = true;
-		senderMustBePlayer = false;
-	}
-	
-	
-	public void perform() 
-	{
-		try {
+    public CommandOpen() {
+        aliases.add("open");
+        aliases.add("o");
+
+        requiredParameters.add("id");
+        helpDescription = "Open a gate so players can use it.";
+        requiredPermission = Plugin.permissionManage;
+
+        needsPermissionAtCurrentLocation = false;
+        shouldPersistToDisk = true;
+        senderMustBePlayer = false;
+    }
+
+    public void perform() {
+        try {
             boolean needsGateManagerUpdate = false;
 
-			if (gate.getGateBlockLocations().isEmpty()) {
+            if (gate.getGateBlockLocations().isEmpty()) {
                 needsGateManagerUpdate = true;
             }
 
@@ -60,11 +52,9 @@ public class CommandOpen extends BaseCommand
                 Plugin.getPlugin().getGatesManager().handleGateLocationChange(gate, null, null, null);
             }
 
-			sendMessage(ChatColor.GREEN + "The gate was opened.");
-		} 
-		catch (Exception e) {
-			sendMessage(ChatColor.RED + e.getMessage());
-		}
-	}
+            sendMessage(ChatColor.GREEN + "The gate was opened.");
+        } catch (Exception e) {
+            sendMessage(ChatColor.RED + e.getMessage());
+        }
+    }
 }
-
