@@ -61,7 +61,7 @@ public class CommandLocation extends BaseLocationCommand {
             sendMessage(ChatColor.GREEN + "The location of '" + gate.getId() + "' is now at your current location.");
         } catch (Exception e) {
             sendMessage(ChatColor.RED + "There seems to be no frame at your new location! The gate got closed!" + ChatColor.AQUA + " You should build a frame now and execute:");
-            sendMessage(new CommandOpen().getUsageTemplate(true, true));
+            sendMessage(new CommandOpen().getUsageTemplate(true));
         } finally {
             Plugin.getPlugin().getGatesManager().handleGateLocationChange(gate, oldLocation, oldGateBlockLocations, oldFrameBlocks);
             GateBlockChangeSender.updateGateBlocks(gate);

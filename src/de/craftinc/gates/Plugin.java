@@ -46,16 +46,16 @@ public class Plugin extends JavaPlugin {
     private static Plugin instance;
     private static Permission permission;
 
-    protected String baseCommand;
-    protected List<BaseCommand> commands = new ArrayList<BaseCommand>();
-    protected GatesManager gatesManager = new GatesManager();
+    private String baseCommand;
+    protected List<BaseCommand> commands = new ArrayList<>();
+    private GatesManager gatesManager = new GatesManager();
 
-    protected PlayerMoveListener moveListener = new PlayerMoveListener();
-    protected PlayerTeleportListener teleportListener = new PlayerTeleportListener();
-    protected PlayerRespawnListener respawnListener = new PlayerRespawnListener();
-    protected PlayerChangedWorldListener worldChangeListener = new PlayerChangedWorldListener();
-    protected PlayerJoinListener joinListener = new PlayerJoinListener();
-    protected BlockBreakListener blockBreakListener = new BlockBreakListener();
+    private PlayerMoveListener moveListener = new PlayerMoveListener();
+    private PlayerTeleportListener teleportListener = new PlayerTeleportListener();
+    private PlayerRespawnListener respawnListener = new PlayerRespawnListener();
+    private PlayerChangedWorldListener worldChangeListener = new PlayerChangedWorldListener();
+    private PlayerJoinListener joinListener = new PlayerJoinListener();
+    private BlockBreakListener blockBreakListener = new BlockBreakListener();
 
 
     public Plugin() {
@@ -79,7 +79,7 @@ public class Plugin extends JavaPlugin {
     }
 
 
-    protected void setupPermissions() {
+    private void setupPermissions() {
         if (getServer().getPluginManager().getPlugin("Vault") == null) {
             return;
         }
@@ -154,7 +154,7 @@ public class Plugin extends JavaPlugin {
     }
 
 
-    protected void registerEventListeners() {
+    private void registerEventListeners() {
         PluginManager pm = this.getServer().getPluginManager();
 
         pm.registerEvents(this.moveListener, this);
@@ -187,13 +187,13 @@ public class Plugin extends JavaPlugin {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
-        List<String> parameters = new ArrayList<String>(Arrays.asList(args));
+        List<String> parameters = new ArrayList<>(Arrays.asList(args));
         this.handleCommand(sender, parameters);
         return true;
     }
 
 
-    public void handleCommand(CommandSender sender, List<String> parameters) {
+    private void handleCommand(CommandSender sender, List<String> parameters) {
         if (parameters.size() == 0) {
             this.commands.get(0).execute(sender, parameters);
             return;
@@ -202,9 +202,9 @@ public class Plugin extends JavaPlugin {
         String commandName = parameters.get(0).toLowerCase();
         parameters.remove(0);
 
-        for (BaseCommand fcommand : this.commands) {
-            if (fcommand.getAliases().contains(commandName)) {
-                fcommand.execute(sender, parameters);
+        for (BaseCommand command : this.commands) {
+            if (command.getAliases().contains(commandName)) {
+                command.execute(sender, parameters);
                 return;
             }
         }
@@ -212,7 +212,6 @@ public class Plugin extends JavaPlugin {
         sender.sendMessage(ChatColor.RED + "Unknown gate-command \"" + commandName + "\"." +
                 ChatColor.GREEN + " Try " + "/" + getBaseCommand() + " help");
     }
-
 
     /*
      * Logging

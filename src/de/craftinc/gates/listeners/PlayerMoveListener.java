@@ -39,7 +39,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 
 
 public class PlayerMoveListener implements Listener {
-    protected HashMap<String, Long> lastNoPermissionMessages = new HashMap<String, Long>();
+    private HashMap<String, Long> lastNoPermissionMessages = new HashMap<>();
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerMove(PlayerMoveEvent event) {
@@ -150,7 +150,7 @@ public class PlayerMoveListener implements Listener {
     }
 
 
-    protected boolean hasPermission(final Player player, final Gate gate) {
+    private boolean hasPermission(final Player player, final Gate gate) {
         if (Plugin.getPermission() == null) { // fallback: use the standard bukkit permission system
             return player.hasPermission(Plugin.permissionUse);
         } else {

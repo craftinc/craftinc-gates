@@ -68,17 +68,17 @@ public class CommandList extends BaseCommand {
             return;
         }
 
-        String message = TextUtil.titleize("List of all gates (" + page + "/" + allPages.size() + ")") + "\n";
+        String message = TextUtil.titleSize("List of all gates (" + page + "/" + allPages.size() + ")") + "\n";
         message += allPages.get(page - 1);
 
         sendMessage(message);
     }
 
     private static List<String> linesOfGateIds(List<String> gates) {
-        List<String> lines = new ArrayList<String>();
+        List<String> lines = new ArrayList<>();
 
         int index = 0;
-        List<String> gateIdsForCurrentLine = new ArrayList<String>();
+        List<String> gateIdsForCurrentLine = new ArrayList<>();
         int numCharactersInCurrentLine = 0;
 
         while (index < gates.size()) {
@@ -86,7 +86,7 @@ public class CommandList extends BaseCommand {
             int gateIdLength = gateId.length() + 2; // actual length + comma + whitespace
 
             if (gateIdLength > charactersPerLine && numCharactersInCurrentLine == 0) { // special case: very long gate id
-                gateIdsForCurrentLine = new ArrayList<String>();
+                gateIdsForCurrentLine = new ArrayList<>();
                 numCharactersInCurrentLine = 0;
 
                 while ((gateId.length() + 2) > charactersPerLine) {
@@ -113,7 +113,7 @@ public class CommandList extends BaseCommand {
             } else {  // the current gate does not fit on the
                 lines.add(TextUtil.implode(gateIdsForCurrentLine, ", ") + ", ");
 
-                gateIdsForCurrentLine = new ArrayList<String>();
+                gateIdsForCurrentLine = new ArrayList<>();
                 numCharactersInCurrentLine = 0;
             }
         }
@@ -154,7 +154,7 @@ public class CommandList extends BaseCommand {
             Player p = (Player) this.sender;
 
             // create a copy since we cannot iterate over a collection while modifying it!
-            Collection<Gate> gatesCopy = new ArrayList<Gate>(gates);
+            Collection<Gate> gatesCopy = new ArrayList<>(gates);
 
             for (Gate gate : gatesCopy) {
                 if (gate.getLocation() != null) {
@@ -186,7 +186,7 @@ public class CommandList extends BaseCommand {
      */
     private static List<List<String>> gatesSortedByName(Collection<Gate> allGates) {
         // create the lists
-        List<List<String>> ids = new ArrayList<List<String>>();
+        List<List<String>> ids = new ArrayList<>();
 
         for (int i = 0; i < 28; i++) {
             ids.add(new ArrayList<String>());
@@ -232,7 +232,7 @@ public class CommandList extends BaseCommand {
         }
 
         List<List<String>> gatesSortedByName = gatesSortedByName(gates);
-        List<String> allPages = new ArrayList<String>();
+        List<String> allPages = new ArrayList<>();
         int linesLeftOnPage = linesPerPage - 1;
         String currentPageString = "";
 

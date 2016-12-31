@@ -29,8 +29,8 @@ import de.craftinc.gates.Plugin;
 
 
 public class FloodUtil {
-    protected static final Set<BlockFace> exp1 = new HashSet<BlockFace>();
-    protected static final Set<BlockFace> exp2 = new HashSet<BlockFace>();
+    private static final Set<BlockFace> exp1 = new HashSet<>();
+    private static final Set<BlockFace> exp2 = new HashSet<>();
 
     static {
         exp1.add(BlockFace.UP);
@@ -53,7 +53,7 @@ public class FloodUtil {
      */
     public static Set<Block> getFrame(final Set<Block> blocks) {
         if (blocks == null || blocks.isEmpty()) {
-            return new HashSet<Block>();
+            return new HashSet<>();
         }
 
         // try to find gate's direction (north-south or east-west)
@@ -97,8 +97,8 @@ public class FloodUtil {
     }
 
 
-    protected static Set<Block> _getFrame(final Set<Block> blocks, final Set<BlockFace> searchDirections) {
-        Set<Block> frameBlocks = new HashSet<Block>();
+    private static Set<Block> _getFrame(final Set<Block> blocks, final Set<BlockFace> searchDirections) {
+        Set<Block> frameBlocks = new HashSet<>();
 
         for (Block b : blocks) {
 
@@ -126,7 +126,7 @@ public class FloodUtil {
             throw new IllegalArgumentException("'locations' must not be 'null'");
         }
 
-        Set<Block> blocks = new HashSet<Block>();
+        Set<Block> blocks = new HashSet<>();
 
         for (Location l : locations) {
             blocks.add(l.getBlock());
@@ -167,7 +167,7 @@ public class FloodUtil {
     }
 
 
-    protected static Set<Block> getAirFloodBlocks(final Block startBlock,
+    private static Set<Block> getAirFloodBlocks(final Block startBlock,
                                                   Set<Block> foundBlocks,
                                                   final Set<BlockFace> expandFaces,
                                                   int limit) {

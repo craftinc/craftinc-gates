@@ -21,7 +21,8 @@ import org.bukkit.ChatColor;
 import java.util.List;
 
 public class TextUtil {
-    public static String titleize(String str) {
+
+    public static String titleSize(String str) {
         String center = ".[ " + ChatColor.YELLOW + str + ChatColor.GOLD + " ].";
 
         if (center.length() >= 60) {
@@ -38,7 +39,7 @@ public class TextUtil {
     }
 
 
-    public static String repeat(String s, int times) {
+    private static String repeat(String s, int times) {
         if (times <= 0)
             return "";
 

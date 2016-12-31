@@ -32,7 +32,7 @@ public class CommandNearby extends BaseLocationCommand {
         } else {
             GateBlockChangeSender.temporaryHighlightGatesFrames(player, nearbyGates);
 
-            ArrayList<String> gateNames = new ArrayList<String>();
+            ArrayList<String> gateNames = new ArrayList<>();
 
             for (Gate g : nearbyGates) {
                 gateNames.add(g.getId());
