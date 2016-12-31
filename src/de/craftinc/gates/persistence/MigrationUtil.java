@@ -27,30 +27,25 @@ import java.util.List;
 import java.util.logging.Level;
 
 
-public class MigrationUtil
-{
-    public static boolean performMigration(int storageVersion, int currentVersion, List<Gate> gates)
-    {
+public class MigrationUtil {
+    public static boolean performMigration(int storageVersion, int currentVersion, List<Gate> gates) {
         if (storageVersion == 0 && currentVersion >= 2) {
             removePortalBlocks(gates);
             updateAllowVehicles(gates);
 
             return true;
-        }
-        else if (storageVersion == 1  && currentVersion >= 2) {
+        } else if (storageVersion == 1 && currentVersion >= 2) {
             updateAllowVehicles(gates);
 
             return true;
-        }
-        else {
+        } else {
             Plugin.log(Level.SEVERE, "Supplied storage version is currently not supported! Make sure you have the latest version of Craft Inc. Gates installed. Plugin will be disabled!");
             return false;
         }
     }
 
 
-    protected static void removePortalBlocks(List<Gate> gates)
-    {
+    protected static void removePortalBlocks(List<Gate> gates) {
         for (Gate g : gates) {
 
             for (Location l : g.getGateBlockLocations()) {
@@ -64,8 +59,7 @@ public class MigrationUtil
     }
 
 
-    protected static void updateAllowVehicles(List<Gate> gates)
-    {
+    protected static void updateAllowVehicles(List<Gate> gates) {
         for (Gate g : gates) {
 
             g.setAllowsVehicles(true);

@@ -23,11 +23,9 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-public class PlayerJoinListener implements Listener
-{
+public class PlayerJoinListener implements Listener {
     @EventHandler(priority = EventPriority.NORMAL)
-    public void onPlayerJoin(PlayerJoinEvent event)
-    {
+    public void onPlayerJoin(PlayerJoinEvent event) {
         GateBlockChangeSender.updateGateBlocks(event.getPlayer());
     }
 }

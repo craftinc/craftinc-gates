@@ -23,61 +23,48 @@ import de.craftinc.gates.Gate;
 import de.craftinc.gates.GatesManager;
 import de.craftinc.gates.Plugin;
 
+public class CommandNew extends BaseLocationCommand {
 
-public class CommandNew extends BaseLocationCommand
-{
-	public CommandNew()
-	{
-		aliases.add("new");
+    public CommandNew() {
+        aliases.add("new");
         aliases.add("n");
 
-		requiredParameters.add("id");		
-		
-		senderMustBePlayer = true;
-		hasGateParam = false;
-		
-		helpDescription = "Create a gate at your current location.";
-		
-		requiredPermission = Plugin.permissionManage;
-		
-		needsPermissionAtCurrentLocation = true;
-		shouldPersistToDisk = true;
-		
-		senderMustBePlayer = true;
-	}
-	
-	
-	public void perform() 
-	{
-		String id = parameters.get(0);
-		GatesManager gatesManager = Plugin.getPlugin().getGatesManager();
-		
-		if (gatesManager.gateExists(id)) {
-			sendMessage(ChatColor.RED + "Creating the gate failed! " + "A gate with the supplied id already exists!");
-			return;
-		}
-		
-		gate = new Gate(id);
-		sendMessage(ChatColor.GREEN + "Gate with id '" + id + "' was created.");
+        requiredParameters.add("id");
 
-		
-		Location playerLocation = getValidPlayerLocation();
-		
-		if (playerLocation != null) {
-			
-			try {
-				gate.setLocation(playerLocation);
-				sendMessage(ChatColor.AQUA + "The gates location has been set to your current location.");
-			} 
-			catch (Exception ignored) {}
-		}
-		else 
-		{
-			sendMessage(ChatColor.RED + "Your location is invalid!" + ChatColor.AQUA + "Go somewhere else and execute:");
-			sendMessage(new CommandLocation().getUsageTemplate(true, true));
-		}
+        senderMustBePlayer = true;
+        hasGateParam = false;
+        helpDescription = "Create a gate at your current location.";
+        requiredPermission = Plugin.permissionManage;
+        needsPermissionAtCurrentLocation = true;
+        shouldPersistToDisk = true;
+        senderMustBePlayer = true;
+    }
+
+    public void perform() {
+        String id = parameters.get(0);
+        GatesManager gatesManager = Plugin.getPlugin().getGatesManager();
+
+        if (gatesManager.gateExists(id)) {
+            sendMessage(ChatColor.RED + "Creating the gate failed! " + "A gate with the supplied id already exists!");
+            return;
+        }
+
+        gate = new Gate(id);
+        sendMessage(ChatColor.GREEN + "Gate with id '" + id + "' was created.");
+
+        Location playerLocation = getValidPlayerLocation();
+
+        if (playerLocation != null) {
+            try {
+                gate.setLocation(playerLocation);
+                sendMessage(ChatColor.AQUA + "The gates location has been set to your current location.");
+            } catch (Exception ignored) {
+            }
+        } else {
+            sendMessage(ChatColor.RED + "Your location is invalid!" + ChatColor.AQUA + "Go somewhere else and execute:");
+            sendMessage(new CommandLocation().getUsageTemplate(true, true));
+        }
 
         gatesManager.handleNewGate(gate);
-	}
+    }
 }
-

@@ -28,32 +28,30 @@ import org.bukkit.block.BlockFace;
 import de.craftinc.gates.Plugin;
 
 
-public class FloodUtil 
-{
-	protected static final Set<BlockFace> exp1 = new HashSet<BlockFace>();
+public class FloodUtil {
+    protected static final Set<BlockFace> exp1 = new HashSet<BlockFace>();
     protected static final Set<BlockFace> exp2 = new HashSet<BlockFace>();
-	
-	static 
-	{
-		exp1.add(BlockFace.UP);
-		exp1.add(BlockFace.DOWN);
-		exp1.add(BlockFace.EAST);
-		exp1.add(BlockFace.WEST);
-		
-		exp2.add(BlockFace.UP);
-		exp2.add(BlockFace.DOWN);
-		exp2.add(BlockFace.NORTH);
-		exp2.add(BlockFace.SOUTH);
-	}
+
+    static {
+        exp1.add(BlockFace.UP);
+        exp1.add(BlockFace.DOWN);
+        exp1.add(BlockFace.EAST);
+        exp1.add(BlockFace.WEST);
+
+        exp2.add(BlockFace.UP);
+        exp2.add(BlockFace.DOWN);
+        exp2.add(BlockFace.NORTH);
+        exp2.add(BlockFace.SOUTH);
+    }
 
 
     /**
      * Returns the all frame blocks of an gate.
+     *
      * @param blocks All blocks inside the gate.
      * @return A Set containing all frame block. Will never return 'null'.
      */
-    public static Set<Block> getFrame(final Set<Block> blocks)
-    {
+    public static Set<Block> getFrame(final Set<Block> blocks) {
         if (blocks == null || blocks.isEmpty()) {
             return new HashSet<Block>();
         }
@@ -64,7 +62,7 @@ public class FloodUtil
         for (Block b : blocks) {
 
             if (blocks.contains(b.getRelative(BlockFace.EAST)) ||
-                blocks.contains(b.getRelative(BlockFace.WEST))) {
+                    blocks.contains(b.getRelative(BlockFace.WEST))) {
 
                 gateFrameSearchFaces = exp1;
                 break;
@@ -81,8 +79,7 @@ public class FloodUtil
 
         if (gateFrameSearchFaces != null) {
             return _getFrame(blocks, gateFrameSearchFaces);
-        }
-        else { // no direction found (the gate might only consist of blocks one over another)
+        } else { // no direction found (the gate might only consist of blocks one over another)
 
             // Try one direction and check if the found blocks are not air.
             // If air is found (frame broken or wrong direction) return the other direction
@@ -100,9 +97,7 @@ public class FloodUtil
     }
 
 
-
-    protected static Set<Block> _getFrame(final Set<Block> blocks, final Set<BlockFace> searchDirections)
-    {
+    protected static Set<Block> _getFrame(final Set<Block> blocks, final Set<BlockFace> searchDirections) {
         Set<Block> frameBlocks = new HashSet<Block>();
 
         for (Block b : blocks) {
@@ -122,11 +117,11 @@ public class FloodUtil
 
     /**
      * Returns the all frame blocks of an gate.
+     *
      * @param locations All locations inside the gate.
      * @return A Set containing all frame block. Will never return 'null'.
      */
-    public static Set<Block> getFrameWithLocations(final Set<Location> locations)
-    {
+    public static Set<Block> getFrameWithLocations(final Set<Location> locations) {
         if (locations == null) {
             throw new IllegalArgumentException("'locations' must not be 'null'");
         }
@@ -140,10 +135,9 @@ public class FloodUtil
         return getFrame(blocks);
     }
 
-	
-	// For the same frame and location this set of blocks is deterministic
-	public static Set<Block> getGatePortalBlocks(final Block block)
-	{
+
+    // For the same frame and location this set of blocks is deterministic
+    public static Set<Block> getGatePortalBlocks(final Block block) {
         if (block == null) {
             throw new IllegalArgumentException("'block' must not be 'null'");
         }
@@ -151,57 +145,56 @@ public class FloodUtil
         int frameBlockSearchLimit = Plugin.getPlugin().getConfig().getInt(ConfigurationUtil.confMaxGateBlocksKey);
 
         Set<Block> blocks1 = getAirFloodBlocks(block, new HashSet<Block>(), exp1, frameBlockSearchLimit);
-		Set<Block> blocks2 = getAirFloodBlocks(block, new HashSet<Block>(), exp2, frameBlockSearchLimit);
-		
-		if (blocks1 == null && blocks2 == null) {
-			return null;
-		}
-		
-		if (blocks1 == null) {
-			return blocks2;
-		}
-		
-		if (blocks2 == null) {
-			return blocks1;
-		}
-		
-		if (blocks1.size() > blocks2.size()) {
-			return blocks2;
-		}
-		
-		return blocks1;
-	}
+        Set<Block> blocks2 = getAirFloodBlocks(block, new HashSet<Block>(), exp2, frameBlockSearchLimit);
 
-
-    protected static Set<Block> getAirFloodBlocks(final Block           startBlock,
-                                                        Set<Block>      foundBlocks,
-                                                  final Set<BlockFace>  expandFaces,
-                                                        int             limit)
-	{
-		if (foundBlocks == null) {
-			return null;
-		}
-		
-		if  (foundBlocks.size() > limit) {
-			Plugin.log(Level.ALL, "exceeding gate size limit.");
-			return null;
-		}
-		
-		if (foundBlocks.contains(startBlock))  {
-			return foundBlocks;
+        if (blocks1 == null && blocks2 == null) {
+            return null;
         }
-		
-		if (startBlock.getType() == Material.AIR) {
-			// ... We found a block :D ...
-			foundBlocks.add(startBlock);
-			
-			// ... And flood away !
-			for (BlockFace face : expandFaces) {
-				Block potentialBlock = startBlock.getRelative(face);
-				foundBlocks = getAirFloodBlocks(potentialBlock, foundBlocks, expandFaces, limit);
-			}
-		}
-		
-		return foundBlocks;
-	}
+
+        if (blocks1 == null) {
+            return blocks2;
+        }
+
+        if (blocks2 == null) {
+            return blocks1;
+        }
+
+        if (blocks1.size() > blocks2.size()) {
+            return blocks2;
+        }
+
+        return blocks1;
+    }
+
+
+    protected static Set<Block> getAirFloodBlocks(final Block startBlock,
+                                                  Set<Block> foundBlocks,
+                                                  final Set<BlockFace> expandFaces,
+                                                  int limit) {
+        if (foundBlocks == null) {
+            return null;
+        }
+
+        if (foundBlocks.size() > limit) {
+            Plugin.log(Level.ALL, "exceeding gate size limit.");
+            return null;
+        }
+
+        if (foundBlocks.contains(startBlock)) {
+            return foundBlocks;
+        }
+
+        if (startBlock.getType() == Material.AIR) {
+            // ... We found a block :D ...
+            foundBlocks.add(startBlock);
+
+            // ... And flood away !
+            for (BlockFace face : expandFaces) {
+                Block potentialBlock = startBlock.getRelative(face);
+                foundBlocks = getAirFloodBlocks(potentialBlock, foundBlocks, expandFaces, limit);
+            }
+        }
+
+        return foundBlocks;
+    }
 }

@@ -20,10 +20,8 @@ import org.bukkit.Location;
 import org.bukkit.entity.*;
 
 
-public class VehicleCloner
-{
-    public static Vehicle clone(Vehicle parent, Location cloneLocation)
-    {
+public class VehicleCloner {
+    public static Vehicle clone(Vehicle parent, Location cloneLocation) {
         Vehicle clone = cloneLocation.getWorld().spawn(cloneLocation, parent.getClass());
 
         clone.setFallDistance(parent.getFallDistance());
@@ -33,18 +31,17 @@ public class VehicleCloner
         clone.setLastDamageCause(parent.getLastDamageCause());
 
         if (clone instanceof Boat) {
-            Boat boat = (Boat)clone;
-            Boat parentBoat = (Boat)parent;
+            Boat boat = (Boat) clone;
+            Boat parentBoat = (Boat) parent;
 
             boat.setMaxSpeed(parentBoat.getMaxSpeed());
             boat.setOccupiedDeceleration(parentBoat.getOccupiedDeceleration());
             boat.setUnoccupiedDeceleration(parentBoat.getUnoccupiedDeceleration());
             boat.setWorkOnLand(parentBoat.getWorkOnLand());
             boat.setVelocity(parentBoat.getVelocity());
-        }
-        else if (clone instanceof Animals) {
-            Animals animal = (Animals)clone;
-            Animals parentAnimal = (Animals)parent;
+        } else if (clone instanceof Animals) {
+            Animals animal = (Animals) clone;
+            Animals parentAnimal = (Animals) parent;
 
             animal.setMaxHealth(parentAnimal.getMaxHealth());
             animal.setHealth(parentAnimal.getMaxHealth());
@@ -63,8 +60,8 @@ public class VehicleCloner
             animal.setAgeLock(parentAnimal.getAgeLock());
 
             if (clone instanceof Horse) {
-                Horse horse = (Horse)clone;
-                Horse parentHorse = (Horse)parent;
+                Horse horse = (Horse) clone;
+                Horse parentHorse = (Horse) parent;
 
                 horse.getInventory().setArmor(parentHorse.getInventory().getArmor());
                 horse.getInventory().setSaddle(parentHorse.getInventory().getSaddle());
@@ -81,23 +78,20 @@ public class VehicleCloner
 
                 if (parentHorse.isAdult()) {
                     horse.setAdult();
-                }
-                else {
+                } else {
                     horse.setBaby();
                 }
 
                 horse.setBreed(parentHorse.canBreed());
-            }
-            else  if (clone instanceof Pig) {
-                Pig pig = (Pig)clone;
-                Pig parentPig = (Pig)parent;
+            } else if (clone instanceof Pig) {
+                Pig pig = (Pig) clone;
+                Pig parentPig = (Pig) parent;
 
                 pig.setSaddle(parentPig.hasSaddle());
             }
-        }
-        else if (clone instanceof Minecart) {
-            Minecart minecart = (Minecart)clone;
-            Minecart parentMinecart = (Minecart)parent;
+        } else if (clone instanceof Minecart) {
+            Minecart minecart = (Minecart) clone;
+            Minecart parentMinecart = (Minecart) parent;
 
             minecart.setDerailedVelocityMod(parentMinecart.getDerailedVelocityMod());
             minecart.setFlyingVelocityMod(parentMinecart.getFlyingVelocityMod());

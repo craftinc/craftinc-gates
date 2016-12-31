@@ -16,7 +16,6 @@
 */
 package de.craftinc.gates.commands;
 
-
 import java.util.Set;
 
 import de.craftinc.gates.util.GateBlockChangeSender;
@@ -26,59 +25,46 @@ import org.bukkit.Location;
 import de.craftinc.gates.Plugin;
 import org.bukkit.block.Block;
 
+public class CommandLocation extends BaseLocationCommand {
 
-public class CommandLocation extends BaseLocationCommand
-{
-	public CommandLocation()
-	{
-		aliases.add("location");
-		aliases.add("lo");
-		
-		requiredParameters.add("id");		
-		
-		helpDescription = "Set the entrance of the gate to your current location.";
-		
-		requiredPermission = Plugin.permissionManage;
-		
-		needsPermissionAtCurrentLocation = true;
-		shouldPersistToDisk = true;
-		senderMustBePlayer = true;
-	}
-	
-	
-	public void perform() 
-	{
-		Location playerLocation = getValidPlayerLocation();
-		
-		if (playerLocation == null) 
-		{
-			sendMessage("There is not enough room for a gate to open here");
-			return;
-		}
+    public CommandLocation() {
+        aliases.add("location");
+        aliases.add("lo");
+
+        requiredParameters.add("id");
+        helpDescription = "Set the entrance of the gate to your current location.";
+        requiredPermission = Plugin.permissionManage;
+
+        needsPermissionAtCurrentLocation = true;
+        shouldPersistToDisk = true;
+        senderMustBePlayer = true;
+    }
+
+    public void perform() {
+        Location playerLocation = getValidPlayerLocation();
+
+        if (playerLocation == null) {
+            sendMessage("There is not enough room for a gate to open here");
+            return;
+        }
 
         Location oldLocation = gate.getLocation();
         Set<Location> oldGateBlockLocations = gate.getGateBlockLocations();
         Set<Block> oldFrameBlocks = gate.getGateFrameBlocks();
-		
-		try 
-		{
+
+        try {
             if (gate.isOpen()) {
                 GateBlockChangeSender.updateGateBlocks(gate, true);
             }
 
             gate.setLocation(playerLocation);
-
-			sendMessage(ChatColor.GREEN + "The location of '" + gate.getId() + "' is now at your current location.");
-		} 
-		catch (Exception e) 
-		{
+            sendMessage(ChatColor.GREEN + "The location of '" + gate.getId() + "' is now at your current location.");
+        } catch (Exception e) {
             sendMessage(ChatColor.RED + "There seems to be no frame at your new location! The gate got closed!" + ChatColor.AQUA + " You should build a frame now and execute:");
             sendMessage(new CommandOpen().getUsageTemplate(true, true));
-		}
-        finally {
+        } finally {
             Plugin.getPlugin().getGatesManager().handleGateLocationChange(gate, oldLocation, oldGateBlockLocations, oldFrameBlocks);
             GateBlockChangeSender.updateGateBlocks(gate);
         }
     }
 }
-

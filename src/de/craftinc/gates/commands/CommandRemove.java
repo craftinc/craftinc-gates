@@ -21,33 +21,29 @@ import org.bukkit.ChatColor;
 
 import de.craftinc.gates.Plugin;
 
+public class CommandRemove extends BaseCommand {
 
-public class CommandRemove extends BaseCommand
-{
-	public CommandRemove()
-	{
-		aliases.add("delete");
-		aliases.add("del");
-		aliases.add("remove");
-		
-		requiredParameters.add("id");		
-		
-		senderMustBePlayer = false;
-		helpDescription = "Removes the gate from the game.";
-		
-		requiredPermission = Plugin.permissionManage;
-		
-		needsPermissionAtCurrentLocation = false;
-		shouldPersistToDisk = true;
-		
-		senderMustBePlayer = false;
-	}
-	
-	
-	public void perform() 
-	{
-		Plugin.getPlugin().getGatesManager().handleDeletion(gate);
+    public CommandRemove() {
+        aliases.add("delete");
+        aliases.add("del");
+        aliases.add("remove");
+
+        requiredParameters.add("id");
+
+        senderMustBePlayer = false;
+        helpDescription = "Removes the gate from the game.";
+
+        requiredPermission = Plugin.permissionManage;
+
+        needsPermissionAtCurrentLocation = false;
+        shouldPersistToDisk = true;
+
+        senderMustBePlayer = false;
+    }
+
+    public void perform() {
+        Plugin.getPlugin().getGatesManager().handleDeletion(gate);
         GateBlockChangeSender.updateGateBlocks(gate, true);
-		sendMessage(ChatColor.GREEN + "Gate with id '" + gate.getId() + "' was deleted.");
-	}
+        sendMessage(ChatColor.GREEN + "Gate with id '" + gate.getId() + "' was deleted.");
+    }
 }

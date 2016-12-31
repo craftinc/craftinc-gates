@@ -16,7 +16,6 @@
 */
 package de.craftinc.gates.commands;
 
-
 import de.craftinc.gates.util.GateBlockChangeSender;
 import org.bukkit.ChatColor;
 
@@ -24,30 +23,27 @@ import de.craftinc.gates.Plugin;
 import de.craftinc.gates.util.TextUtil;
 import org.bukkit.entity.Player;
 
+public class CommandInfo extends BaseCommand {
 
-public class CommandInfo extends BaseCommand 
-{
-	public CommandInfo()
-	{
-		aliases.add("info");
-		aliases.add("i");
+    public CommandInfo() {
+        aliases.add("info");
+        aliases.add("i");
 
         optionalParameters.add("id");
-		
-		helpDescription = "Print detailed information about a certain or the closest gate.";
-		
-		requiredPermission = Plugin.permissionInfo;
-		
-		needsPermissionAtCurrentLocation = false;
-		shouldPersistToDisk = false;
-		senderMustBePlayer = false;
+
+        helpDescription = "Print detailed information about a certain or the closest gate.";
+
+        requiredPermission = Plugin.permissionInfo;
+
+        needsPermissionAtCurrentLocation = false;
+        shouldPersistToDisk = false;
+        senderMustBePlayer = false;
         hasGateParam = false;
-	}
-	
-	
-	public void perform() 
-	{
-		if (this.parameters.size() > 0) {
+    }
+
+
+    public void perform() {
+        if (this.parameters.size() > 0) {
 
             if (!this.setGateUsingParameter(this.parameters.get(0))) {
                 sendMessage(ChatColor.RED + "You either provided a invalid gate or do not have permission to " + this.helpDescription.toLowerCase());
@@ -55,8 +51,7 @@ public class CommandInfo extends BaseCommand
             }
 
             sendMessage(TextUtil.titleize("Information about: '" + ChatColor.WHITE + gate.getId() + ChatColor.YELLOW + "'"));
-        }
-        else {
+        } else {
             boolean senderIsPlayer = this.sender instanceof Player;
 
             if (!senderIsPlayer) {
@@ -64,7 +59,7 @@ public class CommandInfo extends BaseCommand
                 return;
             }
 
-            Player p = (Player)this.sender;
+            Player p = (Player) this.sender;
             this.gate = Plugin.getPlugin().getGatesManager().getNearestGate(p.getLocation());
 
             if (!this.hasPermission() || this.gate == null) {
@@ -85,22 +80,22 @@ public class CommandInfo extends BaseCommand
             openHiddenMessage += ChatColor.AQUA + " closed";
 
         if (gate.isHidden())
-            openHiddenMessage += ChatColor.DARK_AQUA +" and" + ChatColor.AQUA + " hidden";
+            openHiddenMessage += ChatColor.DARK_AQUA + " and" + ChatColor.AQUA + " hidden";
 
         openHiddenMessage += ".\n";
 
         sendMessage(openHiddenMessage);
 
         if (gate.getLocation() != null)
-            sendMessage(ChatColor.DARK_AQUA + "location: " + ChatColor.AQUA + "( " + (int)gate.getLocation().getX() +
-                    " | " + (int)gate.getLocation().getY() + " | " + (int)gate.getLocation().getZ() + " ) in " +
+            sendMessage(ChatColor.DARK_AQUA + "location: " + ChatColor.AQUA + "( " + (int) gate.getLocation().getX() +
+                    " | " + (int) gate.getLocation().getY() + " | " + (int) gate.getLocation().getZ() + " ) in " +
                     gate.getLocation().getWorld().getName());
         else
             sendMessage(ChatColor.DARK_AQUA + "NOTE: this gate has no location");
 
         if (gate.getExit() != null)
-            sendMessage(ChatColor.DARK_AQUA + "exit:    " + ChatColor.AQUA + "( " + (int)gate.getExit().getX() + " | "
-                    + (int)gate.getExit().getY() + " | " + (int)gate.getExit().getZ() + " ) in " +
+            sendMessage(ChatColor.DARK_AQUA + "exit:    " + ChatColor.AQUA + "( " + (int) gate.getExit().getX() + " | "
+                    + (int) gate.getExit().getY() + " | " + (int) gate.getExit().getZ() + " ) in " +
                     gate.getExit().getWorld().getName());
         else
             sendMessage(ChatColor.DARK_AQUA + "NOTE: this gate has no exit");
@@ -111,7 +106,7 @@ public class CommandInfo extends BaseCommand
 
 
         if (this.sender instanceof Player) {
-            GateBlockChangeSender.temporaryHighlightGateFrame((Player)this.sender, this.gate);
+            GateBlockChangeSender.temporaryHighlightGateFrame((Player) this.sender, this.gate);
         }
-	}
+    }
 }

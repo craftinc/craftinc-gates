@@ -24,11 +24,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 
 
-public class PlayerChangedWorldListener implements Listener
-{
+public class PlayerChangedWorldListener implements Listener {
     @EventHandler(priority = EventPriority.NORMAL)
-    public void onPlayerChangeWorld(PlayerChangedWorldEvent event)
-    {
+    public void onPlayerChangeWorld(PlayerChangedWorldEvent event) {
         GateBlockChangeSender.updateGateBlocks(event.getPlayer());
     }
 }

@@ -35,8 +35,7 @@ import de.craftinc.gates.util.SimpleChunk;
 import de.craftinc.gates.util.SimpleLocation;
 
 
-public class GatesManager 
-{
+public class GatesManager {
     protected File gatesConfigFile;
     protected FileConfiguration gatesConfig;
     protected static final String gatesPath = "gates"; // path to gates inside the yaml file
@@ -57,38 +56,34 @@ public class GatesManager
     protected Set<GateChangeListener> changeListeners = new HashSet<GateChangeListener>();
 
 
-    public void addGateChangeListener(GateChangeListener listener)
-    {
+    public void addGateChangeListener(GateChangeListener listener) {
         this.changeListeners.add(listener);
     }
 
 
-    public void removeGateChangeListener(GateChangeListener listener)
-    {
+    public void removeGateChangeListener(GateChangeListener listener) {
         this.changeListeners.remove(listener);
     }
 
 
-	public Gate getGateWithId(final String id)
-	{
-		return gatesById.get(id.toLowerCase());
-	}
-	
-	
-	public Set<Gate> getNearbyGates(final Chunk chunk)
-	{
-		SimpleChunk simpleChunk = new SimpleChunk(chunk);
-		return gatesByChunk.get(simpleChunk);
-	}
+    public Gate getGateWithId(final String id) {
+        return gatesById.get(id.toLowerCase());
+    }
+
+
+    public Set<Gate> getNearbyGates(final Chunk chunk) {
+        SimpleChunk simpleChunk = new SimpleChunk(chunk);
+        return gatesByChunk.get(simpleChunk);
+    }
 
 
     /**
      * Returns the closest gate.
+     *
      * @param location The location at which to look for a gate.
      * @return Might return null if there are no nearby gates.
      */
-    public Gate getNearestGate(final Location location)
-    {
+    public Gate getNearestGate(final Location location) {
         Set<Gate> nearbyGates = getNearbyGates(location.getChunk());
 
         if (nearbyGates == null) {
@@ -110,105 +105,97 @@ public class GatesManager
         return nearestGate;
     }
 
-	
-	public Gate getGateAtLocation(final Location location)
-	{
-		SimpleLocation simpleLocation = new SimpleLocation(location);
-		return gatesByLocation.get(simpleLocation);
-	}
+
+    public Gate getGateAtLocation(final Location location) {
+        SimpleLocation simpleLocation = new SimpleLocation(location);
+        return gatesByLocation.get(simpleLocation);
+    }
 
 
-    public Gate getGateAtFrameLocation(final Location location)
-    {
+    public Gate getGateAtFrameLocation(final Location location) {
         SimpleLocation simpleLocation = new SimpleLocation(location);
         return gatesByFrameLocation.get(simpleLocation);
     }
 
-	
-	public void saveGatesToDisk()
-	{
-		if (storageFileIsInvalid) {
+
+    public void saveGatesToDisk() {
+        if (storageFileIsInvalid) {
             Plugin.log(Level.SEVERE, "ERROR: Not saving gates to disk. Storage file is invalid or corrupted!");
             return;
         }
 
         gatesConfig.set(gatesPath, gates);
         gatesConfig.set(storageVersionPath, storageVersion);
-		
-		try {
-			gatesConfig.save(gatesConfigFile);
-			Plugin.log("Saved gates to disk.");
-		} 
-		catch (IOException e) {
-			Plugin.log(Level.SEVERE, "ERROR: Could not save gates to disk.");
-			e.printStackTrace();
-		}
-	}
-	
-	
-	@SuppressWarnings("unchecked")
-	public boolean loadGatesFromDisk()
-	{
-		this.gatesConfigFile = new File(Plugin.getPlugin().getDataFolder(), "gates.yml");
-		
-		if(!this.gatesConfigFile.exists()) {
-			try {
+
+        try {
+            gatesConfig.save(gatesConfigFile);
+            Plugin.log("Saved gates to disk.");
+        } catch (IOException e) {
+            Plugin.log(Level.SEVERE, "ERROR: Could not save gates to disk.");
+            e.printStackTrace();
+        }
+    }
+
+
+    @SuppressWarnings("unchecked")
+    public boolean loadGatesFromDisk() {
+        this.gatesConfigFile = new File(Plugin.getPlugin().getDataFolder(), "gates.yml");
+
+        if (!this.gatesConfigFile.exists()) {
+            try {
                 boolean isNew = this.gatesConfigFile.createNewFile();
 
                 if (isNew) {
                     Plugin.log(Level.FINEST, "Created gate storage file.");
                 }
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 this.storageFileIsInvalid = true;
-				Plugin.log(Level.SEVERE, "Cannot create gate storage file! No gates will be persisted.");
+                Plugin.log(Level.SEVERE, "Cannot create gate storage file! No gates will be persisted.");
                 return false;
-			}
-		}
-		
-		this.gatesConfig = new YamlConfiguration();
+            }
+        }
+
+        this.gatesConfig = new YamlConfiguration();
 
         try {
             this.gatesConfig.load(this.gatesConfigFile);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             this.storageFileIsInvalid = true;
             Plugin.log(Level.SEVERE, "Gate file on disk is invalid. No gates loaded. Plugin will be disabled! (" + Arrays.toString(e.getStackTrace()) + ")");
             return false;
         }
 
-		this.gates = (List<Gate>)gatesConfig.getList(gatesPath);
+        this.gates = (List<Gate>) gatesConfig.getList(gatesPath);
 
         if (this.gates == null) {
             this.gates = new ArrayList<Gate>();
         }
 
         for (Object o : this.gates) {
-			
-			if (!(o instanceof Gate)) {
+
+            if (!(o instanceof Gate)) {
                 this.storageFileIsInvalid = true;
-				Plugin.log(Level.SEVERE, "Gate file on disk is invalid. No gates loaded. Plugin will be disabled! (Invalid gate class detected)");
+                Plugin.log(Level.SEVERE, "Gate file on disk is invalid. No gates loaded. Plugin will be disabled! (Invalid gate class detected)");
                 return false;
-        	}
-		}
+            }
+        }
 
         for (Gate g : this.gates) {
             try {
                 g.validate();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 try {
                     g.setOpen(false);
+                } catch (Exception ignored) {
                 }
-                catch (Exception ignored) { }
 
                 Plugin.log(Level.FINER, "closed gate '" + g.getId() + "' reason: " + e.getMessage());
             }
         }
 
-		fillGatesById();
-		fillGatesByChunk();
-		fillGatesByLocation();
+        fillGatesById();
+        fillGatesByChunk();
+        fillGatesByLocation();
         fillGatesByFrameLocation();
 
         Plugin.log("Loaded " + this.gates.size() + " gates.");
@@ -231,11 +218,10 @@ public class GatesManager
         }
 
         return true;
-	}
+    }
 
 
-    protected int getChunkRadius()
-    {
+    protected int getChunkRadius() {
         if (this.chunkRadius == 0) {
             this.chunkRadius = Plugin.getPlugin().getConfig().getInt(ConfigurationUtil.confPlayerGateBlockUpdateRadiusKey);
             this.chunkRadius = this.chunkRadius >> 4;
@@ -245,21 +231,19 @@ public class GatesManager
     }
 
 
-    protected void fillGatesById()
-	{
-		gatesById = new HashMap<String, Gate>((int)(gates.size() * 1.25));
-		
-		for (Gate g : gates) {
-			this.addGateWithId(g);
-		}
-	}
+    protected void fillGatesById() {
+        gatesById = new HashMap<String, Gate>((int) (gates.size() * 1.25));
+
+        for (Gate g : gates) {
+            this.addGateWithId(g);
+        }
+    }
 
 
-    protected void fillGatesByChunk()
-	{
-		HashSet<SimpleChunk> chunksUsedByGates = new HashSet<SimpleChunk>();
-		
-		for (Gate g : gates) {
+    protected void fillGatesByChunk() {
+        HashSet<SimpleChunk> chunksUsedByGates = new HashSet<SimpleChunk>();
+
+        for (Gate g : gates) {
 
             if (g.getLocation() != null) {
 
@@ -268,59 +252,57 @@ public class GatesManager
                 int x = c.getX();
                 int z = c.getZ();
 
-                for (int i = x-getChunkRadius(); i < x+getChunkRadius(); i++) {
+                for (int i = x - getChunkRadius(); i < x + getChunkRadius(); i++) {
 
-                    for (int j = z-getChunkRadius(); j < z+getChunkRadius(); j++) {
+                    for (int j = z - getChunkRadius(); j < z + getChunkRadius(); j++) {
 
                         chunksUsedByGates.add(new SimpleChunk(i, j, c.getWorld()));
                     }
                 }
             }
-		}
-		
-		gatesByChunk = new HashMap<SimpleChunk, Set<Gate>>((int)(chunksUsedByGates.size() * 1.25));
-		
-		for (Gate g : gates) {
-			this.addGateByChunk(g);
-		}
-	}
+        }
+
+        gatesByChunk = new HashMap<SimpleChunk, Set<Gate>>((int) (chunksUsedByGates.size() * 1.25));
+
+        for (Gate g : gates) {
+            this.addGateByChunk(g);
+        }
+    }
 
 
-    protected void fillGatesByLocation()
-	{
-		Set<Location> gateBlocks = new HashSet<Location>();
-		
-		for (Gate g : gates) {
+    protected void fillGatesByLocation() {
+        Set<Location> gateBlocks = new HashSet<Location>();
+
+        for (Gate g : gates) {
 
             for (Location l : g.getGateBlockLocations()) {
                 gateBlocks.add(l);
 
                 Location headLocation = new Location(l.getWorld(),
-                                                     l.getX(),
-                                                     l.getY()+1,
-                                                     l.getZ());
+                        l.getX(),
+                        l.getY() + 1,
+                        l.getZ());
 
                 gateBlocks.add(headLocation);
             }
-		}
-		
-		gatesByLocation = new HashMap<SimpleLocation, Gate>((int)(gateBlocks.size()*1.25));
-		
-		for (Gate g : gates) {
-			this.addGateByLocations(g);
-		}
-	}
+        }
+
+        gatesByLocation = new HashMap<SimpleLocation, Gate>((int) (gateBlocks.size() * 1.25));
+
+        for (Gate g : gates) {
+            this.addGateByLocations(g);
+        }
+    }
 
 
-    protected void fillGatesByFrameLocation()
-    {
+    protected void fillGatesByFrameLocation() {
         int numFrameBlocks = 0;
 
         for (Gate g : gates) {
             numFrameBlocks += g.gateFrameBlocks.size();
         }
 
-        gatesByFrameLocation = new HashMap<SimpleLocation, Gate>((int)(numFrameBlocks*1.25));
+        gatesByFrameLocation = new HashMap<SimpleLocation, Gate>((int) (numFrameBlocks * 1.25));
 
         for (Gate g : gates) {
             this.addGateByFrameLocations(g);
@@ -328,21 +310,18 @@ public class GatesManager
     }
 
 
-    protected void removeGateById(final String id)
-	{
-		gatesById.remove(id);
-	}
+    protected void removeGateById(final String id) {
+        gatesById.remove(id);
+    }
 
 
-    protected void addGateWithId(final Gate g)
-	{
-		gatesById.put(g.getId(), g);
-	}
+    protected void addGateWithId(final Gate g) {
+        gatesById.put(g.getId(), g);
+    }
 
 
-    protected void removeGateByLocation(final Set<Location> gateBlocks)
-	{
-		if (gateBlocks != null) {
+    protected void removeGateByLocation(final Set<Location> gateBlocks) {
+        if (gateBlocks != null) {
 
             for (Location l : gateBlocks) {
 
@@ -353,11 +332,10 @@ public class GatesManager
                 gatesByLocation.remove(headLocation);
             }
         }
-	}
+    }
 
 
-    protected void removeGateByFrameLocation(final Set<Block> gateFrameBlocks)
-    {
+    protected void removeGateByFrameLocation(final Set<Block> gateFrameBlocks) {
         if (gateFrameBlocks != null) {
 
             for (Block block : gateFrameBlocks) {
@@ -368,21 +346,19 @@ public class GatesManager
     }
 
 
-    protected void addGateByLocations(final Gate g)
-	{
+    protected void addGateByLocations(final Gate g) {
         for (Location l : g.getGateBlockLocations()) {
 
-			SimpleLocation sl = new SimpleLocation(l);
-			gatesByLocation.put(sl, g);
+            SimpleLocation sl = new SimpleLocation(l);
+            gatesByLocation.put(sl, g);
 
             SimpleLocation headLocation = new SimpleLocation(l, true);
             gatesByLocation.put(headLocation, g);
-		}
-	}
+        }
+    }
 
 
-    protected void addGateByFrameLocations(final Gate g)
-    {
+    protected void addGateByFrameLocations(final Gate g) {
         for (Block block : g.getGateFrameBlocks()) {
             SimpleLocation sl = new SimpleLocation(block.getLocation());
             gatesByFrameLocation.put(sl, g);
@@ -390,20 +366,19 @@ public class GatesManager
     }
 
 
-    protected void removeGateFromChunk(final Gate g, final Location l)
-	{
-		if (l != null) {
+    protected void removeGateFromChunk(final Gate g, final Location l) {
+        if (l != null) {
 
             Chunk c = l.getChunk();
             int x = c.getX();
             int z = c.getZ();
 
-            for (int i = x-getChunkRadius(); i < x+getChunkRadius(); i++) {
+            for (int i = x - getChunkRadius(); i < x + getChunkRadius(); i++) {
 
-                for (int j = z-getChunkRadius(); j < z+getChunkRadius(); j++) {
+                for (int j = z - getChunkRadius(); j < z + getChunkRadius(); j++) {
 
                     SimpleChunk sc = new SimpleChunk(i, j, c.getWorld());
-		            Set<Gate> gatesInChunk = gatesByChunk.get(sc);
+                    Set<Gate> gatesInChunk = gatesByChunk.get(sc);
 
                     if (gatesInChunk != null) {
                         gatesInChunk.remove(g);
@@ -412,22 +387,21 @@ public class GatesManager
                 }
             }
         }
-	}
+    }
 
 
-    protected void addGateByChunk(final Gate g)
-	{
+    protected void addGateByChunk(final Gate g) {
         Location gateLocation = g.getLocation();
 
-		if (gateLocation != null) {
+        if (gateLocation != null) {
 
             Chunk c = g.getLocation().getChunk();
             int x = c.getX();
             int z = c.getZ();
 
-            for (int i = x-getChunkRadius(); i < x+getChunkRadius(); i++) {
+            for (int i = x - getChunkRadius(); i < x + getChunkRadius(); i++) {
 
-                for (int j = z-getChunkRadius(); j < z+getChunkRadius(); j++) {
+                for (int j = z - getChunkRadius(); j < z + getChunkRadius(); j++) {
 
                     SimpleChunk sc = new SimpleChunk(i, j, c.getWorld());
 
@@ -442,67 +416,63 @@ public class GatesManager
                 }
             }
         }
-	}
-	
-	
-	public void storeInvalidGate(Map<String, Object> map)
-	{
-		File invalidGatesFile = new File(Plugin.getPlugin().getDataFolder(), "invalid_gates.yml");
-		Boolean invalidGatesFileExists = invalidGatesFile.exists();
-		
-		try {
-			FileWriter fileWriter = new FileWriter(invalidGatesFile, true);
-			
-			if (!invalidGatesFileExists) {
-				fileWriter.write("gates:\n");
-			}
-			
-			fileWriter.write("- ==: ");
-			fileWriter.write(map.get("==").toString() + "\n");
-			map.remove("==");
-			
-			fileWriter.write("\topen: false\n");
-			map.remove("open");
-			
-			fileWriter.write("\tgateBlocks: []\n");
-			map.remove("gateBlocks");
-			
-			
-			for (String key : map.keySet()) {
-				Object value = map.get(key);
-				
-				fileWriter.write("\t" + key + ": ");
-				
-				if (value instanceof Map) {
-					fileWriter.write("\n");
-					
-					@SuppressWarnings("unchecked")
-					Map<String, Object> valueMap = (Map<String, Object>)value;
-					
-					for (String k : valueMap.keySet()) {
-						Object v = valueMap.get(k);
-					
-						fileWriter.write("\t\t" + k + ": " + v.toString() + "\n");
-					}
+    }
 
-				}
-				else {
-					fileWriter.write(value.toString() + "\n");
-				}
-			}
-			
-			fileWriter.close();
-		}
-		catch (IOException e) {
-			Plugin.log("ERROR: Could not save invalid gates to disk. Reason: \n" + Arrays.toString(e.getStackTrace()));
-		}
-	}
-	
-	
-	public void handleGateIdChange(final Gate g, final String oldId)
-	{
-		this.removeGateById(oldId);
-		this.addGateWithId(g);
+
+    public void storeInvalidGate(Map<String, Object> map) {
+        File invalidGatesFile = new File(Plugin.getPlugin().getDataFolder(), "invalid_gates.yml");
+        Boolean invalidGatesFileExists = invalidGatesFile.exists();
+
+        try {
+            FileWriter fileWriter = new FileWriter(invalidGatesFile, true);
+
+            if (!invalidGatesFileExists) {
+                fileWriter.write("gates:\n");
+            }
+
+            fileWriter.write("- ==: ");
+            fileWriter.write(map.get("==").toString() + "\n");
+            map.remove("==");
+
+            fileWriter.write("\topen: false\n");
+            map.remove("open");
+
+            fileWriter.write("\tgateBlocks: []\n");
+            map.remove("gateBlocks");
+
+
+            for (String key : map.keySet()) {
+                Object value = map.get(key);
+
+                fileWriter.write("\t" + key + ": ");
+
+                if (value instanceof Map) {
+                    fileWriter.write("\n");
+
+                    @SuppressWarnings("unchecked")
+                    Map<String, Object> valueMap = (Map<String, Object>) value;
+
+                    for (String k : valueMap.keySet()) {
+                        Object v = valueMap.get(k);
+
+                        fileWriter.write("\t\t" + k + ": " + v.toString() + "\n");
+                    }
+
+                } else {
+                    fileWriter.write(value.toString() + "\n");
+                }
+            }
+
+            fileWriter.close();
+        } catch (IOException e) {
+            Plugin.log("ERROR: Could not save invalid gates to disk. Reason: \n" + Arrays.toString(e.getStackTrace()));
+        }
+    }
+
+
+    public void handleGateIdChange(final Gate g, final String oldId) {
+        this.removeGateById(oldId);
+        this.addGateWithId(g);
 
         Map<String, Object> changeSet = new HashMap<String, Object>();
         changeSet.put(GateChangeListener.changedID, oldId);
@@ -510,19 +480,18 @@ public class GatesManager
         for (GateChangeListener l : this.changeListeners) {
             l.gateChangedHandler(g, changeSet);
         }
-	}
-	
-	
-	public void handleGateLocationChange(final Gate g,
+    }
+
+
+    public void handleGateLocationChange(final Gate g,
                                          final Location oldLocation,
                                          final Set<Location> oldGateBlockLocations,
-                                         final Set<Block> oldGateFrameBlocks)
-	{
-		this.removeGateFromChunk(g, oldLocation);
-		this.addGateByChunk(g);
-		
-		this.removeGateByLocation(oldGateBlockLocations);
-		this.addGateByLocations(g);
+                                         final Set<Block> oldGateFrameBlocks) {
+        this.removeGateFromChunk(g, oldLocation);
+        this.addGateByChunk(g);
+
+        this.removeGateByLocation(oldGateBlockLocations);
+        this.addGateByLocations(g);
 
         this.removeGateByFrameLocation(oldGateFrameBlocks);
         this.addGateByFrameLocations(g);
@@ -533,11 +502,10 @@ public class GatesManager
         for (GateChangeListener l : this.changeListeners) {
             l.gateChangedHandler(g, changeSet);
         }
-	}
+    }
 
 
-    public void handleGateExitChange(final Gate g, final Location oldExit)
-    {
+    public void handleGateExitChange(final Gate g, final Location oldExit) {
         // nothing to do
 
         Map<String, Object> changeSet = new HashMap<String, Object>();
@@ -547,15 +515,14 @@ public class GatesManager
             l.gateChangedHandler(g, changeSet);
         }
     }
-	
-	
-	public void handleNewGate(final Gate g)
-	{
-		this.gates.add(g);
+
+
+    public void handleNewGate(final Gate g) {
+        this.gates.add(g);
 
         this.addGateByChunk(g);
-		this.addGateByLocations(g);
-		this.addGateWithId(g);
+        this.addGateByLocations(g);
+        this.addGateWithId(g);
         this.addGateByFrameLocations(g);
 
 
@@ -565,16 +532,15 @@ public class GatesManager
         for (GateChangeListener l : this.changeListeners) {
             l.gateChangedHandler(g, changeSet);
         }
-	}
-	
-	
-	public void handleDeletion(final Gate g)
-	{
+    }
+
+
+    public void handleDeletion(final Gate g) {
         this.gates.remove(g);
 
         this.removeGateById(g.getId());
-		this.removeGateFromChunk(g, g.getLocation());
-		this.removeGateByLocation(g.getGateBlockLocations());
+        this.removeGateFromChunk(g, g.getLocation());
+        this.removeGateByLocation(g.getGateBlockLocations());
         this.removeGateByFrameLocation(g.getGateFrameBlocks());
 
         Map<String, Object> changeSet = new HashMap<String, Object>();
@@ -583,17 +549,15 @@ public class GatesManager
         for (GateChangeListener l : this.changeListeners) {
             l.gateChangedHandler(g, changeSet);
         }
-	}
-	
-	
-	public boolean gateExists(final String id)
-	{
-		return gatesById.containsKey(id.toLowerCase());
-	}
-	
-	
-	public List<Gate> allGates ()
-	{
-		return gates;
-	}
+    }
+
+
+    public boolean gateExists(final String id) {
+        return gatesById.containsKey(id.toLowerCase());
+    }
+
+
+    public List<Gate> allGates() {
+        return gates;
+    }
 }
