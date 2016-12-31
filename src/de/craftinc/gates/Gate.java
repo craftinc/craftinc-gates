@@ -27,228 +27,202 @@ import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import java.util.*;
 
 
-public class Gate implements ConfigurationSerializable
-{
-	protected Location location; /* saving both location and gateBlockLocations is redundant but makes it easy to allow players to reshape gates */
-	protected Set<Location> gateBlockLocations = new HashSet<Location>(); /* Locations of the blocks inside the gate */
+public class Gate implements ConfigurationSerializable {
+    protected Location location; /* saving both location and gateBlockLocations is redundant but makes it easy to allow players to reshape gates */
+    protected Set<Location> gateBlockLocations = new HashSet<Location>(); /* Locations of the blocks inside the gate */
     protected Set<Block> gateFrameBlocks = new HashSet<Block>();
-	
-	protected Location exit;
-	
-	protected boolean isHidden = false;
-	protected boolean isOpen = false;
+
+    protected Location exit;
+
+    protected boolean isHidden = false;
+    protected boolean isOpen = false;
 
     protected boolean allowsVehicles = true;
-	
-	protected String id;
+
+    protected String id;
 
     /**
      * You should never create two gates with the same 'id'. Also see 'setId(String id)'.
+     *
      * @param id This parameter must not be 'null'. An exception will be thrown otherwise!
      */
-	public Gate(final String id)
-	{
+    public Gate(final String id) {
         setId(id);
-	}
-	
-	
-	public String toString()
-	{
-		return super.toString() + " " + this.getId();
-	}
+    }
+
+
+    public String toString() {
+        return super.toString() + " " + this.getId();
+    }
 
 
     /**
-     *
      * @return This method might return a 'null' data.
      */
-	public Location getLocation() 
-	{
-		return location;
-	}
+    public Location getLocation() {
+        return location;
+    }
 
 
     /**
-     *
      * @param location Supplying 'null' is permitted.
      * @throws Exception Will throw an exception if the gate is open and an invalid (no gate frame) location is
-     *         supplied. Note that the supplied 'location' will be set even if an exception is thrown. Note that this
-     *         gate will be closed if an exception is thrown.
+     *                   supplied. Note that the supplied 'location' will be set even if an exception is thrown. Note that this
+     *                   gate will be closed if an exception is thrown.
      */
-	public void setLocation(final Location location) throws Exception
-	{
-		this.location = location;
-		
-		if (isOpen) {
+    public void setLocation(final Location location) throws Exception {
+        this.location = location;
+
+        if (isOpen) {
             findPortalBlocks();
-			validate();
-		}
-        else {
+            validate();
+        } else {
             this.gateBlockLocations = new HashSet<Location>();
             this.gateFrameBlocks = new HashSet<Block>();
         }
-	}
+    }
 
 
     /**
-     *
      * @return This method might return a 'null' value.
      */
-	public Location getExit() 
-	{
-		return exit;
-	}
+    public Location getExit() {
+        return exit;
+    }
 
 
     /**
-     *
      * @param exit Supplying 'null' is permitted.
      * @throws Exception An exception will be thrown if 'null' data is supplied and this gate is open. Note that the
-     *         supplied 'exit' will be set even if an exception is thrown. Note that this gate will be closed if an
-     *         exception is thrown.
+     *                   supplied 'exit' will be set even if an exception is thrown. Note that this gate will be closed if an
+     *                   exception is thrown.
      */
-	public void setExit(final Location exit) throws Exception
-	{
-		this.exit = exit;
-		validate();
-	}
+    public void setExit(final Location exit) throws Exception {
+        this.exit = exit;
+        validate();
+    }
 
 
     /**
-     *
      * @return This method will never return 'null'.
      */
-	public String getId()
-    {
-		return id;
-	}
+    public String getId() {
+        return id;
+    }
 
 
     /**
      * Every gate should have an unique 'id'. You should therefore check if another gate with the same 'id' exists.
      * Note that this method will not check if another gate with the same 'id' exists!
+     *
      * @param id This parameter must not be 'null'. An exception will be thrown otherwise!
      */
-	public void setId(final String id)
-    {
+    public void setId(final String id) {
         if (id == null) {
             throw new IllegalArgumentException("gate 'id' cannot be 'null'");
         }
 
-		this.id = id.toLowerCase();
-	}
+        this.id = id.toLowerCase();
+    }
 
 
-	public boolean isHidden() 
-	{
-		return isHidden;
-	}
-	
-	
-	public void setHidden(boolean isHidden) throws Exception
-	{
-		this.isHidden = isHidden;
+    public boolean isHidden() {
+        return isHidden;
+    }
+
+
+    public void setHidden(boolean isHidden) throws Exception {
+        this.isHidden = isHidden;
         this.validate();
-	}
-	
-	
-	public boolean isOpen() 
-	{
-		return isOpen;
-	}
-	
-	
-	public void setOpen(boolean isOpen) throws Exception
-	{
-		if (isOpen && !this.isOpen) {
+    }
+
+
+    public boolean isOpen() {
+        return isOpen;
+    }
+
+
+    public void setOpen(boolean isOpen) throws Exception {
+        if (isOpen && !this.isOpen) {
             findPortalBlocks();
-		}
+        }
 
-		this.isOpen = isOpen;
-		validate();
-	}
+        this.isOpen = isOpen;
+        validate();
+    }
 
 
-    public void setAllowsVehicles(boolean allowsVehicles)
-    {
+    public void setAllowsVehicles(boolean allowsVehicles) {
         this.allowsVehicles = allowsVehicles;
     }
 
 
-    public boolean getAllowsVehicles()
-    {
+    public boolean getAllowsVehicles() {
         return this.allowsVehicles;
     }
 
 
     /**
-     *
      * @return Will never return 'null' but might return an empty Set.
      */
-	public Set<Location> getGateBlockLocations() 
-	{
-		return gateBlockLocations;
-	}
+    public Set<Location> getGateBlockLocations() {
+        return gateBlockLocations;
+    }
 
 
     /**
-     *
      * @return Will never return 'null' but might return an empty Set.
      */
-    public Set<Block> getGateFrameBlocks()
-    {
+    public Set<Block> getGateFrameBlocks() {
         return gateFrameBlocks;
     }
 
 
+    protected void findPortalBlocks() {
+        gateBlockLocations = new HashSet<Location>();
+        Set<Block> gateBlocks = FloodUtil.getGatePortalBlocks(location.getBlock());
 
-	protected void findPortalBlocks()
-	{
-		gateBlockLocations = new HashSet<Location>();
-		Set<Block> gateBlocks = FloodUtil.getGatePortalBlocks(location.getBlock());
-
-		if (gateBlocks != null) {
-			for (Block b : gateBlocks) {
-				gateBlockLocations.add(b.getLocation());
-			}
-		}
+        if (gateBlocks != null) {
+            for (Block b : gateBlocks) {
+                gateBlockLocations.add(b.getLocation());
+            }
+        }
 
         gateFrameBlocks = FloodUtil.getFrame(gateBlocks);
-	}
+    }
 
 
-	/**
-	 * Checks if values attributes do add up; will close gate on wrong values.
-	 */
-	public void validate() throws Exception
-	{
-		if (!isOpen) {
-			return;
-		}
-		
-		if (location == null) {
-			isOpen = false;
-            this.gateBlockLocations = new HashSet<Location>();
-            this.gateFrameBlocks = new HashSet<Block>();
+    /**
+     * Checks if values attributes do add up; will close gate on wrong values.
+     */
+    public void validate() throws Exception {
+        if (!isOpen) {
+            return;
+        }
 
-			throw new Exception("Gate got closed. It has no location.");
-		}
-		
-		if (exit == null) {
+        if (location == null) {
             isOpen = false;
             this.gateBlockLocations = new HashSet<Location>();
             this.gateFrameBlocks = new HashSet<Block>();
 
-			throw new Exception("Gate got closed. It has no exit.");
-		}
-		
-		if (gateBlockLocations.size() == 0) {
+            throw new Exception("Gate got closed. It has no location.");
+        }
+
+        if (exit == null) {
             isOpen = false;
             this.gateBlockLocations = new HashSet<Location>();
             this.gateFrameBlocks = new HashSet<Block>();
 
-			throw new Exception("Gate got closed. The frame is missing or broken. (no gate blocks)");
-		}
+            throw new Exception("Gate got closed. It has no exit.");
+        }
+
+        if (gateBlockLocations.size() == 0) {
+            isOpen = false;
+            this.gateBlockLocations = new HashSet<Location>();
+            this.gateFrameBlocks = new HashSet<Block>();
+
+            throw new Exception("Gate got closed. The frame is missing or broken. (no gate blocks)");
+        }
 
         if (!isHidden() && Plugin.getPlugin().getConfig().getBoolean(ConfigurationUtil.confCheckForBrokenGateFramesKey)) {
 
@@ -263,105 +237,101 @@ public class Gate implements ConfigurationSerializable
                 }
             }
         }
-	}
+    }
 
 
-	/*
-	 * INTERFACE: ConfigurationSerializable
-	 */
-	static protected String idKey = "id";
-	static protected String locationKey = "location";
-	static protected String gateBlocksKey = "gateBlocks";
-	static protected String exitKey = "exit";
-	static protected String isHiddenKey = "hidden";
-	static protected String isOpenKey = "open";
-	static protected String locationYawKey = "locationYaw";
-	static protected String locationPitchKey = "locationPitch";
-	static protected String exitYawKey = "exitYaw";
-	static protected String exitPitchKey = "exitPitch";
-	static protected String allowsVehiclesKey = "allowsVehiclesKey";
+    /*
+     * INTERFACE: ConfigurationSerializable
+     */
+    static protected String idKey = "id";
+    static protected String locationKey = "location";
+    static protected String gateBlocksKey = "gateBlocks";
+    static protected String exitKey = "exit";
+    static protected String isHiddenKey = "hidden";
+    static protected String isOpenKey = "open";
+    static protected String locationYawKey = "locationYaw";
+    static protected String locationPitchKey = "locationPitch";
+    static protected String exitYawKey = "exitYaw";
+    static protected String exitPitchKey = "exitPitch";
+    static protected String allowsVehiclesKey = "allowsVehiclesKey";
 
-	
-	@SuppressWarnings("unchecked")
-    public Gate(Map<String, Object> map)
-	{
+
+    @SuppressWarnings("unchecked")
+    public Gate(Map<String, Object> map) {
         try {
-			id = map.get(idKey).toString().toLowerCase();
+            id = map.get(idKey).toString().toLowerCase();
 
-			isHidden = (Boolean)map.get(isHiddenKey);
-			isOpen = (Boolean)map.get(isOpenKey);
-			
-			location = LocationUtil.deserializeLocation((Map<String, Object>) map.get(locationKey));
-			exit = LocationUtil.deserializeLocation((Map<String, Object>) map.get(exitKey));
-			
-			if (map.containsKey(exitPitchKey)) {
-				exit.setPitch(((Number)map.get(exitPitchKey)).floatValue());
-				exit.setYaw(((Number)map.get(exitYawKey)).floatValue());
-			}
-			
-			if (map.containsKey(locationPitchKey)) {
-				location.setPitch(((Number)map.get(locationPitchKey)).floatValue());
-				location.setYaw(((Number)map.get(locationYawKey)).floatValue());
-			}
+            isHidden = (Boolean) map.get(isHiddenKey);
+            isOpen = (Boolean) map.get(isOpenKey);
+
+            location = LocationUtil.deserializeLocation((Map<String, Object>) map.get(locationKey));
+            exit = LocationUtil.deserializeLocation((Map<String, Object>) map.get(exitKey));
+
+            if (map.containsKey(exitPitchKey)) {
+                exit.setPitch(((Number) map.get(exitPitchKey)).floatValue());
+                exit.setYaw(((Number) map.get(exitYawKey)).floatValue());
+            }
+
+            if (map.containsKey(locationPitchKey)) {
+                location.setPitch(((Number) map.get(locationPitchKey)).floatValue());
+                location.setYaw(((Number) map.get(locationYawKey)).floatValue());
+            }
 
             if (map.containsKey(allowsVehiclesKey)) {
-                allowsVehicles = (Boolean)map.get(allowsVehiclesKey);
+                allowsVehicles = (Boolean) map.get(allowsVehiclesKey);
             }
-			
-			gateBlockLocations = new HashSet<Location>();
-			List<Map<String, Object>> serializedGateBlocks = (List<Map<String, Object>>)map.get(gateBlocksKey);
-			
-			for (Map<String, Object> sgb : serializedGateBlocks) {
-				gateBlockLocations.add(LocationUtil.deserializeLocation(sgb));
-			}
+
+            gateBlockLocations = new HashSet<Location>();
+            List<Map<String, Object>> serializedGateBlocks = (List<Map<String, Object>>) map.get(gateBlocksKey);
+
+            for (Map<String, Object> sgb : serializedGateBlocks) {
+                gateBlockLocations.add(LocationUtil.deserializeLocation(sgb));
+            }
 
             gateFrameBlocks = FloodUtil.getFrameWithLocations(gateBlockLocations);
-		}
-		catch (Exception e) {
-			Plugin.log("ERROR: Failed to load gate '" + id + "'! (" + e.getMessage() + ")");
-			Plugin.log("NOTE:  This gate will be removed from 'gates.yml' and added to 'invalid_gates.yml'!");
-			
-			Plugin.getPlugin().getGatesManager().storeInvalidGate(map);
-		}
+        } catch (Exception e) {
+            Plugin.log("ERROR: Failed to load gate '" + id + "'! (" + e.getMessage() + ")");
+            Plugin.log("NOTE:  This gate will be removed from 'gates.yml' and added to 'invalid_gates.yml'!");
+
+            Plugin.getPlugin().getGatesManager().storeInvalidGate(map);
+        }
 
         try {
             validate(); // make sure to not write invalid stuff to disk
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             Plugin.log("The loaded gate " + this.getId() + " seems to be not valid: " + e.getMessage());
         }
-	}
-	
-	
-	public Map<String, Object> serialize() 
-	{
-		Map<String, Object> retVal = new HashMap<String, Object>();
-		
-		retVal.put(idKey, id);
-		retVal.put(locationKey, LocationUtil.serializeLocation(location));		
-		retVal.put(exitKey, LocationUtil.serializeLocation(exit));
-		retVal.put(isHiddenKey, isHidden);
-		retVal.put(isOpenKey, isOpen);
+    }
+
+
+    public Map<String, Object> serialize() {
+        Map<String, Object> retVal = new HashMap<String, Object>();
+
+        retVal.put(idKey, id);
+        retVal.put(locationKey, LocationUtil.serializeLocation(location));
+        retVal.put(exitKey, LocationUtil.serializeLocation(exit));
+        retVal.put(isHiddenKey, isHidden);
+        retVal.put(isOpenKey, isOpen);
         retVal.put(allowsVehiclesKey, allowsVehicles);
-		
-		if (exit != null) {
-			retVal.put(exitPitchKey, exit.getPitch());
-			retVal.put(exitYawKey, exit.getYaw());
-		}
-		
-		if (location != null) {
-			retVal.put(locationPitchKey, location.getPitch());
-			retVal.put(locationYawKey, location.getYaw());
-		}
-		
-		List<Map<String, Object>> serializedGateBlocks = new ArrayList<Map<String, Object>>();
-		
-		for (Location l : gateBlockLocations) {
-			serializedGateBlocks.add(LocationUtil.serializeLocation(l));
-		}
-		
-		retVal.put(gateBlocksKey, serializedGateBlocks);
-		
-		return retVal;
-	}
+
+        if (exit != null) {
+            retVal.put(exitPitchKey, exit.getPitch());
+            retVal.put(exitYawKey, exit.getYaw());
+        }
+
+        if (location != null) {
+            retVal.put(locationPitchKey, location.getPitch());
+            retVal.put(locationYawKey, location.getYaw());
+        }
+
+        List<Map<String, Object>> serializedGateBlocks = new ArrayList<Map<String, Object>>();
+
+        for (Location l : gateBlockLocations) {
+            serializedGateBlocks.add(LocationUtil.serializeLocation(l));
+        }
+
+        retVal.put(gateBlocksKey, serializedGateBlocks);
+
+        return retVal;
+    }
 }

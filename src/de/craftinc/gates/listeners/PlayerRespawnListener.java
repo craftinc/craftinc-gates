@@ -24,11 +24,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
 
-public class PlayerRespawnListener implements Listener
-{
+public class PlayerRespawnListener implements Listener {
     @EventHandler(priority = EventPriority.NORMAL)
-    public void onPlayerRespawn(PlayerRespawnEvent event)
-    {
+    public void onPlayerRespawn(PlayerRespawnEvent event) {
         GateBlockChangeSender.updateGateBlocks(event.getPlayer(), event.getRespawnLocation(), true);
     }
 }

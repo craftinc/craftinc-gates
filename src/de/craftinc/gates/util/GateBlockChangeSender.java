@@ -32,17 +32,16 @@ import java.util.Set;
 import static de.craftinc.gates.util.ConfigurationUtil.*;
 
 
-public class GateBlockChangeSender
-{
+public class GateBlockChangeSender {
     /**
      * Replaces gate frame blocks with glowstone for a short period of time.
      * Uses the data stored in 'highlightDuration' inside the config file
      * for determining when to de-highlight the frames.
+     *
      * @param player The player for whom the frame should be highlighted.
      *               Must not be null!
      */
-    public static void temporaryHighlightGatesFrames(final Player player, final Set<Gate> gates)
-    {
+    public static void temporaryHighlightGatesFrames(final Player player, final Set<Gate> gates) {
         if (player == null) {
             throw new IllegalArgumentException("'player' must not be 'null'!");
         }
@@ -55,7 +54,7 @@ public class GateBlockChangeSender
             Set<Block> frameBlocks = g.getGateFrameBlocks();
 
             for (Block b : frameBlocks) {
-                player.sendBlockChange(b.getLocation(), Material.GLOWSTONE, (byte)0);
+                player.sendBlockChange(b.getLocation(), Material.GLOWSTONE, (byte) 0);
             }
         }
 
@@ -71,8 +70,7 @@ public class GateBlockChangeSender
     }
 
 
-    public static void temporaryHighlightGateFrame(final Player player, final Gate gate)
-    {
+    public static void temporaryHighlightGateFrame(final Player player, final Gate gate) {
         if (gate == null) {
             throw new IllegalArgumentException("'gate' must not be 'null!");
         }
@@ -84,7 +82,7 @@ public class GateBlockChangeSender
         Set<Block> frameBlocks = gate.getGateFrameBlocks();
 
         for (Block b : frameBlocks) {
-            player.sendBlockChange(b.getLocation(), Material.GLOWSTONE, (byte)0);
+            player.sendBlockChange(b.getLocation(), Material.GLOWSTONE, (byte) 0);
         }
 
         Plugin plugin = Plugin.getPlugin();
@@ -99,24 +97,22 @@ public class GateBlockChangeSender
     }
 
 
-    protected static void dehighlightGatesFrames(final Player player, final Set<Gate> gates)
-    {
+    protected static void dehighlightGatesFrames(final Player player, final Set<Gate> gates) {
         for (Gate g : gates) {
             Set<Block> frameBlocks = g.getGateFrameBlocks();
 
             for (Block b : frameBlocks) {
-                player.sendBlockChange(b.getLocation(), b.getType(), (byte)0);
+                player.sendBlockChange(b.getLocation(), b.getType(), (byte) 0);
             }
         }
     }
 
 
-    protected static void dehighlightGateFrame(final Player player, final Gate gate)
-    {
+    protected static void dehighlightGateFrame(final Player player, final Gate gate) {
         Set<Block> frameBlocks = gate.getGateFrameBlocks();
 
         for (Block b : frameBlocks) {
-            player.sendBlockChange(b.getLocation(), b.getType(), (byte)0);
+            player.sendBlockChange(b.getLocation(), b.getType(), (byte) 0);
         }
     }
 
@@ -124,13 +120,13 @@ public class GateBlockChangeSender
     /**
      * Sends gate blocks to player at a given location. Will send the updates either immediately or
      * immediately and after a short delay.
+     *
      * @param player      A player to send block changes to. Must not be null!
      * @param location    The location to look for gates nearby. Must not be null!
      * @param sendDelayed Set to 'true' if the block changes shall be send a second time after a one
      *                    second delay.
      */
-    public static void updateGateBlocks(final Player player, final Location location, boolean sendDelayed)
-    {
+    public static void updateGateBlocks(final Player player, final Location location, boolean sendDelayed) {
         if (player == null) {
             throw new IllegalArgumentException("'player' must not be 'null'!");
         }
@@ -161,11 +157,9 @@ public class GateBlockChangeSender
         }
 
         if (sendDelayed) {
-            Bukkit.getScheduler().scheduleSyncDelayedTask(Plugin.getPlugin(), new Runnable()
-            {
+            Bukkit.getScheduler().scheduleSyncDelayedTask(Plugin.getPlugin(), new Runnable() {
                 @Override
-                public void run()
-                {
+                public void run() {
                     updateGateBlocks(player, location, false);
                 }
             }, 20L);
@@ -176,16 +170,14 @@ public class GateBlockChangeSender
     /**
      * This method calls: updateGateBlocks(player, location, false);
      */
-    public static void updateGateBlocks(final Player player, final Location location)
-    {
+    public static void updateGateBlocks(final Player player, final Location location) {
         updateGateBlocks(player, location, false);
     }
 
     /**
      * This method calls: updateGateBlocks(player, player.getLocation(), false);
      */
-    public static void updateGateBlocks(final Player player)
-    {
+    public static void updateGateBlocks(final Player player) {
         if (player == null) {
             throw new IllegalArgumentException("'player' must not be 'null'!");
         }
@@ -194,18 +186,17 @@ public class GateBlockChangeSender
     }
 
 
-    public static void updateGateBlocks(final Gate gate)
-    {
+    public static void updateGateBlocks(final Gate gate) {
         updateGateBlocks(gate, false);
     }
 
     /**
      * Sends block changes to players near a given gate.
-     * @param gate Must not be 'null'!
+     *
+     * @param gate   Must not be 'null'!
      * @param remove Set to true if all visible gate blocks shall be removed.
      */
-    public static void updateGateBlocks(final Gate gate, boolean remove)
-    {
+    public static void updateGateBlocks(final Gate gate, boolean remove) {
         if (gate == null) {
             throw new IllegalArgumentException("'gate must not be 'null'!");
         }
@@ -234,8 +225,7 @@ public class GateBlockChangeSender
         if (gate.isOpen() && !gate.isHidden() && !remove) {
             material = gateMaterial.material;
             data = gateMaterial.data;
-        }
-        else {
+        } else {
             material = Material.AIR;
         }
 

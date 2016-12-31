@@ -25,11 +25,9 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 
-public class BlockBreakListener implements Listener
-{
+public class BlockBreakListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
-    public void onBlockBreak(BlockBreakEvent event)
-    {
+    public void onBlockBreak(BlockBreakEvent event) {
         if (event.isCancelled()) {
             return;
         }
@@ -39,8 +37,8 @@ public class BlockBreakListener implements Listener
         if (gate != null && !gate.isHidden()) {
             try {
                 gate.setOpen(false);
+            } catch (Exception ignored) {
             }
-            catch (Exception ignored) { }
 
             GateBlockChangeSender.updateGateBlocks(gate);
         }

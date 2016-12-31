@@ -23,8 +23,7 @@ import org.bukkit.Material;
 import java.util.logging.Level;
 
 
-public class ConfigurationUtil
-{
+public class ConfigurationUtil {
     public static final String confMaxGateBlocksKey = "maxGateBlocks";
     public static final String confPlayerGateBlockUpdateRadiusKey = "playerGateBlockUpdateRadius";
     public static final String confCheckForBrokenGateFramesKey = "checkForBrokenGateFrames";
@@ -38,79 +37,56 @@ public class ConfigurationUtil
     public static final String confGateMaterialKey = "gateMaterial";
 
 
-    public static GateMaterial getPortalMaterial()
-    {
+    public static GateMaterial getPortalMaterial() {
         String materialString = Plugin.getPlugin().getConfig().getString(confGateMaterialKey);
         GateMaterial material = new GateMaterial();
 
         if (materialString.equals("sapling")) {
             material.material = Material.SAPLING;
-        }
-        else  if (materialString.equals("water")) {
+        } else if (materialString.equals("water")) {
             material.material = Material.STATIONARY_WATER;
-        }
-        else if (materialString.equals("lava")) {
+        } else if (materialString.equals("lava")) {
             material.material = Material.STATIONARY_LAVA;
-        }
-        else if (materialString.equals("cobweb")) {
+        } else if (materialString.equals("cobweb")) {
             material.material = Material.WEB;
-        }
-        else if (materialString.equals("grass")) {
+        } else if (materialString.equals("grass")) {
             material.material = Material.LONG_GRASS;
             material.data = 1;
-        }
-        else if (materialString.equals("dead bush")) {
+        } else if (materialString.equals("dead bush")) {
             material.material = Material.DEAD_BUSH;
-        }
-        else if (materialString.equals("dandelion")) {
+        } else if (materialString.equals("dandelion")) {
             material.material = Material.YELLOW_FLOWER;
-        }
-        else if (materialString.equals("poppy")) {
+        } else if (materialString.equals("poppy")) {
             material.material = Material.RED_ROSE;
-        }
-        else if (materialString.equals("brown mushroom")) {
+        } else if (materialString.equals("brown mushroom")) {
             material.material = Material.BROWN_MUSHROOM;
-        }
-        else if (materialString.equals("red mushroom")) {
+        } else if (materialString.equals("red mushroom")) {
             material.material = Material.RED_MUSHROOM;
-        }
-        else if (materialString.equals("torch")) {
+        } else if (materialString.equals("torch")) {
             material.material = Material.TORCH;
-        }
-        else if (materialString.equals("redstone torch (off)")) {
+        } else if (materialString.equals("redstone torch (off)")) {
             material.material = Material.REDSTONE_TORCH_OFF;
-        }
-        else if (materialString.equals("redstone torch (on)")) {
+        } else if (materialString.equals("redstone torch (on)")) {
             material.material = Material.REDSTONE_TORCH_ON;
-        }
-        else if (materialString.equals("fence")) {
+        } else if (materialString.equals("fence")) {
             material.material = Material.FENCE;
-        }
-        else if (materialString.equals("nether portal")) {
+        } else if (materialString.equals("nether portal")) {
             material.material = Material.PORTAL;
-        }
-        else if (materialString.equals("iron bars")) {
+        } else if (materialString.equals("iron bars")) {
             material.material = Material.IRON_FENCE;
-        }
-        else if (materialString.equals("glass pane")) {
+        } else if (materialString.equals("glass pane")) {
             material.material = Material.THIN_GLASS;
-        }
-        else if (materialString.equals("fence gate")) {
+        } else if (materialString.equals("fence gate")) {
             material.material = Material.FENCE_GATE;
-        }
-        else if (materialString.equals("nether brick fence")) {
+        } else if (materialString.equals("nether brick fence")) {
             material.material = Material.NETHER_FENCE;
-        }
-        else  if (materialString.equals("nether wart")) {
+        } else if (materialString.equals("nether wart")) {
             material.material = Material.NETHER_WARTS;
-        }
-        else if (materialString.equals("end portal")) {
+        } else if (materialString.equals("end portal")) {
             material.material = Material.ENDER_PORTAL;
-        }
-        else if (materialString.equals("cobblestone wall")) {
+        } else if (materialString.equals("cobblestone wall")) {
             material.material = Material.COBBLE_WALL;
-        }
-        else { // fallback!
+        } else { // fallback!
             material.material = Material.PORTAL;
             Plugin.log(Level.WARNING, "Gate material invalid! Please check and correct your configuration file!");
         }
@@ -120,8 +96,7 @@ public class ConfigurationUtil
 }
 
 
-class GateMaterial
-{
+class GateMaterial {
     public Material material = Material.PORTAL;
     public byte data = 0;
 }
