@@ -41,7 +41,7 @@ public class GatesManager {
 
     private static final String gatesPath = "gates"; // path to gates inside the yaml file
     private static final String storageVersionPath = "version";
-    private static final int storageVersion = 2;
+    private static final int storageVersion = 3;
 
     private File gatesConfigFile;
     private FileConfiguration gatesConfig;
