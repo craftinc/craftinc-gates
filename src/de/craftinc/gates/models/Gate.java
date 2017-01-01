@@ -19,7 +19,6 @@ package de.craftinc.gates.models;
 import de.craftinc.gates.Plugin;
 import de.craftinc.gates.util.ConfigurationUtil;
 import de.craftinc.gates.util.FloodUtil;
-import de.craftinc.gates.persistence.LocationUtil;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -249,44 +248,18 @@ public class Gate implements ConfigurationSerializable {
     static private String exitKey = "exit";
     static private String materialKey = "material";
     static private String isOpenKey = "open";
-    static private String locationYawKey = "locationYaw";
-    static private String locationPitchKey = "locationPitch";
-    static private String exitYawKey = "exitYaw";
-    static private String exitPitchKey = "exitPitch";
     static private String allowsVehiclesKey = "allowsVehiclesKey";
-
 
     @SuppressWarnings("unchecked")
     public Gate(Map<String, Object> map) {
         try {
             id = map.get(idKey).toString().toLowerCase();
+            location = (Location) map.get(locationKey);
+            exit = (Location) map.get(exitKey);
 
             isOpen = (Boolean) map.get(isOpenKey);
-
-            location = LocationUtil.deserializeLocation((Map<String, Object>) map.get(locationKey));
-            exit = LocationUtil.deserializeLocation((Map<String, Object>) map.get(exitKey));
-            material = new GateMaterial((String)map.get(materialKey));
-
-            if (map.containsKey(exitPitchKey)) {
-                exit.setPitch(((Number) map.get(exitPitchKey)).floatValue());
-                exit.setYaw(((Number) map.get(exitYawKey)).floatValue());
-            }
-
-            if (map.containsKey(locationPitchKey)) {
-                location.setPitch(((Number) map.get(locationPitchKey)).floatValue());
-                location.setYaw(((Number) map.get(locationYawKey)).floatValue());
-            }
-
-            if (map.containsKey(allowsVehiclesKey)) {
-                allowsVehicles = (Boolean) map.get(allowsVehiclesKey);
-            }
-
-            gateBlockLocations = new HashSet<>();
-            List<Map<String, Object>> serializedGateBlocks = (List<Map<String, Object>>) map.get(gateBlocksKey);
-
-            for (Map<String, Object> sgb : serializedGateBlocks) {
-                gateBlockLocations.add(LocationUtil.deserializeLocation(sgb));
-            }
+            allowsVehicles = (Boolean) map.get(allowsVehiclesKey);
+            gateBlockLocations = (Set<Location>) map.get(gateBlocksKey);
 
             gateFrameBlocks = FloodUtil.getFrameWithLocations(gateBlockLocations);
         } catch (Exception e) {
@@ -303,34 +276,22 @@ public class Gate implements ConfigurationSerializable {
         }
     }
 
-
     public Map<String, Object> serialize() {
         Map<String, Object> retVal = new HashMap<>();
 
         retVal.put(idKey, id);
         retVal.put(locationKey, LocationUtil.serializeLocation(location));
-        retVal.put(exitKey, LocationUtil.serializeLocation(exit));
         retVal.put(isOpenKey, isOpen);
         retVal.put(allowsVehiclesKey, allowsVehicles);
-        retVal.put(materialKey, material.toString());
+        retVal.put(gateBlocksKey, gateBlockLocations);
 
         if (exit != null) {
-            retVal.put(exitPitchKey, exit.getPitch());
-            retVal.put(exitYawKey, exit.getYaw());
+            retVal.put(exitKey, exit.serialize());
         }
 
         if (location != null) {
-            retVal.put(locationPitchKey, location.getPitch());
-            retVal.put(locationYawKey, location.getYaw());
+            retVal.put(locationKey, location.serialize());
         }
-
-        List<Map<String, Object>> serializedGateBlocks = new ArrayList<>();
-
-        for (Location l : gateBlockLocations) {
-            serializedGateBlocks.add(LocationUtil.serializeLocation(l));
-        }
-
-        retVal.put(gateBlocksKey, serializedGateBlocks);
 
         return retVal;
     }
