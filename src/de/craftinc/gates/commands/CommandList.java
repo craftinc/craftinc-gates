@@ -25,12 +25,11 @@ import de.craftinc.gates.controllers.PermissionController;
 import org.bukkit.ChatColor;
 
 import de.craftinc.gates.models.Gate;
-import de.craftinc.gates.Plugin;
 import de.craftinc.gates.util.TextUtil;
 
 public class CommandList extends BaseCommand {
 
-    private static final int linesPerPage = 10;
+    private static final int linesPerPage = 15;
 
     /* this is actually not true. the font used by Minecraft is not
        monospaced. but there seems to be no (easy) way to calculate
@@ -64,7 +63,7 @@ public class CommandList extends BaseCommand {
         }
 
         if (page > allPages.size() || page < 1) {
-            sendMessage(ChatColor.RED + "The requested page is not availible");
+            sendMessage(ChatColor.RED + "The requested page is not available");
             return;
         }
 
@@ -148,7 +147,7 @@ public class CommandList extends BaseCommand {
      * Method for getting a collection of gates the player is allowed to see.
      */
     private Collection<Gate> getAllGates() {
-        Collection<Gate> gates = Plugin.getPlugin().getGatesManager().allGates();
+        Collection<Gate> gates = gatesManager.allGates();
         // create a copy since we cannot iterate over a collection while modifying it!
         Collection<Gate> gatesCopy = new ArrayList<>(gates);
 

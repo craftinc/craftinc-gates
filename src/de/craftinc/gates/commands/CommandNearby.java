@@ -1,9 +1,7 @@
 package de.craftinc.gates.commands;
 
 import de.craftinc.gates.models.Gate;
-import de.craftinc.gates.controllers.GatesManager;
 import de.craftinc.gates.controllers.PermissionController;
-import de.craftinc.gates.Plugin;
 import de.craftinc.gates.util.GateBlockChangeSender;
 import de.craftinc.gates.util.TextUtil;
 
@@ -25,8 +23,7 @@ public class CommandNearby extends BaseLocationCommand {
     }
 
     public void perform() {
-        GatesManager manager = Plugin.getPlugin().getGatesManager();
-        Set<Gate> nearbyGates = manager.getNearbyGates(player.getLocation().getChunk());
+        Set<Gate> nearbyGates = gatesManager.getNearbyGates(player.getLocation().getChunk());
 
         if (nearbyGates == null) {
             player.sendMessage("There are no gates near you!");

@@ -33,10 +33,10 @@ public class Gate implements ConfigurationSerializable {
     private Set<Location> gateBlockLocations = new HashSet<>(); /* Locations of the blocks inside the gate */
     private Set<Block> gateFrameBlocks = new HashSet<>();
     private Location exit;
-    private boolean isHidden = false;
     private boolean isOpen = false;
     private boolean allowsVehicles = true;
     private String id;
+    private GateMaterial material = new GateMaterial(Material.PORTAL);
 
     /**
      * You should never create two gates with the same 'id'. Also see 'setId(String id)'.
@@ -61,6 +61,15 @@ public class Gate implements ConfigurationSerializable {
 
             return east || west ? GateDirection.EastWest : GateDirection.NorthSouth;
         }
+    }
+
+    public GateMaterial getMaterial() {
+        return material;
+    }
+
+    public void setMaterial(GateMaterial material) throws Exception {
+        this.material = material;
+        validate();
     }
 
     /**
@@ -125,15 +134,6 @@ public class Gate implements ConfigurationSerializable {
         }
 
         this.id = id.toLowerCase();
-    }
-
-    public boolean isHidden() {
-        return isHidden;
-    }
-
-    public void setHidden(boolean isHidden) throws Exception {
-        this.isHidden = isHidden;
-        this.validate();
     }
 
     public boolean isOpen() {
@@ -216,17 +216,25 @@ public class Gate implements ConfigurationSerializable {
             throw new Exception("Gate got closed. The frame is missing or broken. (no gate blocks)");
         }
 
-        if (!isHidden() && Plugin.getPlugin().getConfig().getBoolean(ConfigurationUtil.confCheckForBrokenGateFramesKey)) {
+        validateFrame();
+    }
 
-            for (Block b : gateFrameBlocks) {
+    private void validateFrame() throws Exception {
+        boolean isAir = material.getMaterial() == Material.AIR;
+        boolean ignore = !Plugin.getPlugin().getConfig().getBoolean(ConfigurationUtil.confCheckForBrokenGateFramesKey);
 
-                if (b.getType() == Material.AIR) {
-                    isOpen = false;
-                    this.gateBlockLocations = new HashSet<>();
-                    this.gateFrameBlocks = new HashSet<>();
+        if (isAir || ignore) {
+            return;
+        }
 
-                    throw new Exception("Gate got closed. The frame is missing or broken. (missing frame block(s))");
-                }
+        for (Block b : gateFrameBlocks) {
+
+            if (b.getType() == Material.AIR) {
+                isOpen = false;
+                this.gateBlockLocations = new HashSet<>();
+                this.gateFrameBlocks = new HashSet<>();
+
+                throw new Exception("Gate got closed. The frame is missing or broken. (missing frame block(s))");
             }
         }
     }
@@ -238,7 +246,7 @@ public class Gate implements ConfigurationSerializable {
     static private String locationKey = "location";
     static private String gateBlocksKey = "gateBlocks";
     static private String exitKey = "exit";
-    static private String isHiddenKey = "hidden";
+    static private String materialKey = "material";
     static private String isOpenKey = "open";
     static private String allowsVehiclesKey = "allowsVehiclesKey";
 
@@ -248,7 +256,7 @@ public class Gate implements ConfigurationSerializable {
             id = map.get(idKey).toString().toLowerCase();
             location = (Location) map.get(locationKey);
             exit = (Location) map.get(exitKey);
-            isHidden = (Boolean) map.get(isHiddenKey);
+            material = new GateMaterial((String)map.get(materialKey));
             isOpen = (Boolean) map.get(isOpenKey);
             allowsVehicles = (Boolean) map.get(allowsVehiclesKey);
             gateBlockLocations = (Set<Location>) map.get(gateBlocksKey);
@@ -272,10 +280,10 @@ public class Gate implements ConfigurationSerializable {
         Map<String, Object> retVal = new HashMap<>();
 
         retVal.put(idKey, id);
-        retVal.put(isHiddenKey, isHidden);
         retVal.put(isOpenKey, isOpen);
         retVal.put(allowsVehiclesKey, allowsVehicles);
         retVal.put(gateBlocksKey, gateBlockLocations);
+        retVal.put(materialKey, material.toString());
 
         if (exit != null) {
             retVal.put(exitKey, exit.serialize());

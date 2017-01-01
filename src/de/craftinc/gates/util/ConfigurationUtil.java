@@ -16,12 +16,6 @@
 */
 package de.craftinc.gates.util;
 
-import de.craftinc.gates.Plugin;
-import de.craftinc.gates.models.GateMaterial;
-
-import java.security.InvalidParameterException;
-import java.util.logging.Level;
-
 public class ConfigurationUtil {
     public static final String confMaxGateBlocksKey = "maxGateBlocks";
     public static final String confPlayerGateBlockUpdateRadiusKey = "playerGateBlockUpdateRadius";
@@ -33,17 +27,4 @@ public class ConfigurationUtil {
     public static final String confShowTeleportNoPermissionMessageKey = "showTeleportNoPermissionMessage";
     public static final String confSaveOnChangesKey = "saveOnChanges";
     public static final String confHighlightDurationKey = "highlightDuration";
-    public static final String confGateMaterialKey = "gateMaterial";
-
-
-    static GateMaterial getPortalMaterial() {
-        String materialString = Plugin.getPlugin().getConfig().getString(confGateMaterialKey);
-
-        try {
-            return new GateMaterial(materialString);
-        } catch (InvalidParameterException ignored) {
-            Plugin.log(Level.WARNING, "Gate material invalid! Please check and correct your configuration file!");
-            return new GateMaterial("nether portal");
-        }
-    }
 }

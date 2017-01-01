@@ -33,6 +33,7 @@ import de.craftinc.gates.util.TextUtil;
 
 public abstract class BaseCommand {
     PermissionController permissionController;
+    GatesManager gatesManager;
 
     List<String> aliases = new ArrayList<>();
     List<String> requiredParameters = new ArrayList<>();
@@ -58,6 +59,7 @@ public abstract class BaseCommand {
     }
 
     public BaseCommand() {
+        gatesManager = Plugin.getPlugin().getGatesManager();
         permissionController = Plugin.getPlugin().getPermissionController();
     }
 
@@ -69,14 +71,14 @@ public abstract class BaseCommand {
             return;
         }
 
-        if (this.senderMustBePlayer) {
+        if (sender instanceof Player) {
             this.player = (Player)sender;
         }
 
         this.perform();
 
         if (this.shouldPersistToDisk && getSaveOnChanges()) {
-            Plugin.getPlugin().getGatesManager().saveGatesToDisk();
+            gatesManager.saveGatesToDisk();
         }
     }
 
@@ -93,12 +95,10 @@ public abstract class BaseCommand {
     }
 
     boolean setGateUsingParameter(String param) {
-        GatesManager gateManager = Plugin.getPlugin().getGatesManager();
-
-        if (!gateManager.gateExists(param)) {
+        if (!gatesManager.gateExists(param)) {
             return false;
         } else {
-            gate = gateManager.getGateWithId(param);
+            gate = gatesManager.getGateWithId(param);
             return true;
         }
     }

@@ -16,38 +16,39 @@
 */
 package de.craftinc.gates.commands;
 
-import java.util.logging.Level;
-
 import de.craftinc.gates.controllers.PermissionController;
 import de.craftinc.gates.util.GateBlockChangeSender;
 import org.bukkit.ChatColor;
 
-import de.craftinc.gates.Plugin;
+public class CommandTriggerOpen extends BaseCommand {
 
-public class CommandClose extends BaseCommand {
-
-    public CommandClose() {
-        aliases.add("close");
-        aliases.add("c");
+    public CommandTriggerOpen() {
+        aliases.add("triggerOpen");
+        aliases.add("o");
 
         requiredParameters.add("id");
-        helpDescription = "Closes a gate to prevent players from using it.";
+        helpDescription = "Open/close a gate.";
         requiredPermission = PermissionController.permissionManage;
+
         needsPermissionAtCurrentLocation = false;
         shouldPersistToDisk = true;
         senderMustBePlayer = false;
     }
 
-    @Override
     public void perform() {
         try {
-            gate.setOpen(false);
+            if (!gate.isOpen() && gate.getExit() == null && player != null) {
+                gate.setExit(player.getLocation());
+                sendMessage(ChatColor.GREEN + "The exit of gate '" + gate.getId() + "' is now where you stand.");
+            }
+
+            gate.setOpen(!gate.isOpen());
+
             GateBlockChangeSender.updateGateBlocks(gate);
-            sendMessage(ChatColor.GREEN + "The gate was closed.");
+            gatesManager.handleGateLocationChange(gate, null, null, null);
+            sendMessage(ChatColor.GREEN + "The gate is now " + (gate.isOpen() ? "open." : "closed."));
         } catch (Exception e) {
-            sendMessage(ChatColor.RED + "Opening the gate failed! See server log for more information");
-            Plugin.log(Level.WARNING, e.getMessage());
-            e.printStackTrace();
+            sendMessage(ChatColor.RED + e.getMessage());
         }
     }
 }

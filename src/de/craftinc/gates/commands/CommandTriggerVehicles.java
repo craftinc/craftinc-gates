@@ -19,14 +19,15 @@ package de.craftinc.gates.commands;
 import de.craftinc.gates.controllers.PermissionController;
 import org.bukkit.ChatColor;
 
-public class CommandDenyRiding extends BaseCommand {
+public class CommandTriggerVehicles extends BaseCommand {
 
-    public CommandDenyRiding() {
-        aliases.add("denyRiding");
-        aliases.add("dr");
+    public CommandTriggerVehicles() {
+        aliases.add("vehicles");
+        aliases.add("v");
 
         requiredParameters.add("id");
-        helpDescription = "Deny players to travel while riding.";
+
+        helpDescription = "Allow/deny players to travel while riding.";
         requiredPermission = PermissionController.permissionManage;
         needsPermissionAtCurrentLocation = false;
         shouldPersistToDisk = true;
@@ -35,7 +36,12 @@ public class CommandDenyRiding extends BaseCommand {
 
     @Override
     protected void perform() {
-        gate.setAllowsVehicles(false);
-        sendMessage(ChatColor.GREEN + "Traveling while riding is now disabled for this gate.");
+        gate.setAllowsVehicles(gate.getAllowsVehicles());
+
+        if (gate.getAllowsVehicles()) {
+            sendMessage(ChatColor.GREEN + "Traveling while riding is now enabled for this gate.");
+        } else {
+            sendMessage(ChatColor.GREEN + "Traveling while riding is now disabled for this gate.");
+        }
     }
 }

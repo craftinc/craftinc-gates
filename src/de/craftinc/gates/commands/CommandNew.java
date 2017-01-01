@@ -21,13 +21,12 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 
 import de.craftinc.gates.models.Gate;
-import de.craftinc.gates.controllers.GatesManager;
-import de.craftinc.gates.Plugin;
 
 public class CommandNew extends BaseLocationCommand {
 
     public CommandNew() {
         aliases.add("new");
+        aliases.add("create");
         aliases.add("n");
 
         requiredParameters.add("id");
@@ -43,7 +42,6 @@ public class CommandNew extends BaseLocationCommand {
 
     public void perform() {
         String id = parameters.get(0);
-        GatesManager gatesManager = Plugin.getPlugin().getGatesManager();
 
         if (gatesManager.gateExists(id)) {
             sendMessage(ChatColor.RED + "Creating the gate failed! " + "A gate with the supplied id already exists!");
