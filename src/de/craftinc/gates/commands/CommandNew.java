@@ -21,8 +21,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 
 import de.craftinc.gates.models.Gate;
-import de.craftinc.gates.controllers.GatesManager;
-import de.craftinc.gates.Plugin;
 
 public class CommandNew extends BaseLocationCommand {
 

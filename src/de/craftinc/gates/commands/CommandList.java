@@ -25,7 +25,6 @@ import de.craftinc.gates.controllers.PermissionController;
 import org.bukkit.ChatColor;
 
 import de.craftinc.gates.models.Gate;
-import de.craftinc.gates.Plugin;
 import de.craftinc.gates.util.TextUtil;
 
 public class CommandList extends BaseCommand {

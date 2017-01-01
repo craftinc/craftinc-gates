@@ -19,9 +19,6 @@ package de.craftinc.gates.commands;
 import de.craftinc.gates.controllers.PermissionController;
 import org.bukkit.ChatColor;
 
-import de.craftinc.gates.controllers.GatesManager;
-import de.craftinc.gates.Plugin;
-
 public class CommandRename extends BaseCommand {
 
     public CommandRename() {

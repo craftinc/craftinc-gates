@@ -23,7 +23,6 @@ import de.craftinc.gates.util.GateBlockChangeSender;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 
-import de.craftinc.gates.Plugin;
 import org.bukkit.block.Block;
 
 public class CommandLocation extends BaseLocationCommand {

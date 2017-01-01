@@ -20,8 +20,6 @@ import de.craftinc.gates.controllers.PermissionController;
 import de.craftinc.gates.util.GateBlockChangeSender;
 import org.bukkit.ChatColor;
 
-import de.craftinc.gates.Plugin;
-
 public class CommandTriggerOpen extends BaseCommand {
 
     public CommandTriggerOpen() {
