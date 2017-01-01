@@ -16,9 +16,10 @@
 */
 package de.craftinc.gates.commands;
 
+import de.craftinc.gates.controllers.PermissionController;
 import org.bukkit.ChatColor;
 
-import de.craftinc.gates.GatesManager;
+import de.craftinc.gates.controllers.GatesManager;
 import de.craftinc.gates.Plugin;
 
 public class CommandRename extends BaseCommand {
@@ -35,7 +36,7 @@ public class CommandRename extends BaseCommand {
 
         helpDescription = "Changes the id of a gate.";
 
-        requiredPermission = Plugin.permissionManage;
+        requiredPermission = PermissionController.permissionManage;
 
         needsPermissionAtCurrentLocation = false;
         shouldPersistToDisk = true;

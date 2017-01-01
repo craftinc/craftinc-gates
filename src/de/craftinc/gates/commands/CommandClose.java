@@ -18,11 +18,11 @@ package de.craftinc.gates.commands;
 
 import java.util.logging.Level;
 
+import de.craftinc.gates.controllers.PermissionController;
 import de.craftinc.gates.util.GateBlockChangeSender;
 import org.bukkit.ChatColor;
 
 import de.craftinc.gates.Plugin;
-
 
 public class CommandClose extends BaseCommand {
 
@@ -32,7 +32,7 @@ public class CommandClose extends BaseCommand {
 
         requiredParameters.add("id");
         helpDescription = "Closes a gate to prevent players from using it.";
-        requiredPermission = Plugin.permissionManage;
+        requiredPermission = PermissionController.permissionManage;
         needsPermissionAtCurrentLocation = false;
         shouldPersistToDisk = true;
         senderMustBePlayer = false;

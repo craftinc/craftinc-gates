@@ -14,37 +14,30 @@
     You should have received a copy of the GNU Lesser General Public License
     along with this program (LGPLv3).  If not, see <http://www.gnu.org/licenses/>.
 */
-package de.craftinc.gates;
+package de.craftinc.gates.models;
 
+import de.craftinc.gates.Plugin;
 import de.craftinc.gates.util.ConfigurationUtil;
 import de.craftinc.gates.util.FloodUtil;
 import de.craftinc.gates.persistence.LocationUtil;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
 import java.util.*;
 
 
 public class Gate implements ConfigurationSerializable {
-    protected Location location; /* saving both location and gateBlockLocations is redundant but makes it easy to allow players to reshape gates */
+    private Location location; /* saving both location and gateBlockLocations is redundant but makes it easy to allow players to reshape gates */
     private Set<Location> gateBlockLocations = new HashSet<>(); /* Locations of the blocks inside the gate */
-
     private Set<Block> gateFrameBlocks = new HashSet<>();
-
-    protected Location exit;
-
+    private Location exit;
     private boolean isHidden = false;
     private boolean isOpen = false;
-
     private boolean allowsVehicles = true;
-
-    protected String id;
-
-    public static String getGateBlocksKey() {
-        return gateBlocksKey;
-    }
+    private String id;
 
     /**
      * You should never create two gates with the same 'id'. Also see 'setId(String id)'.
@@ -55,11 +48,21 @@ public class Gate implements ConfigurationSerializable {
         setId(id);
     }
 
-
     public String toString() {
         return super.toString() + " " + this.getId();
     }
 
+    public GateDirection getDirection() {
+        if (gateBlockLocations.isEmpty()) {
+            return null;
+        } else {
+            Block some = ((Location)gateBlockLocations.toArray()[0]).getBlock();
+            boolean east = gateBlockLocations.contains(some.getRelative(BlockFace.EAST).getLocation());
+            boolean west = gateBlockLocations.contains(some.getRelative(BlockFace.WEST).getLocation());
+
+            return east || west ? GateDirection.EastWest : GateDirection.NorthSouth;
+        }
+    }
 
     /**
      * @return This method might return a 'null' data.
@@ -67,7 +70,6 @@ public class Gate implements ConfigurationSerializable {
     public Location getLocation() {
         return location;
     }
-
 
     /**
      * @param location Supplying 'null' is permitted.
@@ -186,7 +188,7 @@ public class Gate implements ConfigurationSerializable {
     /**
      * Checks if values attributes do add up; will close gate on wrong values.
      */
-    void validate() throws Exception {
+    public void validate() throws Exception {
         if (!isOpen) {
             return;
         }

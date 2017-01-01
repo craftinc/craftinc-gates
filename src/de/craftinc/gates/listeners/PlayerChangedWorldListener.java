@@ -16,17 +16,18 @@
 */
 package de.craftinc.gates.listeners;
 
-
 import de.craftinc.gates.util.GateBlockChangeSender;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 
-
 public class PlayerChangedWorldListener implements Listener {
+
     @EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerChangeWorld(PlayerChangedWorldEvent event) {
-        GateBlockChangeSender.updateGateBlocks(event.getPlayer());
+        Player p = event.getPlayer();
+        GateBlockChangeSender.updateGateBlocks(p, p.getLocation());
     }
 }

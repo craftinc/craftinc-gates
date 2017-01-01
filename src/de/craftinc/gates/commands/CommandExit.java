@@ -18,6 +18,7 @@ package de.craftinc.gates.commands;
 
 import java.util.logging.Level;
 
+import de.craftinc.gates.controllers.PermissionController;
 import de.craftinc.gates.util.GateBlockChangeSender;
 import org.bukkit.ChatColor;
 
@@ -34,7 +35,7 @@ public class CommandExit extends BaseCommand {
 
         helpDescription = "Change exit of location.";
 
-        requiredPermission = Plugin.permissionManage;
+        requiredPermission = PermissionController.permissionManage;
 
         needsPermissionAtCurrentLocation = true;
         shouldPersistToDisk = true;

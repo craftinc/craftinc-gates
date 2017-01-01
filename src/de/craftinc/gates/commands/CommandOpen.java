@@ -16,6 +16,7 @@
 */
 package de.craftinc.gates.commands;
 
+import de.craftinc.gates.controllers.PermissionController;
 import de.craftinc.gates.util.GateBlockChangeSender;
 import org.bukkit.ChatColor;
 
@@ -29,7 +30,7 @@ public class CommandOpen extends BaseCommand {
 
         requiredParameters.add("id");
         helpDescription = "Open a gate so players can use it.";
-        requiredPermission = Plugin.permissionManage;
+        requiredPermission = PermissionController.permissionManage;
 
         needsPermissionAtCurrentLocation = false;
         shouldPersistToDisk = true;

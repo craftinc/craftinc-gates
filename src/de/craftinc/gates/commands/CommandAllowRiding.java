@@ -16,8 +16,7 @@
 */
 package de.craftinc.gates.commands;
 
-
-import de.craftinc.gates.Plugin;
+import de.craftinc.gates.controllers.PermissionController;
 import org.bukkit.ChatColor;
 
 public class CommandAllowRiding extends BaseCommand {
@@ -29,7 +28,7 @@ public class CommandAllowRiding extends BaseCommand {
         requiredParameters.add("id");
 
         helpDescription = "Allow players to travel while riding.";
-        requiredPermission = Plugin.permissionManage;
+        requiredPermission = PermissionController.permissionManage;
         needsPermissionAtCurrentLocation = false;
         shouldPersistToDisk = true;
 

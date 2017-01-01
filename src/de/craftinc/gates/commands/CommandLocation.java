@@ -18,6 +18,7 @@ package de.craftinc.gates.commands;
 
 import java.util.Set;
 
+import de.craftinc.gates.controllers.PermissionController;
 import de.craftinc.gates.util.GateBlockChangeSender;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -33,7 +34,7 @@ public class CommandLocation extends BaseLocationCommand {
 
         requiredParameters.add("id");
         helpDescription = "Set the entrance of the gate to your current location.";
-        requiredPermission = Plugin.permissionManage;
+        requiredPermission = PermissionController.permissionManage;
 
         needsPermissionAtCurrentLocation = true;
         shouldPersistToDisk = true;

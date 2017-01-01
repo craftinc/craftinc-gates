@@ -16,7 +16,7 @@
 */
 package de.craftinc.gates.persistence;
 
-import de.craftinc.gates.Gate;
+import de.craftinc.gates.models.Gate;
 
 import de.craftinc.gates.Plugin;
 import org.bukkit.Location;
