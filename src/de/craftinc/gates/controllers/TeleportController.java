@@ -47,16 +47,16 @@ public class TeleportController {
 
         if (vehicle != null && !gate.getAllowsVehicles()) {
             messageUtil.sendVehicleForbiddenMessage(player);
+            Plugin.log("no vehicle transport");
             return;
         }
 
         final Location destination = calculateDestination(player, gate);
+        player.teleport(destination);
 
         if (vehicle != null) {
             vehicle.teleport(destination, PlayerTeleportEvent.TeleportCause.PLUGIN);
             vehicle.setPassenger(player);
-        } else {
-            player.teleport(destination);
         }
 
         messageUtil.sendTeleportMessage(player);

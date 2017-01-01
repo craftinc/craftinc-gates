@@ -32,6 +32,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
+import org.bukkit.event.vehicle.VehicleMoveEvent;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -50,6 +51,7 @@ public class Plugin extends JavaPlugin {
     private PermissionController permissionController = new PermissionController();
 
     private PlayerMoveListener moveListener;
+    private VehicleMoveListener vehicleListener;
     private PlayerTeleportListener teleportListener = new PlayerTeleportListener();
     private PlayerRespawnListener respawnListener = new PlayerRespawnListener();
     private PlayerChangedWorldListener worldChangeListener = new PlayerChangedWorldListener();
@@ -59,6 +61,7 @@ public class Plugin extends JavaPlugin {
     public Plugin() {
         instance = this;
         moveListener = new PlayerMoveListener(this);
+        vehicleListener = new VehicleMoveListener(this);
     }
 
     public static Plugin getPlugin() {
@@ -159,6 +162,7 @@ public class Plugin extends JavaPlugin {
         pm.registerEvents(this.respawnListener, this);
         pm.registerEvents(this.worldChangeListener, this);
         pm.registerEvents(this.joinListener, this);
+        pm.registerEvents(this.vehicleListener, this);
 
         if (getConfig().getBoolean(ConfigurationUtil.confCheckForBrokenGateFramesKey)) {
             pm.registerEvents(this.blockBreakListener, this);
