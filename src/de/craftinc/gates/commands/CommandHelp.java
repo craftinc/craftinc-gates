@@ -17,6 +17,7 @@
 package de.craftinc.gates.commands;
 
 import de.craftinc.gates.controllers.PermissionController;
+import de.craftinc.gates.util.TextUtil;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -38,6 +39,7 @@ public class CommandHelp extends BaseCommand {
     }
 
     public void perform() {
+        sendMessage(TextUtil.titleSize("Craft Inc. Gates Help"));
         sendMessage(getHelp());
     }
 
