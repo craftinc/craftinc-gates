@@ -33,7 +33,7 @@ public class GateMaterial {
             case "grass":
                 material = Material.LONG_GRASS;
                 break;
-            case "dead bush":
+            case "dead-bush":
                 material = Material.DEAD_BUSH;
                 break;
             case "dandelion":
@@ -42,46 +42,49 @@ public class GateMaterial {
             case "poppy":
                 material = Material.RED_ROSE;
                 break;
-            case "brown mushroom":
+            case "brown-mushroom":
                 material = Material.BROWN_MUSHROOM;
                 break;
-            case "red mushroom":
+            case "red-mushroom":
                 material = Material.RED_MUSHROOM;
                 break;
             case "torch":
                 material = Material.TORCH;
                 break;
-            case "redstone torch (off)":
+            case "redstone-torch-off":
                 material = Material.REDSTONE_TORCH_OFF;
                 break;
-            case "redstone torch (on)":
+            case "redstone-torch-on":
                 material = Material.REDSTONE_TORCH_ON;
                 break;
             case "fence":
                 material = Material.FENCE;
                 break;
+            case "nether-portal":
+                material = Material.PORTAL;
+                break;
             case "nether portal":
                 material = Material.PORTAL;
                 break;
-            case "iron bars":
+            case "iron-bars":
                 material = Material.IRON_FENCE;
                 break;
-            case "glass pane":
+            case "glass-pane":
                 material = Material.THIN_GLASS;
                 break;
-            case "fence gate":
+            case "fence-gate":
                 material = Material.FENCE_GATE;
                 break;
-            case "nether brick fence":
+            case "nether-brick-fence":
                 material = Material.NETHER_FENCE;
                 break;
-            case "nether wart":
+            case "nether-wart":
                 material = Material.NETHER_WARTS;
                 break;
-            case "end portal":
+            case "end-portal":
                 material = Material.ENDER_PORTAL;
                 break;
-            case "cobblestone wall":
+            case "cobblestone-wall":
                 material = Material.COBBLE_WALL;
                 break;
             default:
@@ -107,41 +110,41 @@ public class GateMaterial {
             case LONG_GRASS:
                 return "grass";
             case DEAD_BUSH:
-                return "dead bush";
+                return "dead-bush";
             case YELLOW_FLOWER:
                 return "dandelion";
             case RED_ROSE:
                 return "poppy";
             case BROWN_MUSHROOM:
-                return "brown mushroom";
+                return "brown-mushroom";
             case RED_MUSHROOM:
-                return "red mushroom";
+                return "red-mushroom";
             case TORCH:
                 return "torch";
             case REDSTONE_TORCH_OFF:
-                return "redstone torch (off)";
+                return "redstone-torch-off";
             case REDSTONE_TORCH_ON:
-                return "redstone torch (on)";
+                return "redstone-torch-on";
             case FENCE:
                 return "fence";
             case PORTAL:
-                return "nether portal";
+                return "nether-portal";
             case IRON_FENCE:
-                return "iron bars";
+                return "iron-bars";
             case THIN_GLASS:
-                return "glass pane";
+                return "glass-pane";
             case FENCE_GATE:
-                return "fence gate";
+                return "fence-gate";
             case NETHER_FENCE:
-                return "nether brick fence";
+                return "nether-brick-fence";
             case NETHER_WARTS:
-                return "nether wart";
+                return "nether-wart";
             case ENDER_PORTAL:
-                return "end portal";
+                return "end-portal";
             case COBBLE_WALL:
-                return "cobblestone wall";
+                return "cobblestone-wall";
             default:
-                return "nether portal";
+                return "nether-portal";
         }
     }
 
