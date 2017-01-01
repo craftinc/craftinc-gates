@@ -23,6 +23,10 @@ public class PermissionController {
         assert(sender != null);
         assert(permission != null);
 
+        if (gate == null) {
+            return hasPermission(sender, permission);
+        }
+
         final Location location = gate.getLocation();
         final Location exit = gate.getExit();
 
