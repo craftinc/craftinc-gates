@@ -5,13 +5,19 @@ import org.bukkit.Material;
 import java.security.InvalidParameterException;
 
 public class GateMaterial {
-
     private Material material;
+
+    GateMaterial(Material material) {
+        this.material = material;
+    }
 
     public GateMaterial(String materialString) throws InvalidParameterException {
         Material material;
 
         switch (materialString) {
+            case "air":
+                material = Material.AIR;
+                break;
             case "sapling":
                 material = Material.SAPLING;
                 break;
@@ -83,6 +89,60 @@ public class GateMaterial {
         }
 
         this.material = material;
+    }
+
+    @Override
+    public String toString() {
+        switch (material) {
+            case AIR:
+                return "air";
+            case SAPLING:
+                return "sapling";
+            case STATIONARY_WATER:
+                return "water";
+            case STATIONARY_LAVA:
+                return "lava";
+            case WEB:
+                return "cobweb";
+            case LONG_GRASS:
+                return "grass";
+            case DEAD_BUSH:
+                return "dead bush";
+            case YELLOW_FLOWER:
+                return "dandelion";
+            case RED_ROSE:
+                return "poppy";
+            case BROWN_MUSHROOM:
+                return "brown mushroom";
+            case RED_MUSHROOM:
+                return "red mushroom";
+            case TORCH:
+                return "torch";
+            case REDSTONE_TORCH_OFF:
+                return "redstone torch (off)";
+            case REDSTONE_TORCH_ON:
+                return "redstone torch (on)";
+            case FENCE:
+                return "fence";
+            case PORTAL:
+                return "nether portal";
+            case IRON_FENCE:
+                return "iron bars";
+            case THIN_GLASS:
+                return "glass pane";
+            case FENCE_GATE:
+                return "fence gate";
+            case NETHER_FENCE:
+                return "nether brick fence";
+            case NETHER_WARTS:
+                return "nether wart";
+            case ENDER_PORTAL:
+                return "end portal";
+            case COBBLE_WALL:
+                return "cobblestone wall";
+            default:
+                return "nether portal";
+        }
     }
 
     public Material getMaterial() {

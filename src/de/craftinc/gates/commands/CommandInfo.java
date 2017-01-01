@@ -71,19 +71,16 @@ public class CommandInfo extends BaseCommand {
             sendMessage(TextUtil.titleSize("Information about closest gate: '" + ChatColor.WHITE + gate.getId() + ChatColor.YELLOW + "'"));
         }
 
-        String openHiddenMessage = ChatColor.DARK_AQUA + "This gate is";
+        String openMessage = ChatColor.DARK_AQUA + "This gate is";
 
         if (gate.isOpen())
-            openHiddenMessage += ChatColor.AQUA + " open";
+            openMessage += ChatColor.AQUA + " open";
         else
-            openHiddenMessage += ChatColor.AQUA + " closed";
+            openMessage += ChatColor.AQUA + " closed";
 
-        if (gate.isHidden())
-            openHiddenMessage += ChatColor.DARK_AQUA + " and" + ChatColor.AQUA + " hidden";
+        openMessage += ".\n";
 
-        openHiddenMessage += ".\n";
-
-        sendMessage(openHiddenMessage);
+        sendMessage(openMessage);
 
         if (gate.getLocation() != null)
             sendMessage(ChatColor.DARK_AQUA + "location: " + ChatColor.AQUA + "( " + (int) gate.getLocation().getX() +
@@ -103,6 +100,8 @@ public class CommandInfo extends BaseCommand {
         if (gate.getAllowsVehicles())
             sendMessage(ChatColor.DARK_AQUA + "You can ride through this gate.");
 
+        sendMessage(ChatColor.DARK_AQUA + "This gate is made of "
+                + ChatColor.AQUA + gate.getMaterial() + ChatColor.DARK_AQUA + ".");
 
         if (this.sender instanceof Player) {
             HashSet<Gate> set = new HashSet<>();

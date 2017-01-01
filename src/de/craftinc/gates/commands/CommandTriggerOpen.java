@@ -42,11 +42,11 @@ public class CommandTriggerOpen extends BaseCommand {
                 sendMessage(ChatColor.GREEN + "The exit of gate '" + gate.getId() + "' is now where you stand.");
             }
 
-            gate.setOpen(gate.isOpen());
+            gate.setOpen(!gate.isOpen());
 
             GateBlockChangeSender.updateGateBlocks(gate);
             gatesManager.handleGateLocationChange(gate, null, null, null);
-            sendMessage(ChatColor.GREEN + "The gate was opened.");
+            sendMessage(ChatColor.GREEN + "The gate is now " + (gate.isOpen() ? "open." : "closed."));
         } catch (Exception e) {
             sendMessage(ChatColor.RED + e.getMessage());
         }

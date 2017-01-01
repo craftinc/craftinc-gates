@@ -76,7 +76,7 @@ public class GateBlockChangeSender {
         }
 
         for (Gate g : gatesNearby) {
-            if (!g.isOpen() || g.isHidden()) {
+            if (!g.isOpen()) {
                 continue;
             }
             sendGateBlockChanges(g, true, player);
@@ -124,7 +124,7 @@ public class GateBlockChangeSender {
             }
         }
 
-        boolean isVisible = gate.isOpen() && !gate.isHidden() && !remove;
+        boolean isVisible = gate.isOpen() && !remove;
         for (Player p : playersNearby) {
             sendGateBlockChanges(gate, isVisible, p);
         }
@@ -157,7 +157,7 @@ public class GateBlockChangeSender {
         Material material;
 
         if (isVisible) {
-            GateMaterial gm = getPortalMaterial();
+            GateMaterial gm = gate.getMaterial();
             data = gm.getData(gate.getDirection());
             material = gm.getMaterial();
         } else {
