@@ -24,7 +24,6 @@ import org.bukkit.World;
 
 import de.craftinc.gates.Plugin;
 
-
 public class LocationUtil {
 
     private final static String worldKey = "world";
@@ -32,7 +31,7 @@ public class LocationUtil {
     private final static String yKey = "y";
     private final static String zKey = "z";
 
-    protected static World getWorld(final String name) throws Exception {
+    private static World getWorld(final String name) throws Exception {
         if (name == null) {
             throw new IllegalArgumentException("The name of the world must not be 'null");
         }

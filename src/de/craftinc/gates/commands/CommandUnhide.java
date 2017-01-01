@@ -16,10 +16,9 @@
 */
 package de.craftinc.gates.commands;
 
+import de.craftinc.gates.controllers.PermissionController;
 import de.craftinc.gates.util.GateBlockChangeSender;
 import org.bukkit.ChatColor;
-
-import de.craftinc.gates.Plugin;
 
 public class CommandUnhide extends BaseCommand {
 
@@ -29,7 +28,7 @@ public class CommandUnhide extends BaseCommand {
 
         requiredParameters.add("id");
         helpDescription = "Make that gate visible";
-        requiredPermission = Plugin.permissionManage;
+        requiredPermission = PermissionController.permissionManage;
         needsPermissionAtCurrentLocation = false;
         shouldPersistToDisk = true;
         senderMustBePlayer = false;

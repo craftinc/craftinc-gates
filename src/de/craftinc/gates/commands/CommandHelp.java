@@ -17,6 +17,7 @@
 package de.craftinc.gates.commands;
 
 import de.craftinc.gates.Plugin;
+import de.craftinc.gates.controllers.PermissionController;
 import de.craftinc.gates.util.TextUtil;
 
 import java.util.ArrayList;
@@ -69,7 +70,7 @@ public class CommandHelp extends BaseCommand {
         optionalParameters.add("page");
         helpDescription = "prints this help page";
 
-        requiredPermission = Plugin.permissionInfo;
+        requiredPermission = PermissionController.permissionInfo;
 
         hasGateParam = false;
         needsPermissionAtCurrentLocation = false;

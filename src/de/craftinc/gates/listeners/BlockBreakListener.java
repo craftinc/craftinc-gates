@@ -16,8 +16,7 @@
 */
 package de.craftinc.gates.listeners;
 
-
-import de.craftinc.gates.Gate;
+import de.craftinc.gates.models.Gate;
 import de.craftinc.gates.Plugin;
 import de.craftinc.gates.util.GateBlockChangeSender;
 import org.bukkit.event.EventHandler;
@@ -26,6 +25,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 
 public class BlockBreakListener implements Listener {
+
     @EventHandler(priority = EventPriority.MONITOR)
     public void onBlockBreak(BlockBreakEvent event) {
         if (event.isCancelled()) {
@@ -37,8 +37,7 @@ public class BlockBreakListener implements Listener {
         if (gate != null && !gate.isHidden()) {
             try {
                 gate.setOpen(false);
-            } catch (Exception ignored) {
-            }
+            } catch (Exception ignored) {}
 
             GateBlockChangeSender.updateGateBlocks(gate);
         }

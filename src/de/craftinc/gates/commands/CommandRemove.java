@@ -16,6 +16,7 @@
 */
 package de.craftinc.gates.commands;
 
+import de.craftinc.gates.controllers.PermissionController;
 import de.craftinc.gates.util.GateBlockChangeSender;
 import org.bukkit.ChatColor;
 
@@ -33,7 +34,7 @@ public class CommandRemove extends BaseCommand {
         senderMustBePlayer = false;
         helpDescription = "Removes the gate from the game.";
 
-        requiredPermission = Plugin.permissionManage;
+        requiredPermission = PermissionController.permissionManage;
 
         needsPermissionAtCurrentLocation = false;
         shouldPersistToDisk = true;

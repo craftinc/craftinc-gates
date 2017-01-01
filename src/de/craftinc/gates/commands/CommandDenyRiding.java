@@ -17,6 +17,7 @@
 package de.craftinc.gates.commands;
 
 import de.craftinc.gates.Plugin;
+import de.craftinc.gates.controllers.PermissionController;
 import org.bukkit.ChatColor;
 
 public class CommandDenyRiding extends BaseCommand {
@@ -27,7 +28,7 @@ public class CommandDenyRiding extends BaseCommand {
 
         requiredParameters.add("id");
         helpDescription = "Deny players to travel while riding.";
-        requiredPermission = Plugin.permissionManage;
+        requiredPermission = PermissionController.permissionManage;
         needsPermissionAtCurrentLocation = false;
         shouldPersistToDisk = true;
         senderMustBePlayer = false;

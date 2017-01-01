@@ -14,7 +14,7 @@
     You should have received a copy of the GNU Lesser General Public License
     along with this program (LGPLv3).  If not, see <http://www.gnu.org/licenses/>.
 */
-package de.craftinc.gates;
+package de.craftinc.gates.controllers;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -23,6 +23,8 @@ import java.io.IOException;
 import java.util.*;
 import java.util.logging.Level;
 
+import de.craftinc.gates.Plugin;
+import de.craftinc.gates.models.Gate;
 import de.craftinc.gates.persistence.MigrationUtil;
 import de.craftinc.gates.util.ConfigurationUtil;
 import org.bukkit.Chunk;
@@ -31,9 +33,8 @@ import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import de.craftinc.gates.util.SimpleChunk;
-import de.craftinc.gates.util.SimpleLocation;
-
+import de.craftinc.gates.models.SimpleChunk;
+import de.craftinc.gates.models.SimpleLocation;
 
 public class GatesManager {
     protected List<Gate> gates;
@@ -88,18 +89,15 @@ public class GatesManager {
         return nearestGate;
     }
 
-
-    public Gate getGateAtLocation(final Location location) {
+    Gate getGateAtLocation(final Location location) {
         SimpleLocation simpleLocation = new SimpleLocation(location);
         return gatesByLocation.get(simpleLocation);
     }
-
 
     public Gate getGateAtFrameLocation(final Location location) {
         SimpleLocation simpleLocation = new SimpleLocation(location);
         return gatesByFrameLocation.get(simpleLocation);
     }
-
 
     public void saveGatesToDisk() {
         if (storageFileIsInvalid) {
@@ -121,7 +119,9 @@ public class GatesManager {
 
 
     @SuppressWarnings("unchecked")
-    boolean loadGatesFromDisk() {
+    public boolean loadGatesFromDisk() {
+        // TODO: refactor: move loading/saving logic into persistence package
+
         this.gatesConfigFile = new File(Plugin.getPlugin().getDataFolder(), "gates.yml");
 
         if (!this.gatesConfigFile.exists()) {
@@ -289,7 +289,6 @@ public class GatesManager {
         if (gateBlocks != null) {
 
             for (Location l : gateBlocks) {
-
                 SimpleLocation sl = new SimpleLocation(l);
                 gatesByLocation.remove(sl);
 
@@ -311,7 +310,6 @@ public class GatesManager {
 
     private void addGateByLocations(final Gate g) {
         for (Location l : g.getGateBlockLocations()) {
-
             SimpleLocation sl = new SimpleLocation(l);
             gatesByLocation.put(sl, g);
 
@@ -368,7 +366,7 @@ public class GatesManager {
                     Set<Gate> gatesForC = gatesByChunk.get(sc);
 
                     if (gatesForC == null) {
-                        gatesForC = new HashSet<Gate>(); // NOTE: not optimizing size here
+                        gatesForC = new HashSet<>(); // NOTE: not optimizing size here
                         gatesByChunk.put(sc, gatesForC);
                     }
 
@@ -378,7 +376,7 @@ public class GatesManager {
         }
     }
 
-    void storeInvalidGate(Map<String, Object> map) {
+    public void storeInvalidGate(Map<String, Object> map) {
         File invalidGatesFile = new File(Plugin.getPlugin().getDataFolder(), "invalid_gates.yml");
         Boolean invalidGatesFileExists = invalidGatesFile.exists();
 
@@ -428,12 +426,10 @@ public class GatesManager {
         }
     }
 
-
     public void handleGateIdChange(final Gate g, final String oldId) {
         this.removeGateById(oldId);
         this.addGateWithId(g);
     }
-
 
     public void handleGateLocationChange(final Gate g,
                                          final Location oldLocation,
@@ -449,11 +445,9 @@ public class GatesManager {
         this.addGateByFrameLocations(g);
     }
 
-
     public void handleGateExitChange(final Gate g, final Location oldExit) {
         // nothing to do
     }
-
 
     public void handleNewGate(final Gate g) {
         this.gates.add(g);
@@ -464,7 +458,6 @@ public class GatesManager {
         this.addGateByFrameLocations(g);
     }
 
-
     public void handleDeletion(final Gate g) {
         this.gates.remove(g);
 
@@ -474,11 +467,9 @@ public class GatesManager {
         this.removeGateByFrameLocation(g.getGateFrameBlocks());
     }
 
-
     public boolean gateExists(final String id) {
         return gatesById.containsKey(id.toLowerCase());
     }
-
 
     public List<Gate> allGates() {
         return gates;

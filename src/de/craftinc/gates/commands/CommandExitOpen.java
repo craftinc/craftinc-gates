@@ -17,6 +17,7 @@
 package de.craftinc.gates.commands;
 
 
+import de.craftinc.gates.controllers.PermissionController;
 import de.craftinc.gates.Plugin;
 import de.craftinc.gates.util.GateBlockChangeSender;
 import org.bukkit.ChatColor;
@@ -32,7 +33,7 @@ public class CommandExitOpen extends BaseCommand {
 
         requiredParameters.add("id");
         helpDescription = "Change exit of location and open that gate afterwards.";
-        requiredPermission = Plugin.permissionManage;
+        requiredPermission = PermissionController.permissionManage;
         needsPermissionAtCurrentLocation = true;
         shouldPersistToDisk = true;
         senderMustBePlayer = true;

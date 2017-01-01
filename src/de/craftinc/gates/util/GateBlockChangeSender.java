@@ -16,10 +16,10 @@
 */
 package de.craftinc.gates.util;
 
-
 import de.craftinc.gates.Plugin;
-import de.craftinc.gates.Gate;
+import de.craftinc.gates.models.Gate;
 
+import de.craftinc.gates.models.GateMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -31,7 +31,6 @@ import java.util.Set;
 
 import static de.craftinc.gates.util.ConfigurationUtil.*;
 
-
 public class GateBlockChangeSender {
     /**
      * Replaces gate frame blocks with glowstone for a short period of time.
@@ -40,15 +39,12 @@ public class GateBlockChangeSender {
      *
      * @param player The player for whom the frame should be highlighted.
      *               Must not be null!
+     *
+     * @param gates The gates to highlighting
      */
     public static void temporaryHighlightGatesFrames(final Player player, final Set<Gate> gates) {
-        if (player == null) {
-            throw new IllegalArgumentException("'player' must not be 'null'!");
-        }
-
-        if (gates == null) {
-            throw new IllegalArgumentException("'gate' must not be 'null!");
-        }
+        assert(player != null);
+        assert(gates != null);
 
         for (Gate g : gates) {
             Set<Block> frameBlocks = g.getGateFrameBlocks();
@@ -57,65 +53,8 @@ public class GateBlockChangeSender {
                 player.sendBlockChange(b.getLocation(), Material.GLOWSTONE, (byte) 0);
             }
         }
-
-        Plugin plugin = Plugin.getPlugin();
-        long highlightDuration = 20 * plugin.getConfig().getLong(confHighlightDurationKey);
-
-        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-            @Override
-            public void run() {
-                dehighlightGatesFrames(player, gates);
-            }
-        }, highlightDuration);
+        scheduleDelighting(player, gates);
     }
-
-
-    public static void temporaryHighlightGateFrame(final Player player, final Gate gate) {
-        if (gate == null) {
-            throw new IllegalArgumentException("'gate' must not be 'null!");
-        }
-
-        if (player == null) {
-            throw new IllegalArgumentException("'player' must not be 'null'!");
-        }
-
-        Set<Block> frameBlocks = gate.getGateFrameBlocks();
-
-        for (Block b : frameBlocks) {
-            player.sendBlockChange(b.getLocation(), Material.GLOWSTONE, (byte) 0);
-        }
-
-        Plugin plugin = Plugin.getPlugin();
-        long highlightDuration = 20 * plugin.getConfig().getLong(confHighlightDurationKey);
-
-        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-            @Override
-            public void run() {
-                dehighlightGateFrame(player, gate);
-            }
-        }, highlightDuration);
-    }
-
-
-    private static void dehighlightGatesFrames(final Player player, final Set<Gate> gates) {
-        for (Gate g : gates) {
-            Set<Block> frameBlocks = g.getGateFrameBlocks();
-
-            for (Block b : frameBlocks) {
-                player.sendBlockChange(b.getLocation(), b.getType(), (byte) 0);
-            }
-        }
-    }
-
-
-    private static void dehighlightGateFrame(final Player player, final Gate gate) {
-        Set<Block> frameBlocks = gate.getGateFrameBlocks();
-
-        for (Block b : frameBlocks) {
-            player.sendBlockChange(b.getLocation(), b.getType(), (byte) 0);
-        }
-    }
-
 
     /**
      * Sends gate blocks to player at a given location. Will send the updates either immediately or
@@ -127,33 +66,20 @@ public class GateBlockChangeSender {
      *                    second delay.
      */
     public static void updateGateBlocks(final Player player, final Location location, boolean sendDelayed) {
-        if (player == null) {
-            throw new IllegalArgumentException("'player' must not be 'null'!");
-        }
-
-        if (location == null) {
-            throw new IllegalArgumentException("'location' must not be 'null'!");
-        }
+        assert(player != null);
+        assert(location != null);
 
         Set<Gate> gatesNearby = Plugin.getPlugin().getGatesManager().getNearbyGates(location.getChunk());
-        GateMaterial gateMaterial = getPortalMaterial();
 
         if (gatesNearby == null) {
             return; // no gates nearby
         }
 
         for (Gate g : gatesNearby) {
-
             if (!g.isOpen() || g.isHidden()) {
                 continue;
             }
-
-            for (Location l : g.getGateBlockLocations()) {
-
-                if (l.getBlock().getType() == Material.AIR) {
-                    player.sendBlockChange(l, gateMaterial.material, gateMaterial.data);
-                }
-            }
+            sendGateBlockChanges(g, true, player);
         }
 
         if (sendDelayed) {
@@ -166,23 +92,8 @@ public class GateBlockChangeSender {
         }
     }
 
-
-    /**
-     * This method calls: updateGateBlocks(player, location, false);
-     */
     public static void updateGateBlocks(final Player player, final Location location) {
         updateGateBlocks(player, location, false);
-    }
-
-    /**
-     * This method calls: updateGateBlocks(player, player.getLocation(), false);
-     */
-    public static void updateGateBlocks(final Player player) {
-        if (player == null) {
-            throw new IllegalArgumentException("'player' must not be 'null'!");
-        }
-
-        updateGateBlocks(player, player.getLocation(), false);
     }
 
 
@@ -197,45 +108,66 @@ public class GateBlockChangeSender {
      * @param remove Set to true if all visible gate blocks shall be removed.
      */
     public static void updateGateBlocks(final Gate gate, boolean remove) {
-        if (gate == null) {
-            throw new IllegalArgumentException("'gate must not be 'null'!");
-        }
+        assert(gate != null);
 
         Location gateLocation = gate.getLocation();
-
         if (gate.getGateBlockLocations().isEmpty()) {
             return;
         }
 
         ArrayList<Player> playersNearby = new ArrayList<>();
-
         int searchRadius = Plugin.getPlugin().getConfig().getInt(confPlayerGateBlockUpdateRadiusKey);
 
         for (Player p : Plugin.getPlugin().getServer().getOnlinePlayers()) {
-
             if (p.getWorld() == gateLocation.getWorld() && p.getLocation().distance(gateLocation) < searchRadius) {
                 playersNearby.add(p);
             }
         }
 
-        GateMaterial gateMaterial = getPortalMaterial();
-        Material material;
-        byte data = 0;
+        boolean isVisible = gate.isOpen() && !gate.isHidden() && !remove;
+        for (Player p : playersNearby) {
+            sendGateBlockChanges(gate, isVisible, p);
+        }
+    }
 
-        if (gate.isOpen() && !gate.isHidden() && !remove) {
-            material = gateMaterial.material;
-            data = gateMaterial.data;
+    private static void scheduleDelighting(final Player player, final Set<Gate> gates) {
+        Plugin plugin = Plugin.getPlugin();
+        long highlightDuration = 20 * plugin.getConfig().getLong(confHighlightDurationKey);
+
+        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+            @Override
+            public void run() {
+                dehighlightGatesFrames(player, gates);
+            }
+        }, highlightDuration);
+    }
+
+    private static void dehighlightGatesFrames(final Player player, final Set<Gate> gates) {
+        for (Gate g : gates) {
+            Set<Block> frameBlocks = g.getGateFrameBlocks();
+
+            for (Block b : frameBlocks) {
+                player.sendBlockChange(b.getLocation(), b.getType(), (byte) 0);
+            }
+        }
+    }
+
+    private static void sendGateBlockChanges(final Gate gate, boolean isVisible, final Player p) {
+        byte data;
+        Material material;
+
+        if (isVisible) {
+            GateMaterial gm = getPortalMaterial();
+            data = gm.getData(gate.getDirection());
+            material = gm.getMaterial();
         } else {
+            data = 0b0;
             material = Material.AIR;
         }
 
-        for (Player p : playersNearby) {
-
-            for (Location l : gate.getGateBlockLocations()) {
-
-                if (l.getBlock().getType() == Material.AIR) { // on server-side a gate is always made out of AIR
-                    p.sendBlockChange(l, material, data);
-                }
+        for (Location l : gate.getGateBlockLocations()) {
+            if (l.getBlock().getType() == Material.AIR) {
+                p.sendBlockChange(l, material, data);
             }
         }
     }

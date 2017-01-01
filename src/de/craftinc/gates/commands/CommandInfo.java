@@ -16,12 +16,16 @@
 */
 package de.craftinc.gates.commands;
 
+import de.craftinc.gates.models.Gate;
+import de.craftinc.gates.controllers.PermissionController;
 import de.craftinc.gates.util.GateBlockChangeSender;
 import org.bukkit.ChatColor;
 
 import de.craftinc.gates.Plugin;
 import de.craftinc.gates.util.TextUtil;
 import org.bukkit.entity.Player;
+
+import java.util.HashSet;
 
 public class CommandInfo extends BaseCommand {
 
@@ -33,7 +37,7 @@ public class CommandInfo extends BaseCommand {
 
         helpDescription = "Print detailed information about a certain or the closest gate.";
 
-        requiredPermission = Plugin.permissionInfo;
+        requiredPermission = PermissionController.permissionInfo;
 
         needsPermissionAtCurrentLocation = false;
         shouldPersistToDisk = false;
@@ -106,7 +110,10 @@ public class CommandInfo extends BaseCommand {
 
 
         if (this.sender instanceof Player) {
-            GateBlockChangeSender.temporaryHighlightGateFrame((Player) this.sender, this.gate);
+            HashSet<Gate> set = new HashSet<>();
+            set.add(this.gate);
+
+            GateBlockChangeSender.temporaryHighlightGatesFrames((Player)this.sender, set);
         }
     }
 }

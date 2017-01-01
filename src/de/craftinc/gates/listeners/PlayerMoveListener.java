@@ -16,30 +16,20 @@
 */
 package de.craftinc.gates.listeners;
 
-import java.util.Calendar;
-import java.util.HashMap;
-
-import de.craftinc.gates.util.ConfigurationUtil;
+import de.craftinc.gates.Plugin;
+import de.craftinc.gates.controllers.TeleportController;
 import de.craftinc.gates.util.GateBlockChangeSender;
-import de.craftinc.gates.util.VehicleCloner;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Vehicle;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 
-import de.craftinc.gates.Gate;
-import de.craftinc.gates.GatesManager;
-import de.craftinc.gates.Plugin;
-import org.bukkit.scheduler.BukkitScheduler;
-
-
 public class PlayerMoveListener implements Listener {
-    private HashMap<String, Long> lastNoPermissionMessages = new HashMap<>();
+    private TeleportController teleportController;
+
+    public PlayerMoveListener(Plugin plugin) {
+        this.teleportController = new TeleportController(plugin);
+    }
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerMove(PlayerMoveEvent event) {
@@ -51,113 +41,6 @@ public class PlayerMoveListener implements Listener {
             GateBlockChangeSender.updateGateBlocks(event.getPlayer(), event.getTo());
         }
 
-        final GatesManager gateManager = Plugin.getPlugin().getGatesManager();
-        final Gate gateAtLocation = gateManager.getGateAtLocation(event.getTo());
-
-        if ((gateAtLocation == null) || !gateAtLocation.isOpen()) {
-            return;
-        }
-
-        // Check for permission
-        if (!hasPermission(event.getPlayer(), gateAtLocation)
-                && Plugin.getPlugin().getConfig().getBoolean(ConfigurationUtil.confShowTeleportNoPermissionMessageKey)) {
-
-            final String playerName = event.getPlayer().getName();
-
-            if (playerName == null) {
-                return;
-            }
-
-            // get the current time
-            final Long now = Calendar.getInstance().getTimeInMillis();
-
-            // do not display messages more often than once per second
-            if (!this.lastNoPermissionMessages.containsKey(playerName) || this.lastNoPermissionMessages.get(playerName) < now - 10000L) {
-
-                final String noPermissionString = Plugin.getPlugin().getConfig().getString(ConfigurationUtil.confGateTeleportNoPermissionMessageKey);
-                event.getPlayer().sendMessage(ChatColor.RED + noPermissionString);
-                this.lastNoPermissionMessages.put(playerName, now);
-            }
-        } else {
-            this.teleportPlayer(event.getPlayer(), gateAtLocation);
-        }
-    }
-
-
-    /**
-     * Teleports a player.
-     *
-     * @param player The player to teleport.
-     * @param gate   The gate to which exit the player will be teleported.
-     */
-    private void teleportPlayer(final Player player, final Gate gate) {
-        // Destination
-        final Float newYaw = gate.getExit().getYaw() - gate.getLocation().getYaw() + player.getLocation().getYaw();
-        final Location destLocation = new Location(gate.getExit().getWorld(),
-                gate.getExit().getX(),
-                gate.getExit().getY(),
-                gate.getExit().getZ(),
-                newYaw,
-                player.getLocation().getPitch()
-        );
-
-        // Riding
-        final Entity vehicle = player.getVehicle();
-        final boolean vehicleIsSuitable = (vehicle != null) && (vehicle instanceof Vehicle);
-
-        if (vehicle != null && (!vehicleIsSuitable) || !gate.getAllowsVehicles()) {
-
-            if (!gate.getAllowsVehicles() && Plugin.getPlugin().getConfig().getBoolean(ConfigurationUtil.confShowTeleportNoPermissionMessageKey)) {
-                final String notAllowedMessage = Plugin.getPlugin().getConfig().getString(ConfigurationUtil.confGateTeleportVehicleNotAllowedMessageKey);
-                player.sendMessage(ChatColor.DARK_AQUA + notAllowedMessage);
-            }
-
-            return;
-        }
-
-        //  (eject player)
-        if (vehicleIsSuitable) {
-            vehicle.eject();
-            vehicle.remove();
-        }
-
-        // Teleport
-        player.teleport(destLocation);
-
-        // Riding (mount player)
-        if (vehicleIsSuitable) {
-            final Plugin plugin = Plugin.getPlugin();
-            final BukkitScheduler scheduler = plugin.getServer().getScheduler();
-
-            destLocation.getChunk().load(); // load the destination chunk, no new entity will be created otherwise
-
-            scheduler.scheduleSyncDelayedTask(plugin, new Runnable() {
-                public void run() {
-                    // FIXME: the code below should be executed after the chunk got loaded and not after a fixed time!
-
-                    // create a new entity at the destination location
-                    final Vehicle newVehicle = VehicleCloner.clone((Vehicle) vehicle, destLocation);
-                    newVehicle.setPassenger(player);
-                }
-            }, 2);
-        }
-
-        // Message
-        if (Plugin.getPlugin().getConfig().getBoolean(ConfigurationUtil.confShowTeleportMessageKey)) {
-            final String teleportMessage = Plugin.getPlugin().getConfig().getString(ConfigurationUtil.confGateTeleportMessageKey);
-            player.sendMessage(ChatColor.DARK_AQUA + teleportMessage);
-        }
-    }
-
-
-    private boolean hasPermission(final Player player, final Gate gate) {
-        if (Plugin.getPermission() == null) { // fallback: use the standard bukkit permission system
-            return player.hasPermission(Plugin.permissionUse);
-        } else {
-            final boolean permAtLocation = Plugin.getPermission().has(gate.getLocation().getWorld(), player.getName(), Plugin.permissionUse);
-            final boolean permAtExit = Plugin.getPermission().has(gate.getExit().getWorld(), player.getName(), Plugin.permissionUse);
-
-            return permAtLocation && permAtExit;
-        }
+        teleportController.teleport(event.getPlayer(), event.getTo());
     }
 }

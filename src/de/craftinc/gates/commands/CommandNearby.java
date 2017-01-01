@@ -1,7 +1,8 @@
 package de.craftinc.gates.commands;
 
-import de.craftinc.gates.Gate;
-import de.craftinc.gates.GatesManager;
+import de.craftinc.gates.models.Gate;
+import de.craftinc.gates.controllers.GatesManager;
+import de.craftinc.gates.controllers.PermissionController;
 import de.craftinc.gates.Plugin;
 import de.craftinc.gates.util.GateBlockChangeSender;
 import de.craftinc.gates.util.TextUtil;
@@ -16,7 +17,7 @@ public class CommandNearby extends BaseLocationCommand {
         aliases.add("nb");
 
         helpDescription = "Highlight nearby gates";
-        requiredPermission = Plugin.permissionInfo;
+        requiredPermission = PermissionController.permissionInfo;
         needsPermissionAtCurrentLocation = true;
         shouldPersistToDisk = false;
         senderMustBePlayer = true;

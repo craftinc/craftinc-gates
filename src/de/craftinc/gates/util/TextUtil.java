@@ -46,7 +46,6 @@ public class TextUtil {
         return s + repeat(s, times - 1);
     }
 
-
     /**
      * Joins all elements of list into a single string, separating the original strings with glue.
      */
@@ -64,5 +63,3 @@ public class TextUtil {
         return ret;
     }
 }
-
-

@@ -16,12 +16,11 @@
 */
 package de.craftinc.gates.util;
 
-
 import de.craftinc.gates.Plugin;
-import org.bukkit.Material;
+import de.craftinc.gates.models.GateMaterial;
 
+import java.security.InvalidParameterException;
 import java.util.logging.Level;
-
 
 public class ConfigurationUtil {
     public static final String confMaxGateBlocksKey = "maxGateBlocks";
@@ -39,88 +38,12 @@ public class ConfigurationUtil {
 
     static GateMaterial getPortalMaterial() {
         String materialString = Plugin.getPlugin().getConfig().getString(confGateMaterialKey);
-        GateMaterial material = new GateMaterial();
 
-        switch (materialString) {
-            case "sapling":
-                material.material = Material.SAPLING;
-                break;
-            case "water":
-                material.material = Material.STATIONARY_WATER;
-                break;
-            case "lava":
-                material.material = Material.STATIONARY_LAVA;
-                break;
-            case "cobweb":
-                material.material = Material.WEB;
-                break;
-            case "grass":
-                material.material = Material.LONG_GRASS;
-                material.data = 1;
-                break;
-            case "dead bush":
-                material.material = Material.DEAD_BUSH;
-                break;
-            case "dandelion":
-                material.material = Material.YELLOW_FLOWER;
-                break;
-            case "poppy":
-                material.material = Material.RED_ROSE;
-                break;
-            case "brown mushroom":
-                material.material = Material.BROWN_MUSHROOM;
-                break;
-            case "red mushroom":
-                material.material = Material.RED_MUSHROOM;
-                break;
-            case "torch":
-                material.material = Material.TORCH;
-                break;
-            case "redstone torch (off)":
-                material.material = Material.REDSTONE_TORCH_OFF;
-                break;
-            case "redstone torch (on)":
-                material.material = Material.REDSTONE_TORCH_ON;
-                break;
-            case "fence":
-                material.material = Material.FENCE;
-                break;
-            case "nether portal":
-                material.material = Material.PORTAL;
-                break;
-            case "iron bars":
-                material.material = Material.IRON_FENCE;
-                break;
-            case "glass pane":
-                material.material = Material.THIN_GLASS;
-                break;
-            case "fence gate":
-                material.material = Material.FENCE_GATE;
-                break;
-            case "nether brick fence":
-                material.material = Material.NETHER_FENCE;
-                break;
-            case "nether wart":
-                material.material = Material.NETHER_WARTS;
-                break;
-            case "end portal":
-                material.material = Material.ENDER_PORTAL;
-                break;
-            case "cobblestone wall":
-                material.material = Material.COBBLE_WALL;
-                break;
-            default:  // fallback!
-                material.material = Material.PORTAL;
-                Plugin.log(Level.WARNING, "Gate material invalid! Please check and correct your configuration file!");
-                break;
+        try {
+            return new GateMaterial(materialString);
+        } catch (InvalidParameterException ignored) {
+            Plugin.log(Level.WARNING, "Gate material invalid! Please check and correct your configuration file!");
+            return new GateMaterial("nether portal");
         }
-
-        return material;
     }
-}
-
-
-class GateMaterial {
-    public Material material = Material.PORTAL;
-    public byte data = 0;
 }

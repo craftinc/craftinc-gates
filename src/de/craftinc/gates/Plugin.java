@@ -21,8 +21,10 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
+import de.craftinc.gates.controllers.GatesManager;
 import de.craftinc.gates.listeners.*;
+import de.craftinc.gates.models.Gate;
+import de.craftinc.gates.controllers.PermissionController;
 import de.craftinc.gates.util.ConfigurationUtil;
 import net.milkbowl.vault.permission.Permission;
 
@@ -37,50 +39,44 @@ import org.bukkit.plugin.java.JavaPlugin;
 import de.craftinc.gates.commands.*;
 import org.mcstats.Metrics;
 
-
 public class Plugin extends JavaPlugin {
-    public static final String permissionInfo = "craftincgates.info";
-    public static final String permissionManage = "craftincgates.manage";
-    public static final String permissionUse = "craftincgates.use";
-
     private static Plugin instance;
-    private static Permission permission;
 
     private String baseCommand;
     protected List<BaseCommand> commands = new ArrayList<>();
+
     private GatesManager gatesManager = new GatesManager();
 
-    private PlayerMoveListener moveListener = new PlayerMoveListener();
+    private PermissionController permissionController = new PermissionController();
+
+    private PlayerMoveListener moveListener;
     private PlayerTeleportListener teleportListener = new PlayerTeleportListener();
     private PlayerRespawnListener respawnListener = new PlayerRespawnListener();
     private PlayerChangedWorldListener worldChangeListener = new PlayerChangedWorldListener();
     private PlayerJoinListener joinListener = new PlayerJoinListener();
     private BlockBreakListener blockBreakListener = new BlockBreakListener();
 
-
     public Plugin() {
         instance = this;
+        moveListener = new PlayerMoveListener(this);
     }
-
 
     public static Plugin getPlugin() {
         return instance;
     }
 
-
     public GatesManager getGatesManager() {
         return gatesManager;
     }
-
 
     @Override
     public void onLoad() {
         ConfigurationSerialization.registerClass(Gate.class);
     }
 
-
     private void setupPermissions() {
         if (getServer().getPluginManager().getPlugin("Vault") == null) {
+            log("Not using setup permission provider provided by Vault.");
             return;
         }
 
@@ -88,12 +84,11 @@ public class Plugin extends JavaPlugin {
 
         if (rsp != null) {
             log("Using permission provider provided by Vault.");
-            permission = rsp.getProvider();
+            permissionController.setPermission(rsp.getProvider());
         } else {
             log("Not using setup permission provider provided by Vault.");
         }
     }
-
 
     @Override
     public void onDisable() {
@@ -102,7 +97,6 @@ public class Plugin extends JavaPlugin {
 
         log("Disabled");
     }
-
 
     @Override
     public void onEnable() {
@@ -153,6 +147,9 @@ public class Plugin extends JavaPlugin {
         }
     }
 
+    public PermissionController getPermissionController() {
+        return permissionController;
+    }
 
     private void registerEventListeners() {
         PluginManager pm = this.getServer().getPluginManager();
@@ -223,10 +220,5 @@ public class Plugin extends JavaPlugin {
 
     public static void log(Level level, String msg) {
         Logger.getLogger("Minecraft").log(level, "[" + instance.getDescription().getFullName() + "] " + msg);
-    }
-
-
-    public static Permission getPermission() {
-        return permission;
     }
 }

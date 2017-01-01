@@ -16,11 +16,12 @@
 */
 package de.craftinc.gates.commands;
 
+import de.craftinc.gates.controllers.PermissionController;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 
-import de.craftinc.gates.Gate;
-import de.craftinc.gates.GatesManager;
+import de.craftinc.gates.models.Gate;
+import de.craftinc.gates.controllers.GatesManager;
 import de.craftinc.gates.Plugin;
 
 public class CommandNew extends BaseLocationCommand {
@@ -34,7 +35,7 @@ public class CommandNew extends BaseLocationCommand {
         senderMustBePlayer = true;
         hasGateParam = false;
         helpDescription = "Create a gate at your current location.";
-        requiredPermission = Plugin.permissionManage;
+        requiredPermission = PermissionController.permissionManage;
         needsPermissionAtCurrentLocation = true;
         shouldPersistToDisk = true;
         senderMustBePlayer = true;

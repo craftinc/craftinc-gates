@@ -16,6 +16,7 @@
 */
 package de.craftinc.gates.commands;
 
+import de.craftinc.gates.Plugin;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;

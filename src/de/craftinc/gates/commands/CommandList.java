@@ -21,10 +21,10 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import de.craftinc.gates.controllers.PermissionController;
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
 
-import de.craftinc.gates.Gate;
+import de.craftinc.gates.models.Gate;
 import de.craftinc.gates.Plugin;
 import de.craftinc.gates.util.TextUtil;
 
@@ -48,7 +48,7 @@ public class CommandList extends BaseCommand {
 
         helpDescription = "lists all availible gates.";
 
-        requiredPermission = Plugin.permissionInfo;
+        requiredPermission = PermissionController.permissionInfo;
         shouldPersistToDisk = false;
         senderMustBePlayer = false;
     }
@@ -149,31 +149,14 @@ public class CommandList extends BaseCommand {
      */
     private Collection<Gate> getAllGates() {
         Collection<Gate> gates = Plugin.getPlugin().getGatesManager().allGates();
+        // create a copy since we cannot iterate over a collection while modifying it!
+        Collection<Gate> gatesCopy = new ArrayList<>(gates);
 
-        if (this.sender instanceof Player && Plugin.getPermission() != null) {
-            Player p = (Player) this.sender;
-
-            // create a copy since we cannot iterate over a collection while modifying it!
-            Collection<Gate> gatesCopy = new ArrayList<>(gates);
-
-            for (Gate gate : gatesCopy) {
-                if (gate.getLocation() != null) {
-                    boolean permissionAtGateLocation = Plugin.getPermission().has(gate.getLocation().getWorld(), p.getName(), this.requiredPermission);
-                    if (!permissionAtGateLocation) {
-                        gates.remove(gate);
-                        continue;
-                    }
-                }
-
-                if (gate.getExit() != null) {
-                    boolean permissionAtGateExit = Plugin.getPermission().has(gate.getExit().getWorld(), p.getName(), this.requiredPermission);
-                    if (!permissionAtGateExit) {
-                        gates.remove(gate);
-                    }
-                }
+        for (Gate gate : gatesCopy) {
+            if (!this.permissionController.hasPermission(this.sender, gate, this.requiredPermission)) {
+                gates.remove(gate);
             }
         }
-
         return gates;
     }
 

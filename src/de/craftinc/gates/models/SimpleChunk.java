@@ -14,7 +14,7 @@
     You should have received a copy of the GNU Lesser General Public License
     along with this program (LGPLv3).  If not, see <http://www.gnu.org/licenses/>.
 */
-package de.craftinc.gates.util;
+package de.craftinc.gates.models;
 
 import org.bukkit.Chunk;
 import org.bukkit.World;
