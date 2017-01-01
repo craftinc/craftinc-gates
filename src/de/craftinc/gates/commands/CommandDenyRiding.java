@@ -16,7 +16,6 @@
 */
 package de.craftinc.gates.commands;
 
-import de.craftinc.gates.Plugin;
 import de.craftinc.gates.controllers.PermissionController;
 import org.bukkit.ChatColor;
 

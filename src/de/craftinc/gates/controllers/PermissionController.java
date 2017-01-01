@@ -1,6 +1,5 @@
 package de.craftinc.gates.controllers;
 
-import de.craftinc.gates.Plugin;
 import de.craftinc.gates.models.Gate;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Location;

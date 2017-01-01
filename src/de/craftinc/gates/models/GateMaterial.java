@@ -85,10 +85,6 @@ public class GateMaterial {
         this.material = material;
     }
 
-    GateMaterial(Material material) {
-        this.material = material;
-    }
-
     public Material getMaterial() {
         return material;
     }
