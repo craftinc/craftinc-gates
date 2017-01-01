@@ -94,9 +94,7 @@ public class Plugin extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        // Save gates
         gatesManager.saveGatesToDisk();
-
         log("Disabled");
     }
 
@@ -122,18 +120,14 @@ public class Plugin extends JavaPlugin {
         commands.add(new CommandRemove());
         commands.add(new CommandLocation());
         commands.add(new CommandExit());
-        commands.add(new CommandOpen());
+        commands.add(new CommandTriggerOpen());
         commands.add(new CommandRename());
-        commands.add(new CommandClose());
         commands.add(new CommandList());
         commands.add(new CommandInfo());
-        commands.add(new CommandHide());
-        commands.add(new CommandUnhide());
-        commands.add(new CommandExitOpen());
         commands.add(new CommandNearby());
-        commands.add(new CommandAllowRiding());
-        commands.add(new CommandDenyRiding());
-
+        commands.add(new CommandTriggerVehicles());
+        commands.add(new CommandMaterial());
+        commands.add(new CommandTeleport());
 
         // Register events
         this.registerEventListeners();
@@ -168,7 +162,6 @@ public class Plugin extends JavaPlugin {
         }
     }
 
-
     // -------------------------------------------- //
     // Commands
     // -------------------------------------------- //
@@ -184,14 +177,12 @@ public class Plugin extends JavaPlugin {
         return this.baseCommand;
     }
 
-
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
         List<String> parameters = new ArrayList<>(Arrays.asList(args));
         this.handleCommand(sender, parameters);
         return true;
     }
-
 
     private void handleCommand(CommandSender sender, List<String> parameters) {
         if (parameters.size() == 0) {
@@ -219,7 +210,6 @@ public class Plugin extends JavaPlugin {
     public static void log(String msg) {
         log(Level.INFO, msg);
     }
-
 
     public static void log(Level level, String msg) {
         Logger.getLogger("Minecraft").log(level, "[" + instance.getDescription().getFullName() + "] " + msg);

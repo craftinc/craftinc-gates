@@ -17,25 +17,40 @@
 package de.craftinc.gates.commands;
 
 import de.craftinc.gates.controllers.PermissionController;
+import de.craftinc.gates.util.GateBlockChangeSender;
 import org.bukkit.ChatColor;
 
-public class CommandDenyRiding extends BaseCommand {
+import de.craftinc.gates.Plugin;
 
-    public CommandDenyRiding() {
-        aliases.add("denyRiding");
-        aliases.add("dr");
+public class CommandTriggerOpen extends BaseCommand {
+
+    public CommandTriggerOpen() {
+        aliases.add("triggerOpen");
+        aliases.add("o");
 
         requiredParameters.add("id");
-        helpDescription = "Deny players to travel while riding.";
+        helpDescription = "Open/close a gate.";
         requiredPermission = PermissionController.permissionManage;
+
         needsPermissionAtCurrentLocation = false;
         shouldPersistToDisk = true;
         senderMustBePlayer = false;
     }
 
-    @Override
-    protected void perform() {
-        gate.setAllowsVehicles(false);
-        sendMessage(ChatColor.GREEN + "Traveling while riding is now disabled for this gate.");
+    public void perform() {
+        try {
+            if (!gate.isOpen() && gate.getExit() == null && player != null) {
+                gate.setExit(player.getLocation());
+                sendMessage(ChatColor.GREEN + "The exit of gate '" + gate.getId() + "' is now where you stand.");
+            }
+
+            gate.setOpen(gate.isOpen());
+
+            GateBlockChangeSender.updateGateBlocks(gate);
+            gatesManager.handleGateLocationChange(gate, null, null, null);
+            sendMessage(ChatColor.GREEN + "The gate was opened.");
+        } catch (Exception e) {
+            sendMessage(ChatColor.RED + e.getMessage());
+        }
     }
 }

@@ -30,23 +30,16 @@ public class CommandRename extends BaseCommand {
 
         hasGateParam = true;
         senderMustBePlayer = false;
-
         requiredParameters.add("current name");
         requiredParameters.add("new name");
-
         helpDescription = "Changes the id of a gate.";
-
         requiredPermission = PermissionController.permissionManage;
-
         needsPermissionAtCurrentLocation = false;
         shouldPersistToDisk = true;
-        senderMustBePlayer = false;
     }
-
 
     public void perform() {
         String newId = parameters.get(1);
-        GatesManager gatesManager = Plugin.getPlugin().getGatesManager();
 
         if (gatesManager.gateExists(newId)) {
             sendMessage(ChatColor.RED + "Cannot rename " + gate.getId() + ". There is already a gate named " + newId + ".");

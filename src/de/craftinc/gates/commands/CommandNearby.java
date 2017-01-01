@@ -25,8 +25,7 @@ public class CommandNearby extends BaseLocationCommand {
     }
 
     public void perform() {
-        GatesManager manager = Plugin.getPlugin().getGatesManager();
-        Set<Gate> nearbyGates = manager.getNearbyGates(player.getLocation().getChunk());
+        Set<Gate> nearbyGates = gatesManager.getNearbyGates(player.getLocation().getChunk());
 
         if (nearbyGates == null) {
             player.sendMessage("There are no gates near you!");

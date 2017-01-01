@@ -32,19 +32,14 @@ public class CommandInfo extends BaseCommand {
     public CommandInfo() {
         aliases.add("info");
         aliases.add("i");
-
         optionalParameters.add("id");
-
         helpDescription = "Print detailed information about a certain or the closest gate.";
-
         requiredPermission = PermissionController.permissionInfo;
-
         needsPermissionAtCurrentLocation = false;
         shouldPersistToDisk = false;
         senderMustBePlayer = false;
         hasGateParam = false;
     }
-
 
     public void perform() {
         if (this.parameters.size() > 0) {
@@ -64,7 +59,7 @@ public class CommandInfo extends BaseCommand {
             }
 
             Player p = (Player) this.sender;
-            this.gate = Plugin.getPlugin().getGatesManager().getNearestGate(p.getLocation());
+            this.gate = gatesManager.getNearestGate(p.getLocation());
 
             if (!this.hasPermission() || this.gate == null) {
                 sendMessage(ChatColor.RED + "There is either no gate nearby or you do not have permission to " + this.helpDescription.toLowerCase());

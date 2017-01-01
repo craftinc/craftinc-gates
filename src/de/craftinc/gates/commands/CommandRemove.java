@@ -43,7 +43,7 @@ public class CommandRemove extends BaseCommand {
     }
 
     public void perform() {
-        Plugin.getPlugin().getGatesManager().handleDeletion(gate);
+        gatesManager.handleDeletion(gate);
         GateBlockChangeSender.updateGateBlocks(gate, true);
         sendMessage(ChatColor.GREEN + "Gate with id '" + gate.getId() + "' was deleted.");
     }

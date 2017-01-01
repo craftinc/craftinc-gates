@@ -16,22 +16,18 @@
 */
 package de.craftinc.gates.commands;
 
-import java.util.logging.Level;
-
 import de.craftinc.gates.controllers.PermissionController;
-import de.craftinc.gates.util.GateBlockChangeSender;
 import org.bukkit.ChatColor;
 
-import de.craftinc.gates.Plugin;
+public class CommandTriggerVehicles extends BaseCommand {
 
-public class CommandClose extends BaseCommand {
-
-    public CommandClose() {
-        aliases.add("close");
-        aliases.add("c");
+    public CommandTriggerVehicles() {
+        aliases.add("vehicles");
+        aliases.add("v");
 
         requiredParameters.add("id");
-        helpDescription = "Closes a gate to prevent players from using it.";
+
+        helpDescription = "Allow/deny players to travel while riding.";
         requiredPermission = PermissionController.permissionManage;
         needsPermissionAtCurrentLocation = false;
         shouldPersistToDisk = true;
@@ -39,15 +35,13 @@ public class CommandClose extends BaseCommand {
     }
 
     @Override
-    public void perform() {
-        try {
-            gate.setOpen(false);
-            GateBlockChangeSender.updateGateBlocks(gate);
-            sendMessage(ChatColor.GREEN + "The gate was closed.");
-        } catch (Exception e) {
-            sendMessage(ChatColor.RED + "Opening the gate failed! See server log for more information");
-            Plugin.log(Level.WARNING, e.getMessage());
-            e.printStackTrace();
+    protected void perform() {
+        gate.setAllowsVehicles(gate.getAllowsVehicles());
+
+        if (gate.getAllowsVehicles()) {
+            sendMessage(ChatColor.GREEN + "Traveling while riding is now enabled for this gate.");
+        } else {
+            sendMessage(ChatColor.GREEN + "Traveling while riding is now disabled for this gate.");
         }
     }
 }

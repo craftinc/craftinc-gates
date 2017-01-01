@@ -30,25 +30,20 @@ public class CommandExit extends BaseCommand {
     public CommandExit() {
         aliases.add("exit");
         aliases.add("e");
-
         requiredParameters.add("id");
-
         helpDescription = "Change exit of location.";
-
         requiredPermission = PermissionController.permissionManage;
-
         needsPermissionAtCurrentLocation = true;
         shouldPersistToDisk = true;
         senderMustBePlayer = true;
     }
-
 
     public void perform() {
         try {
             Location oldExit = gate.getExit();
             gate.setExit(player.getLocation());
             sendMessage(ChatColor.GREEN + "The exit of gate '" + gate.getId() + "' is now where you stand.");
-            Plugin.getPlugin().getGatesManager().handleGateExitChange(gate, oldExit);
+            gatesManager.handleGateExitChange(gate, oldExit);
         } catch (Exception e) {
             GateBlockChangeSender.updateGateBlocks(gate);
             sendMessage(ChatColor.RED + "Setting the exit for the gate failed! See server log for more information");

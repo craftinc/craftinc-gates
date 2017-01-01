@@ -17,90 +17,50 @@
 package de.craftinc.gates.commands;
 
 import de.craftinc.gates.controllers.PermissionController;
-import de.craftinc.gates.util.TextUtil;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class CommandHelp extends BaseCommand {
 
-    private static List<List<String>> helpPages;
-
-    static {
-        // sort the usage strings
-        List<String> allUsageStrings = new ArrayList<>();
-
-        allUsageStrings.add(new CommandHelp().getUsageTemplate(true));
-        allUsageStrings.add(new CommandNew().getUsageTemplate(true));
-        allUsageStrings.add(new CommandRemove().getUsageTemplate(true));
-        allUsageStrings.add(new CommandLocation().getUsageTemplate(true));
-        allUsageStrings.add(new CommandExit().getUsageTemplate(true));
-        allUsageStrings.add(new CommandOpen().getUsageTemplate(true));
-        allUsageStrings.add(new CommandRename().getUsageTemplate(true));
-        allUsageStrings.add(new CommandClose().getUsageTemplate(true));
-        allUsageStrings.add(new CommandList().getUsageTemplate(true));
-        allUsageStrings.add(new CommandInfo().getUsageTemplate(true));
-        allUsageStrings.add(new CommandHide().getUsageTemplate(true));
-        allUsageStrings.add(new CommandUnhide().getUsageTemplate(true));
-        allUsageStrings.add(new CommandExitOpen().getUsageTemplate(true));
-        allUsageStrings.add(new CommandNearby().getUsageTemplate(true));
-
-        Collections.sort(allUsageStrings);
-
-
-        // put 5 commands on one page
-        helpPages = new ArrayList<>();
-
-        while (!allUsageStrings.isEmpty()) {
-            int toIndex = allUsageStrings.size() >= 6 ? 5 : allUsageStrings.size();
-            List<String> currentHelpPage = new ArrayList<>(allUsageStrings.subList(0, toIndex));
-            helpPages.add(currentHelpPage);
-
-            allUsageStrings.removeAll(currentHelpPage);
-        }
-    }
-
+    private static List<String> help;
 
     public CommandHelp() {
         aliases.add("help");
         aliases.add("?");
-
-        optionalParameters.add("page");
         helpDescription = "prints this help page";
-
         requiredPermission = PermissionController.permissionInfo;
-
         hasGateParam = false;
         needsPermissionAtCurrentLocation = false;
         shouldPersistToDisk = false;
         senderMustBePlayer = false;
     }
 
-
     public void perform() {
-        int page;
+        sendMessage(getHelp());
+    }
 
-        if (parameters.size() > 0) {
-            try {
-                page = Integer.parseInt(parameters.get(0));
-            } catch (NumberFormatException e) {
-                // wasn't an integer
-                page = 1;
-            }
-        } else {
-            page = 1;
+    private List<String> getHelp() {
+        if (help == null) {
+            help = Arrays.asList(
+                    new CommandHelp().getUsageTemplate(true),
+                    new CommandNew().getUsageTemplate(true),
+                    new CommandRemove().getUsageTemplate(true),
+                    new CommandLocation().getUsageTemplate(true),
+                    new CommandExit().getUsageTemplate(true),
+                    new CommandTriggerOpen().getUsageTemplate(true),
+                    new CommandRename().getUsageTemplate(true),
+                    new CommandList().getUsageTemplate(true),
+                    new CommandInfo().getUsageTemplate(true),
+                    new CommandNearby().getUsageTemplate(true),
+                    new CommandTriggerVehicles().getUsageTemplate(true),
+                    new CommandTeleport().getUsageTemplate(true),
+                    new CommandMaterial().getUsageTemplate(true)
+            );
+            Collections.sort(help);
         }
 
-        sendMessage(TextUtil.titleSize("Craft Inc. Gates Help (" + page + "/" + helpPages.size() + ")"));
-
-        page -= 1;
-        if (page < 0 || page >= helpPages.size()) {
-            sendMessage("This page does not exist");
-            return;
-        }
-
-        sendMessage(helpPages.get(page));
+        return help;
     }
 }
-
