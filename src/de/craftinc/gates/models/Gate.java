@@ -286,11 +286,11 @@ public class Gate implements ConfigurationSerializable {
         retVal.put(materialKey, material.toString());
 
         if (exit != null) {
-            retVal.put(exitKey, exit.serialize());
+            retVal.put(exitKey, exit);
         }
 
         if (location != null) {
-            retVal.put(locationKey, location.serialize());
+            retVal.put(locationKey, location);
         }
 
         return retVal;
