@@ -256,7 +256,7 @@ public class Gate implements ConfigurationSerializable {
             id = map.get(idKey).toString().toLowerCase();
             location = (Location) map.get(locationKey);
             exit = (Location) map.get(exitKey);
-
+            material = new GateMaterial((String)map.get(materialKey));
             isOpen = (Boolean) map.get(isOpenKey);
             allowsVehicles = (Boolean) map.get(allowsVehiclesKey);
             gateBlockLocations = (Set<Location>) map.get(gateBlocksKey);
@@ -280,10 +280,10 @@ public class Gate implements ConfigurationSerializable {
         Map<String, Object> retVal = new HashMap<>();
 
         retVal.put(idKey, id);
-        retVal.put(locationKey, LocationUtil.serializeLocation(location));
         retVal.put(isOpenKey, isOpen);
         retVal.put(allowsVehiclesKey, allowsVehicles);
         retVal.put(gateBlocksKey, gateBlockLocations);
+        retVal.put(materialKey, material.toString());
 
         if (exit != null) {
             retVal.put(exitKey, exit.serialize());
